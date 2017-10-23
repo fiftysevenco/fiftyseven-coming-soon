@@ -1,0 +1,768 @@
+html,
+body {
+	color:white;
+	overflow: hidden;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100vw;
+	background: #111;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+	text-rendering: optimizeLegibility !important;
+	-webkit-font-smoothing: antialiased !important;
+}
+::selection {
+	color: white;
+	background: white; 
+}
+::-moz-selection {
+	color: white;
+	background: white; 
+}
+.contact{
+::selection {
+	color: white;
+	background: white; 
+}
+::-moz-selection {
+	color: white;
+	background: white; 
+}	
+}
+nav#global{
+	position: fixed;
+	@include calc('width','100% -'$pad*2);
+	margin: $pad;
+	bottom:0;
+	left:0;
+	overflow: hidden;
+	z-index: 100000;
+	color: white;
+	font-family: $norwester;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	font-size: 12px;
+	line-height: 12px;
+	@include opacity(1);
+	//@include transform(translateY(100%));
+	@include transition(opacity 1s $ease-in-out-expo 1s, transform 1s $ease-in-out-expo 1s);
+	span.outer{
+		position: relative;
+		overflow: hidden;
+		display: inline-block;
+		cursor: pointer;
+		span:nth-of-type(1){
+			position: relative;
+			cursor: pointer;
+			display: inline-block;
+			@include opacity(1);
+			@include transform(translateY(0));
+			@include transition(transform 1s $ease, opacity 1s $ease);
+		}
+		span:nth-of-type(2){
+			position: absolute;
+			cursor: pointer;
+			left:0;
+			text-indent: $pad/6;		
+			display: inline-block;
+			@include opacity(0);
+			//@include backface-visibility(hidden);
+			@include transform(translateY(150%));
+			@include transition(transform 1s $ease, opacity 1s $ease);
+		}
+	}
+	#contact-btn{
+		position: absolute;
+		left:0;
+		bottom:0;
+		display: block;
+		text-decoration: none;
+		color: white;
+		padding-left: $pad*1.25;
+		z-index: 100;
+		cursor: pointer;
+		text-indent: $pad/12;		
+		@include transform(translateY(100%));
+		@include transition(color 0.5s $ease 0s, opacity 0.5s $ease, visibility 0.5s $ease, transform 0.5s $ease);
+		span.outer{
+			visibility: visible;
+			cursor: pointer;
+			@include opacity(1);
+			//@include transition(transform 1s $ease-in-out-expo, opacity 0.5s $ease, visibility 0.5s $ease);
+			&:nth-of-type(2){
+				position: absolute;
+				@include opacity(0);
+				//visibility: hidden;		
+				left:0;			
+				text-indent: $pad/12;		
+				padding-left: $pad*1.25;
+				//@include transform(translateX(100%));
+				span:nth-of-type(2){
+					left:$pad*1.25;
+				}
+			}
+		}
+		.dash{
+			width: $pad;
+			position: absolute;
+			left:0;
+			display: block;
+			top:0;
+			height: 100%;
+			overflow: hidden;
+			&:after{
+				content:'';
+				width: 100%;
+				height: 1px;
+				background: white;
+				position: absolute;;
+				left:0;
+				top:50%;
+				cursor: pointer;
+				@include opacity(1);
+				@include transform(translateY(-50%));
+				@include backface-visibility(hidden);
+				@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0s $ease-in-out-expo 0s, transform 0s $ease-in-out-expo 0s);
+			}
+			&:before{
+				content:'';
+				width: 100%;
+				height: 1px;
+				background: white;
+				position: absolute;;
+				left:0;
+				top:50%;
+				cursor: pointer;
+				@include opacity(1);
+				@include transform(translateY(-50%) translateX(-125%));
+				@include backface-visibility(hidden);
+				@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0s $ease-in-out-expo 0s, transform 0s $ease-in-out-expo 0s);
+			}
+		}
+
+
+		&:hover{
+			.dash{
+				&:after{
+					@include opacity(0);
+					@include transform(translateY(-50%) translateX(150%));
+					@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0.6s $ease 0s, transform 0.6s $ease 0s);
+				}
+				&:before{
+					@include opacity(1);
+					@include transform(translateY(-50%) translateX(0%));
+					@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0.6s $ease 0s, transform 0.6s $ease 0s);
+				}				
+			}
+			span.outer{
+				span:nth-of-type(1){
+					//@include opacity(0);
+					//@include transform(translateY(-150%));
+				}
+				span:nth-of-type(2){
+					//@include opacity(1);
+					//@include transform(translateY(0%));
+				}
+			}
+		}
+	}
+	#sound-btn{
+		position: absolute;
+		bottom:0;
+		right:0;
+		text-indent: $pad/24;
+		padding-right: $pad*1.25;
+		display: block;
+		color: white;
+		z-index: 100;
+		//display: none;
+		visibility: hidden;
+		cursor: pointer;
+		@include transform(translateY(100%));		
+		@include opacity(1);
+		@include transition(color 0.5s $ease-in-out-expo 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo,  padding-right 0.5s $ease-in-out-expo);
+		span.outer{
+			visibility: visible;
+			cursor: pointer;
+			@include opacity(1);
+			span{
+				text-indent: 0;	
+			}
+		}
+		.dash{
+			width: $pad;
+			position: absolute;
+			right:0;
+			display: block;
+			top:0;
+			height: 100%;
+			overflow: hidden;
+			@include transition( width 0.5s $ease-in-out-expo 0s);
+			&:after{
+				content:'';
+				width: 100%;
+				height: 1px;
+				background: white;
+				position: absolute;
+				right:0;
+				top:50%;
+				cursor: pointer;
+				@include transform(translateY(-50%) translateX(0%));
+				@include backface-visibility(hidden);
+				@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0s $ease-in-out-expo 0s, transform 0s $ease-in-out-expo 0s, width 0.5s $ease-in-out-expo);
+			}
+			&:before{
+				content:'';
+				width: 100%;
+				height: 1px;
+				background: white;
+				position: absolute;
+				right:0;
+				top:50%;
+				cursor: pointer;
+				@include opacity(1);
+				@include transform(translateY(-50%) translateX(125%));
+				@include backface-visibility(hidden);
+				@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0s $ease-in-out-expo 0s, transform 0s $ease-in-out-expo 0s, width 0.5s $ease-in-out-expo);
+			}			
+		}
+		&:not(.muted):hover{
+			.dash{
+				&:after{
+					@include opacity(0);
+					@include transform(translateY(-50%) translateX(-150%));
+					@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0.6s $ease 0s, transform 0.6s $ease 0s, width 0.5s $ease-in-out-expo);
+				}
+				&:before{
+					@include opacity(1);
+					@include transform(translateY(-50%) translateX(0%));
+					@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0.6s $ease 0s, transform 0.6s $ease 0s, width 0.5s $ease-in-out-expo);
+				}				
+			}
+			span.outer{
+				span:nth-of-type(1){
+					//@include opacity(0);
+					//@include transform(translateY(-150%));
+				}
+				span:nth-of-type(2){
+					display: none;
+					//@include opacity(1);
+					//@include transform(translateY(0%));
+				}
+			}
+		}		
+		&.muted{
+			padding-right: 0px;
+			//@include transition-delay(1s);
+			@include transition(color 0.5s $ease-in-out-expo 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo,  padding-right 0.5s $ease-in-out-expo);
+			span.outer span:nth-of-type(2){
+				//@include opacity(0);
+				//@include transition(opacity 0.5s $ease, transform 0.5s $ease);
+			}
+			span.outer span:nth-of-type(1){
+				@include opacity(0.5);
+				//@include transform(translateY(0%));
+				//@include transition(opacity 0.5s $ease, transform 0.5s $ease);
+			}
+			.dash{
+				width: 100%;
+				@include transition( width 0.5s $ease-in-out-expo 0.5s);
+				&:after{
+					@include opacity(0);
+					@include transform(translateY(-50%) translateX(-50%));
+				}
+				&:before{
+					@include opacity(1);
+					@include transform(translateY(-50%) translateX(0%));
+					@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0s $ease-in-out-expo 0s, transform 0s $ease-in-out-expo, width 0.5s $ease-in-out-expo 0.5s);
+				}
+				
+			}		
+			&:hover{
+				//@include transition(0s $ease);
+				&:after{
+					@include opacity(0);
+					@include transform(translateY(-50%) translateX(-125%));
+				}
+				&:before{
+					@include opacity(1);
+					@include transform(translateY(-50%) translateX(0%));
+				}
+				/*span.outer{
+					//@include opacity(0.4);
+					@include transition(0s $ease);
+					span:nth-of-type(2){
+						//@include opacity(0.4);
+						//@include transform(translateY(0%));
+						//@include transition(0s $ease);
+					}
+					span:nth-of-type(1){
+						//@include opacity(0);
+						//@include transform(translateY(150%));
+					}
+				}*/
+			}				
+		}
+	}
+	p{
+		color: white;
+		text-align: center;
+		font-size: 9px;
+		line-height: 12px;
+		position: relative;
+		@include transform(translateY(100%));		
+		@include opacity(0.4);
+		@include transition(color 0.5s $ease 0s, transform 0.5s $ease 0s);			
+	}
+	@include breakpoint(mobile){
+		#contact-btn,
+		#sound-btn{
+			display: none!important;
+		}
+		p{
+			@include opacity(0.4);
+			margin-bottom: $pad*2;
+			@include transform(translateY(0%));	
+		}
+	}
+	@include breakpoint(mobile-landscape){
+		left:50%;
+		@include transform(rotate(-90deg) translateX(25%) translateY(50%));
+		p{
+			margin-bottom: $pad;
+		}		
+	}
+}
+nav#swipe{
+	position: absolute;
+	bottom:60px;
+	left:0;
+	width: 100%;
+	z-index: 100000;
+	font-family: $norwester;
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	font-size: 9px;
+	text-align: center;
+	line-height: 2;
+	display: none;
+	height: 30px;
+	@include opacity(0);
+	@include transform(translateY(100%));
+	@include transition(opacity 1s $ease 1s, transform 1s $ease 1s);
+	span{
+		color: white;
+		@include opacity(0.8);
+		position: absolute;
+		text-align: center;
+		left:50%;
+		top:0;
+		@include transform(translateY(-125%) translateX(-50%));
+		@include transition(opacity 1s $ease);
+		&#back-cta{
+			color: white;
+			@include opacity(0);
+		}
+	}
+	@include breakpoint(mobile){
+		display: block;
+	}
+	#slider{
+		position: absolute;
+		top:0;
+		left:50%;
+		//padding-top: 40px;
+		overflow: visible;
+		height: 30px;
+		width: 80px;
+		@include transform(translateX(-50%)  scale(0.75));
+		@include opacity(1);
+		max-width: 90px;
+		@include transition(opacity 0.5s $ease-in-out-expo, max-width 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo);
+		#target{
+			position: absolute;
+			left:0;
+			top:0;
+			height: 100%;
+			z-index: 100;
+			width: 30px;
+			border: solid white 1px;
+			@include border-radius(100%);
+			@include transition(transform 1s $ease-in-out-expo, left 1s $ease-in-out-expo, border-color 1s $ease-in-out-expo);
+			&:after{
+				content:'';
+				width: 7px;
+				height: 7px;
+				position: absolute;
+				top:50%;
+				left:50%;
+				background: white;
+				@include border-radius(100%);
+				@include transform(translateX(-50%) translateY(-50%));
+				@include transition(background 1s $ease-in-out-expo);
+			}
+			&:before{
+				content:'';
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top:50%;
+				left:50%;
+				border: 1px solid white;
+				//@include opacity(0);
+				opacity: 0;
+				@include border-radius(100%);
+				@include transform(translateY(-50%) translateX(-50%));
+				@include animation(pulsate 2s $ease infinite);
+			}
+		}
+		&:after{
+			content:'';
+			position: absolute;
+			top:50%;
+			left:32px;
+			width: 38%;
+			z-index: 10;
+			height: 1px;
+		    background: url(../images/ui/border-white.png) no-repeat center top;	
+		    @include background-size(100% auto);	
+			overflow: hidden;
+			@include transform(translateY(-50%));
+			@include opacity(0);
+			@include transition(max-width 0.2s $ease-in-out-expo, left 1s $ease-in-out-expo, transform 1s $ease-in-out-expo, opacity 0.5s $ease-in-out-expo);
+		}
+		&:before{
+			content:'';
+			position: absolute;
+			top:50%;
+			left:32px;
+			z-index: 10;
+			width: 38%;
+			height: 1px;
+		    background: url(../images/ui/border-white.png) no-repeat center top;	
+		    @include background-size(100% auto);	
+			overflow: hidden;
+			@include transform(translateY(-50%));
+			@include transition(max-width 0.2s $ease-in-out-expo, left 1s $ease-in-out-expo, transform 1s $ease-in-out-expo, opacity 0.5s $ease-in-out-expo);
+		}
+		#dot{
+			position: absolute;
+			left:87.5%;
+			top:50%;
+			height: 50%;
+			width: 11px;
+			height: 11px;
+			z-index: 100;
+			background: white;
+			//margin-left: -20px;
+			@include border-radius(100%);
+			@include transform(translateX(-50%) translateY(-50%));
+			@include transition(transform 1s $ease-in-out-expo, left 1s $ease-in-out-expo, background 1s $ease-in-out-expo);
+		}
+	}
+	@include breakpoint(mobile-landscape){
+		bottom: 20px;
+		span{
+			display: none!important;
+		}
+	}
+	@include breakpoint(short){
+		//bottom: 20px;
+		span{
+			display: none!important;
+		}
+	}
+}
+@include keyframes(pulsate){
+	0%{
+		opacity: 0;
+		@include transform(translateY(-50%) translateX(-50%) scale(0));
+	}
+	50%{
+		opacity: 0.5;
+	}
+	100%{
+		opacity: 0;
+		@include transform(translateY(-50%) translateX(-50%) scale(1.5));
+	}
+
+}
+.swiping{
+	nav#swipe{
+		#slider{
+			&:after,
+			&:before{
+				//@include opacity(0);
+			}	
+		}
+	}
+}
+.audio{
+	nav#global{
+		#sound-btn{
+			visibility: visible;
+			//display: block;
+		}
+	}
+}
+.texture-loaded{
+	nav#global{
+		//@include opacity(1);
+		//@include transform(translateY(0));
+		//@include transition(opacity 1s $ease 1s, transform 1s $ease 1s);
+		#contact-btn{
+			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease 1s, visibility 0.5s $ease 0s, transform 0.5s $ease 0.5s);
+			@include transform(translateY(0%));
+		}
+		p{
+			@include transition(color 0.5s $ease 0s, transform 0.5s $ease 1s);			
+			@include transform(translateY(0%));
+			
+		}
+		#sound-btn{
+			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease 1.5s,  padding-right 1s $ease-in-out-expo);
+			@include transform(translateY(0%));
+		}
+	}
+	&.resizing{
+		nav#global{
+			@include opacity(0);
+			@include transform(translateY(100%));
+			@include transition(opacity 1s $ease, transform 1s $ease 1s);
+		}		
+	}
+	@include breakpoint(mobile){
+		nav#global{
+			@include transition(opacity 1s $ease 1s, transform 0s $ease 0s);			
+		}
+		nav#swipe{
+			@include opacity(1);
+			@include transform(translateY(0));
+			@include transition(opacity 1s $ease 1s, transform 1s $ease 1s);			
+		}
+		&.resizing{
+			nav#swipe{
+				@include opacity(0);
+				@include transform(translateY(100%));
+				@include transition(opacity 1s $ease, transform 1s $ease 1s);
+			}		
+		}
+	}	
+	@include breakpoint(mobile-landscape){
+		nav#global{
+			@include transform(rotate(-90deg) translateX(25%) translateY(-50%));
+			@include transition(opacity 1s $ease 1s, transform 0s $ease 0s);
+		}
+	}
+}
+.contact{
+	nav#global{
+		//@include opacity(0);
+		//@include transition(opacity 1s $ease-in-out-expo);
+		#sound-btn{
+			@include opacity(0);
+			@include transform(translateY(100%));		
+			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo,  padding-right 1s $ease-in-out-expo);
+		
+		}		
+		#contact-btn{
+			@include opacity(0);
+			@include transform(translateY(100%));		
+			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease-in-out-expo 1s, transform 0.5s $ease-in-out-expo 1s);
+		
+		}
+		p{
+			@include opacity(0);
+			@include transition(color 0.5s $ease 0s, transform 0.5s $ease-in-out-expo .5s, opacity 0.5s $ease-in-out-expo .5s);			
+			@include transform(translateY(100%));				
+		}
+	}
+	nav#swipe{
+		@include opacity(1);
+		@include transition(opacity 0.5s $ease-in-out-expo 0.4s, max-width 0.5s $ease-in-out-expo 0.4s);
+		span{
+			@include transition(opacity 1s $ease .5s);
+			&#contact-cta{
+				@include opacity(0);
+			}
+			&#back-cta{
+				@include opacity(0);
+			}
+		}
+		#slider{
+			//max-width: 30px;
+			//@include transform(translateX(-50%) scale(0));
+			//@include transition(opacity 0.5s $ease-in-out-expo, max-width 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo 1s);
+			#target{
+				//left:100%;
+				//@include transform(translateX(-100%));	
+				//border-color: black;	
+				@include transform(scale(0));		
+				@include transition(transform 1s $ease-in-out-expo 0.5s);
+				&:after{
+					//background: black;
+					//@include transition(background 1s $ease-in-out-expo .5s);
+				}
+				&:before{
+					border-color: white;	
+				}
+			}
+			&:after{
+				//left:12px;
+				//max-width: 0;
+				@include opacity(0);
+				//@include transform(translateY(-50%) translateX(0px) scaleX(-1));		
+				@include transition(opacity 0.5s $ease-in-out-expo);
+			}
+			&:before{
+				//left:12px;
+				//max-width: 0;
+				@include opacity(0);
+				//@include transform(translateY(-50%) translateX(0px) scaleX(-1));		
+				@include transition(opacity 0.5s $ease-in-out-expo);
+			}
+
+			#dot{
+				left:15px;
+				//background: black;
+				//margin-left: 0;
+				@include transform(translateX(-50%) translateY(-50%) scale(0));
+				@include transition(transform 1s $ease-in-out-expo 0.5s, left 1s $ease-in-out-expo 0s);
+			}
+		}
+
+	}		
+
+	&.contact-loaded{
+		nav#global{
+			#sound-btn{
+				@include opacity(1);
+				@include transform(translateY(0%));		
+				@include transition(color 1s $ease 0s, opacity 0.5s $ease-in-out-expo 1s, transform 0.5s $ease-in-out-expo 1s,  padding-right 1s $ease-in-out-expo);
+			
+			}		
+			#contact-btn{
+				@include opacity(1);
+				@include transform(translateY(0%));		
+				@include transition(color 1s $ease 0s, opacity 0.5s $ease-in-out-expo 0s, transform 0.5s $ease-in-out-expo 0s);
+			
+			}
+			p{
+				@include opacity(0.5);
+				@include transition(color 1s $ease 0s,  opacity 0.5s $ease-in-out-expo 0.5s, transform 0.5s $ease-in-out-expo 0.5s);			
+				@include transform(translateY(0%));				
+			}
+
+			#contact-btn{
+				//@include transition(color 1s $ease 0s, opacity 1s $ease 0s, visibility 1s $ease 0s, transform 1s $ease 0s );		
+				color: white;
+				span.outer:nth-of-type(1){
+					//visibility: hidden;
+					@include opacity(0);				
+				}	
+				span.outer:nth-of-type(2){
+					//visibility: visible;
+					@include opacity(1);				
+				}
+			}
+			#contact-btn .dash:after,
+			#contact-btn .dash:before{			
+				background: white;
+				@include transition(background 1s $ease 0s, opacity 0s $ease-in-out-expo, transform 0s $ease-in-out-expo);
+			}	
+			#contact-btn:hover{
+				.dash{
+					&:before,
+					&:after{
+						@include transition(background 1s $ease 0s, opacity 0.6s $ease, transform  0.6s $ease);
+					}
+				}				
+			}	
+			#sound-btn{
+				//@include transition(color 1s $ease-in-out-expo 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo, padding-right 1s $ease-in-out-expo);			
+				color: white;
+				&.muted{
+					&:before{
+						@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0.5s $ease-in-out-expo 0s, transform 0.5s $ease-in-out-expo, width 0.5s $ease-in-out-expo 0.5s);
+					}					
+				}
+			}
+			#sound-btn .dash:after,
+			#sound-btn .dash:before{
+				background: white;
+				@include transition(background 1s $ease 0s, opacity 0s $ease-in-out-expo, transform 0s $ease-in-out-expo, width 0.5s $ease-in-out-expo 0s);			
+			}
+			#sound-btn:not(.muted):hover{
+				.dash{
+					&:before,
+					&:after{
+						@include transition(background 1s $ease 0s, opacity 0.6s $ease, transform 0.6s $ease);
+					}
+				}				
+			}	
+			p{
+				color: white;
+				//@include transition(color 1s $ease 0s, transform 1s $ease 0s);			
+			}
+		}
+
+		nav#swipe{
+			span{
+				&#back-cta{
+					@include opacity(1);
+				}
+			}
+			#slider{
+				#target{
+					left:93%;
+					@include transform(translateX(-100%));	
+					border-color: white;			
+					@include transition(transform 1s $ease-in-out-expo .5s, left 1s $ease-in-out-expo .5s, border-color 1s $ease-in-out-expo .5s);
+					&:after{
+						background: white;
+						@include transition(background 1s $ease-in-out-expo .5s);
+					}
+					&:before{
+						border-color: white;
+						//@include transition(background 1s $ease-in-out-expo .5s);
+					}
+				}
+				&:after{
+					left:12px;
+					//max-width: 0;
+					@include opacity(1);
+					//@include transform(translateY(-50%) translateX(0px) scaleX(-1));		
+					@include transition(transform 1s $ease-in-out-expo .5s, opacity 1s $ease-in-out-expo .5s);
+				}
+				&:before{
+					left:12px;
+					//max-width: 0;
+					@include opacity(0);
+					//@include transform(translateY(-50%) translateX(0px) scaleX(-1));		
+					@include transition(transform 1s $ease-in-out-expo .5s, opacity 1s $ease-in-out-expo .5s);
+				}
+	
+				#dot{
+					left:0%;
+					background: white;
+					@include opacity(1);
+					@include transform(translateX(0%) translateY(-50%));
+					@include transition(transform 1s $ease-in-out-expo .5s, left 1s $ease-in-out-expo .5s, background 1s $ease-in-out-expo .5s, opacity 1s $ease-in-out-expo .5s);
+				}
+			}
+	
+		}		
+		&.swiping{
+			nav#swipe{
+				#slider{
+					&:after,
+					&:before{
+						//@include opacity(0);
+					}	
+				}
+			}
+		}
+
+	}
+}

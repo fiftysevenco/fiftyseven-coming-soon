@@ -1,0 +1,56 @@
+var gulp = require('gulp');
+var rename = require('gulp-rename');
+var sass = require('gulp-sass');
+var uglify = require('gulp-uglify');
+var sourcemaps = require('gulp-sourcemaps');
+var browserSync = require('browser-sync').create();
+
+var pump = require('pump');
+var reload = browserSync.reload;
+
+var src = {
+	scss: './src/scss/**/*.scss',
+	js: './src/js/*.js',
+	css: './app/assets/css',
+	html: './app/*.html'
+};
+
+// Static Server + watching scss/html files
+gulp.task('serve', ['sass'], function () {
+	browserSync.init({
+		server: './app',
+		open: false,
+		files: [
+			'./app/assets/js/**/*.js'
+		]
+	});
+
+	gulp.watch(src.js, ['js']);
+	gulp.watch(src.scss, ['sass']);
+	gulp.watch(src.html).on('change', reload);
+});
+
+// Compile sass into CSS
+gulp.task('sass', function () {
+	return gulp
+		.src(src.scss)
+		.pipe(sourcemaps.init())
+		.pipe(sass({
+			includePaths: require('node-bourbon').includePaths
+		}).on('error', sass.logError))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest(src.css))
+		.pipe(reload({ stream: true }));
+});
+
+gulp.task('js', function (cb) {
+	pump([
+		gulp.src('src/js/*.js'),
+		uglify(),
+		rename('base.min.js'),
+		gulp.dest('./app/assets/js') ],
+		cb
+	);
+});
+
+gulp.task('default', ['serve']);

@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 var sass = require('gulp-sass');
+var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require('browser-sync').create();
@@ -14,6 +15,20 @@ var src = {
 	css: './app/assets/css',
 	html: './app/*.html'
 };
+
+var vendor_dir = './app/assets/js/vendor/';
+var vendor_libs = [
+	vendor_dir + 'modernizr.js',
+	vendor_dir + 'gsap.js',
+	vendor_dir + 'jquery.js',
+	
+	vendor_dir + 'history.js',
+	vendor_dir + 'actual.js',
+	vendor_dir + 'fittext.js',
+	vendor_dir + 'mousewheel.js',
+	vendor_dir + 'pixi.js',
+	vendor_dir + 'anime.min.js'
+];
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['sass'], function () {
@@ -41,6 +56,13 @@ gulp.task('sass', function () {
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(src.css))
 		.pipe(reload({ stream: true }));
+});
+
+gulp.task('js:vendor', function () {
+	return gulp.src(vendor_libs)
+		.pipe(concat('libs.min.js', { newLine: ';' }))
+		.pipe(uglify())
+		.pipe(gulp.dest('./app/assets/js'));
 });
 
 gulp.task('js', function (cb) {

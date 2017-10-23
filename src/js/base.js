@@ -109,8 +109,6 @@ $(document)
 .ready(function(){
 	$hiddenLogo = $('#landing hgroup img');
 
-	
-	
 	swipedetect(el, function(swipedir){
 	    if (swipedir =='left' && !$body.hasClass('contact')){
 	       History.pushState({state:2}, 'Contact. '+$title,'/contact');		    

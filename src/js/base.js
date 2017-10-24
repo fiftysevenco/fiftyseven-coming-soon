@@ -105,105 +105,152 @@ var oldY = 0;
 var myX = 0;
 var myY = 0;
 var el = $(document);
-$(document)
-	.ready(function () {
-		$hiddenLogo = $('#landing hgroup img');
 
-		swipedetect(el, function (swipedir) {
-			if (swipedir == 'left' && !$body.hasClass('contact')) {
-				History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
-			} else if (swipedir == 'right' && $body.hasClass('contact')) {
-				History.pushState({ state: 1 }, $title, '/');
-			}
-		})
-		//$(document).prop('title', 'Loading...');
-		$winW = $(window).width();
-		$winH = $(window).height();
-		$('#sound-btn').click(function () {
-			if ($(this).hasClass('muted')) {
-				loadSound('assets/audio/loop.mp3');
-				$(this).removeClass('muted');
-			} else {
-				stopSound();
-				$(this).addClass('muted');
-			}
-		});
-		$('#contact-btn, #contact-btn *').click(function (e) {
-			if ($body.hasClass('contact')) {
-				History.pushState({ state: 1 }, $title, '/');
-			} else {
-				History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
-			}
-		});
-		$('#swipe').on('touchend', function () {
-			if ($body.hasClass('contact')) {
-				History.pushState({ state: 1 }, $title, '/');
-			} else {
-				History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
-			}
-		});
+function splitText(s) {
+	return s.replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>");
+}
 
-	}).mousemove(function (e) {
-		if (e.pageX < $winW * .2 || e.pageX > $winW * .8 || e.pageY < $winH * .2 || e.pageY > $winH * .8) {
-			if ($loaded && !$body.hasClass('contact')) {
-				$body.addClass('mouse-edge');
-				$edgeTimeout = setTimeout(function () {
-					$logoH = $('#landing hgroup img').height();
-					// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
-					TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
-				}, 1100);
-			}
-		} else {
-			clearTimeout($edgeTimeout);
-		}
-		if ($loaded) {
-			$x = e.pageX;
-			$y = e.pageY;
-			twister.radius = 0.15;
-			twister.angle = -1.5;
-			twister.offset.x = $x / $winW;
-			twister.offset.y = $y / $winH;
-			$texture5.position.x = $x;
-			$texture5.position.y = $y;
+$(document).ready(function () {
+	var els = document.querySelectorAll('#fs-monogram use');
 
-		}
-		if ($winW < 767) {
-			if (typeof (last_position.x) != 'undefined') {
-				var deltaX = last_position.x - event.clientX,
-					deltaY = last_position.y - event.clientY;
-
-				//check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
-				if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX > 0 && !$body.hasClass('contact')) {
-					$goContact = true;
-					$goHome = false;
-				} else if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < 0 && $body.hasClass('contact')) {
-					$goContact = false;
-					$goHome = true;
-				}
-			}
-
-			//set the new last position to the current for next time
-			last_position = {
-				x: event.clientX,
-				y: event.clientY
-			};
-
-		}
-		clearTimeout($mouseEnd);
-		myX = e.pageX;
-		myY = e.pageY;
-		$mouseEnd = setTimeout(function () {
-			mouseEnd(myX, myY);
-		}, 600);
-	}).mouseup(function () {
-		if ($winW < 767) {
-			if ($goContact) {
-				History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
-			} else if ($goHome) {
-				History.pushState({ state: 1 }, $title, '/');
-			}
+	anime.timeline({ loop: true })
+	.add({
+		targets: els,
+		translateX: [-40, 0],
+		translateZ: 0,
+		opacity: [0, 1],
+		easing: "easeOutExpo",
+		duration: 1200,
+		delay: function (el, i) {
+			return 500 + 30 * i;
 		}
 	});
+
+	var sub = document.querySelector('.sub');
+	var split = splitText(sub.innerHTML);
+	console.log(split)
+	sub.innerHTML = split;
+	console.log(sub.childNodes)
+
+	anime.timeline({ loop: true })
+	.add({
+		targets: sub.childNodes,
+		translateX: [-40, 0],
+		translateZ: 0,
+		opacity: [0, 1],
+		easing: "easeOutExpo",
+		duration: 1200,
+		delay: function (el, i) {
+			return 500 + 30 * i;
+		}
+	})
+
+
+	// $hiddenLogo = $('#landing hgroup img');
+
+	swipedetect(el, function (swipedir) {
+		if (swipedir == 'left' && !$body.hasClass('contact')) {
+			History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
+		} else if (swipedir == 'right' && $body.hasClass('contact')) {
+			History.pushState({ state: 1 }, $title, '/');
+		}
+	})
+	
+	//$(document).prop('title', 'Loading...');
+
+	$winW = $(window).width();
+	$winH = $(window).height();
+
+	$('#sound-btn').click(function () {
+		if ($(this).hasClass('muted')) {
+			loadSound('assets/audio/loop.mp3');
+			$(this).removeClass('muted');
+		} else {
+			stopSound();
+			$(this).addClass('muted');
+		}
+	});
+
+	$('#contact-btn, #contact-btn *').click(function (e) {
+		if ($body.hasClass('contact')) {
+			History.pushState({ state: 1 }, $title, '/');
+		} else {
+			History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
+		}
+	});
+
+	$('#swipe').on('touchend', function () {
+		if ($body.hasClass('contact')) {
+			History.pushState({ state: 1 }, $title, '/');
+		} else {
+			History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
+		}
+	});
+
+})
+.mousemove(function (e) {
+	if (e.pageX < $winW * .2 || e.pageX > $winW * .8 || e.pageY < $winH * .2 || e.pageY > $winH * .8) {
+		if ($loaded && !$body.hasClass('contact')) {
+			$body.addClass('mouse-edge');
+			$edgeTimeout = setTimeout(function () {
+				$logoH = $('#landing hgroup img').height();
+				// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
+				// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
+			}, 1100);
+		}
+	} else {
+		clearTimeout($edgeTimeout);
+	}
+	if ($loaded) {
+		$x = e.pageX;
+		$y = e.pageY;
+		twister.radius = 0.15;
+		twister.angle = -1.5;
+		twister.offset.x = $x / $winW;
+		twister.offset.y = $y / $winH;
+		$texture5.position.x = $x;
+		$texture5.position.y = $y;
+
+	}
+	if ($winW < 767) {
+		if (typeof (last_position.x) != 'undefined') {
+			var deltaX = last_position.x - event.clientX,
+				deltaY = last_position.y - event.clientY;
+
+			//check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
+			if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX > 0 && !$body.hasClass('contact')) {
+				$goContact = true;
+				$goHome = false;
+			} else if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < 0 && $body.hasClass('contact')) {
+				$goContact = false;
+				$goHome = true;
+			}
+		}
+
+		//set the new last position to the current for next time
+		last_position = {
+			x: event.clientX,
+			y: event.clientY
+		};
+
+	}
+	clearTimeout($mouseEnd);
+	myX = e.pageX;
+	myY = e.pageY;
+	$mouseEnd = setTimeout(function () {
+		mouseEnd(myX, myY);
+	}, 600);
+})
+.mouseup(function () {
+	if ($winW < 767) {
+		if ($goContact) {
+			History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
+		} else if ($goHome) {
+			History.pushState({ state: 1 }, $title, '/');
+		}
+	}
+});
+
 function mouseEnd($mX, $mY) {
 	if (oldX < $mX) {
 		xDirection = "right";
@@ -218,8 +265,28 @@ function mouseEnd($mX, $mY) {
 	oldX = $mX;
 	oldY = $mY;
 }
+
 var $resizer;
-$(window).resize(function () {
+$(window)
+.load(function () {
+	debugger
+	$winW = $(window).width();
+	$winH = $(window).height();
+	$body.addClass('loaded');
+
+	var url = $(location).attr('href').split('/').splice(0, 5).join('/');
+	var segments = url.split('/');
+	var action = segments[3];
+	if (action == 'contact') {
+		$contact = true;
+		$(document).prop('title', 'Contact. ' + $title);
+	} else {
+		$(document).prop('title', $title);
+	}
+	setBackground();
+
+})
+.resize(function () {
 	$body.addClass('resizing');
 	$body.removeClass('texture-loaded');
 
@@ -236,25 +303,8 @@ $(window).resize(function () {
 	clearInterval($visualizer);
 	clearTimeout($resizer);
 	$resizer = setTimeout(resizeEnd, 600);
-
-
-}).load(function () {
-	$winW = $(window).width();
-	$winH = $(window).height();
-	$body.addClass('loaded');
-
-	var url = $(location).attr('href').split('/').splice(0, 5).join('/');
-	var segments = url.split('/');
-	var action = segments[3];
-	if (action == 'contact') {
-		$contact = true;
-		$(document).prop('title', 'Contact. ' + $title);
-	} else {
-		$(document).prop('title', $title);
-	}
-	setBackground();
-
 });
+
 function goHome() {
 	$body.removeClass('contact-loaded');
 	$body.removeClass('contact');
@@ -262,25 +312,26 @@ function goHome() {
 	clearTimeout($contactLoaded);
 	clearTimeout($hideLogo);
 	$showHome = setTimeout(function () {
-		TweenLite.to($container1, .5, { ease: Power2.easeOut, alpha: 1 });
+		// TweenLite.to($container1, .5, { ease: Power2.easeOut, alpha: 1 });
 		$body.addClass('mouse-edge');
 		$logoH = $('#landing hgroup img').height();
-		TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 }, { ease: Power2.easeOut, y: $winH / 2 - $logoH });
+		// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 }, { ease: Power2.easeOut, y: $winH / 2 - $logoH });
 	}, 1200);
 	ga('set', { page: window.location.pathname, title: 'Home' });
 	ga('send', 'pageview');
 }
+
 function goContact() {
 	$body.addClass('mouse-edge');
-	TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });
+	// TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });
 	clearTimeout($hideLogo);
 	clearTimeout($contactLoaded);
 	clearTimeout($showHome);
 	$body.addClass('contact');
 	$hideLogo = setTimeout(function () {
 		$logoH = $('#landing hgroup img').height();
-		TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 - $logoH }, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 });
-		TweenLite.to($container1, 3, { ease: Power2.easeOut, alpha: 0 });
+		// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 - $logoH }, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 });
+		// TweenLite.to($container1, 3, { ease: Power2.easeOut, alpha: 0 });
 		$contactLoaded = setTimeout(function () {
 			$body.addClass('contact-loaded');
 		}, 1600);
@@ -288,6 +339,7 @@ function goContact() {
 	ga('set', { page: window.location.pathname, title: 'Contact' });
 	ga('send', 'pageview');
 }
+
 function resizeEnd() {
 	if ($renderer) {
 		$displacement1.scale.x = $size;
@@ -310,10 +362,12 @@ function resizeEnd() {
 	}
 	setBackground();
 }
+
 function setBackground() {
 	$winW = $(window).width();
 	$winH = $(window).height();
 	//var res = window.devicePixelRatio;
+
 	$renderer = PIXI.autoDetectRenderer($winW, $winH, {
 		'transparent': false,
 		//'resolution': res,
@@ -341,7 +395,7 @@ function setBackground() {
 	var name = PIXI.Sprite.fromImage('assets/images/type/fifty-seven.svg', undefined, undefined, 2.0);
 	name.position.x = $winW / 2;
 	//name.position.y = $winH/2;
-	name.position.y = $hiddenLogo.offset().top + $logoH / 2;
+	// name.position.y = $hiddenLogo.offset().top + $logoH / 2;
 	name.scale.x = 1;
 	name.scale.y = 1;
 
@@ -349,6 +403,7 @@ function setBackground() {
 	name.height = $logoH;
 	name.anchor.x = 0.5;
 	name.anchor.y = 0.5;
+
 	$texture1 = new PIXI.Sprite.fromImage("assets/images/textures/dis1.jpg");
 	$texture2 = new PIXI.Sprite.fromImage("assets/images/textures/dis2.jpg");
 	$texture3 = new PIXI.Sprite.fromImage("assets/images/textures/dis1.jpg");
@@ -444,7 +499,6 @@ function setBackground() {
 		$stage.addChild($container1wrap);
 	}
 
-
 	$('#texture').append($renderer.view);
 
 	function $animate() {
@@ -468,15 +522,24 @@ function setBackground() {
 	if ($body.hasClass('contact')) {
 		$container1.alpha = 0;
 	} else {
-		TweenLite.fromTo($container1, 4, { ease: Power2.easeOut, alpha: 0 }, { ease: Power2.easeOut, alpha: 1 });
+		// TweenLite.fromTo($container1, 4, { ease: Power2.easeOut, alpha: 0 }, { ease: Power2.easeOut, alpha: 1 });
 	}
+
 	clearTimeout($backgroundTimeout);
+
 	$backgroundTimeout = setTimeout(function () {
 		if ($winW > 767) {
-			TweenLite.fromTo($container2, 5, { ease: Power2.easeOut, alpha: 0 }, { ease: Power2.easeOut, alpha: 0.9 });
+			// TweenLite.fromTo($container2, 5, { ease: Power2.easeOut, alpha: 0 }, { ease: Power2.easeOut, alpha: 0.9 });
+			anime({
+				targets: $container2,
+				duration: 5,
+				alpha: [0, 0.9],
+				easing: [0.17, 0.67, 0.83, 0.67]
+			});
 		} else {
-			TweenLite.fromTo($container2, 5, { ease: Power2.easeOut, alpha: 0 }, { ease: Power2.easeOut, alpha: 1 });
+			// TweenLite.fromTo($container2, 5, { ease: Power2.easeOut, alpha: 0 }, { ease: Power2.easeOut, alpha: 1 });
 		}
+
 		if ($audio) {
 			if (!$('#sound-btn').hasClass('muted')) {
 				loadSound('assets/audio/loop.mp3');
@@ -485,7 +548,7 @@ function setBackground() {
 		}
 	}, 600);
 	if ($body.hasClass('mouse-edge')) {
-		TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 - $logoH });
+		// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 - $logoH });
 	}
 	if ($contact && !$body.hasClass('texture-loaded')) {
 		setTimeout(function () {
@@ -495,6 +558,7 @@ function setBackground() {
 	$body.addClass('texture-loaded');
 
 }
+
 if (window.DeviceOrientationEvent && $winW <= 767) {
 	window.addEventListener('deviceorientation', function (eventData) {
 		var tiltLR = eventData.gamma;
@@ -505,10 +569,12 @@ if (window.DeviceOrientationEvent && $winW <= 767) {
 		}
 	}, false);
 }
+
 function deviceOrientationHandler(tiltLR, tiltFB, dir) {
 	$texture3.position.y = tiltFB;
 	$texture4.position.y = -tiltFB;
 }
+
 function loadSound(url) {
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -519,19 +585,20 @@ function loadSound(url) {
 			var soundLength = buffer.duration;
 			sampleBuffer = buffer;
 			playSound(0);
-			//console.log('audio is ready');
+
 			$visualizer = setInterval(function () {
 				if ($audio && $playing && $body.hasClass('texture-loaded')) {
 					array = new Uint8Array(analyser.frequencyBinCount);
 					analyser.getByteFrequencyData(array);
-					TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, x: 2560 * array[4] / 150 });
-					TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, xy: 2560 * array[4] / 150 });
+					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, x: 2560 * array[4] / 150 });
+					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, xy: 2560 * array[4] / 150 });
 				}
 			});
 		});
 	};
 	request.send();
 }
+
 function setupSound() {
 	sound = audioContext.createBufferSource();
 	sound.buffer = sampleBuffer;
@@ -545,11 +612,13 @@ function setupSound() {
 	gainNode.connect(audioContext.destination);
 	sound.playbackRate.value = 1;
 }
+
 function playSound(time) {
 	setupSound();
 	sound.start(time);
 	$playing = true;
 }
+
 function stopSound() {
 	$playing = false;
 	soundPlaying = false;
@@ -557,6 +626,7 @@ function stopSound() {
 	sound.stop(0);
 	clearInterval($visualizer);
 }
+
 var sxsw = {
 	fillscreen: function (boxWidth, boxHeight, imgWidth, imgHeight) {
 		var initW = imgWidth;
@@ -574,6 +644,7 @@ var sxsw = {
 		};
 	}
 }
+
 function swipedetect(el, callback) {
 
 	var touchsurface = el[0],

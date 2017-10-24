@@ -44,6 +44,17 @@
 		</script>
 	</head>
 	<body>
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none;">
+			<symbol id="sym_e"><path fill="#fff" fill-rule="evenodd" d="M46.904 12.708V0H.707v59.847h46.197V47.14H15.21V36.276h19.935c1.723 0 3.12-1.397 3.12-3.12V23.57H15.208V12.707h31.694z"/></symbol>
+			<symbol id="sym_f"><path fill="#fff" fill-rule="evenodd" d="M46.197 12.708V0H0v59.847h14.502v-23.57h19.936c1.723 0 3.12-1.397 3.12-3.12V23.57H14.502V12.707h31.695z"/></symbol>
+			<symbol id="sym_i"><path fill="#fff" fill-rule="evenodd" d="M.512 59.85h14.503V0H.512"/></symbol>
+			<symbol id="sym_n"><path fill="#fff" fill-rule="evenodd" d="M42.785 36.187L12.12.002H.047V59.85H14.55v-35.1l30.664 35.1H57.2V0H42.784"/></symbol>
+			<symbol id="sym_s"><path fill="#fff" fill-rule="evenodd" d="M15.11 21.7v-8.99h19.4v4.93h14.505V3.127c0-1.727-1.4-3.126-3.126-3.126H3.73C2.006.002.606 1.402.606 3.128V27.72c0 1.446.995 2.703 2.403 3.033l31.5 7.397v8.99h-19.4v-4.928H.606v14.51c0 1.727 1.4 3.126 3.126 3.126H45.89c1.725 0 3.125-1.4 3.125-3.126v-24.59c0-1.448-.995-2.703-2.404-3.035L15.11 21.7z"/></symbol>
+			<symbol id="sym_t"><path fill="#fff" fill-rule="evenodd" d="M20.155 59.85H34.57V12.62h19.483V.002H.673V12.62h19.482"/></symbol>
+			<symbol id="sym_v"><path fill="#fff" fill-rule="evenodd" d="M36.397 27.243L48.39.003h16.002l-11.987 27.24H36.397zm-11.9 32.606L.64 0H16.65L40.503 59.85H24.496z"/></symbol>
+			<symbol id="sym_y"><path fill="#fff" fill-rule="evenodd" d="M28.534 27.243H12.527L.54.003h16l11.994 27.24zM40.436 59.85H24.43L48.283 0H64.29L40.437 59.85z"/></symbol>
+		</svg>
+
 		<section id="texture"></section>
 		<script src="assets/js/vendor/pixi.js"></script>
 		<script src="assets/js/libs.min.js"></script>
@@ -60,28 +71,40 @@
 				<div id="target"></div><div id="dot"></div>
 			</div>
 		</nav>
+
 		<section id="landing" >
 			<hgroup>
-				<h1><span class="outer"><span>cruising the universe</span></span></h1>
-				<div id="bm"></div>
-				<figure>	
+				<h1>we’re cruising the universe</h1>
+
+				<svg id="fs-monogram">
+					<use xlink:href="#sym_f" />
+					<use xlink:href="#sym_i" />
+					<use xlink:href="#sym_f" />
+					<use xlink:href="#sym_t" />
+					<use xlink:href="#sym_y" />
+				</svg>
+
+				<div class="sub">designstudio</div>
+
+				<!-- <div id="bm"></div> -->
+				<!-- <figure>	
 					<img src="assets/images/type/fifty-seven.svg"/>
-				</figure>
-				<h1><span class="outer"><span>-   will be landing on earth very soon  -</span></span></h1>
-				<br/>
+				</figure> -->
+				<!-- <h1><span class="outer"><span>-   will be landing on earth very soon  -</span></span></h1> -->
+				<!-- <br/> -->
 				<h1><span class="outer"><span id="latest">we left the stardust behind us</span></span></h1>
 				<ul id="projects">
 					<li><span class="outer"><span><a href="http://koniku.com/" target="_blank">koniku.com</a></span></span></li>
 					<li><span class="outer"><span><a href="http://yachteo.co/" target="_blank">yachteo.co</a></span></span></li>
 				</ul>
-				
 			</hgroup>
 			<div class="line"></div>
 		</section>
+		
 		<section id="contact">
 			<article>
 				<hgroup>
-					<h2><span class="outer"><span>imagination </span></span><span class="outer"><span> overcomes </span></span><span class="outer"><span> knowledge </span></span></h2>
+					<h2><span class="outer">Our mission is to provoke and inspire.</h2>
 				</hgroup>
 				<h3><span class="outer"><span>Contact Info</span></span></h3>
 				<ul>
@@ -100,6 +123,7 @@
 				</ul>
 			</article>
 		</section>
+
 		<div id="white-fill"></div>
 	</body>
 </html>

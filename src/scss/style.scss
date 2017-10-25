@@ -157,8 +157,11 @@ figure {
     visibility: hidden;
 }
 
-#fs-monogram {
+#fs-logo {
 	overflow: visible;
+	path {
+		fill: white;
+	}
 }
 
 .sub {

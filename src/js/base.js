@@ -111,26 +111,28 @@ function splitText(s) {
 }
 
 $(document).ready(function () {
-	var els = document.querySelectorAll('#fs-monogram use');
+	var $fsLogo = document.getElementById('fs-logo');
+	var els = Array.prototype.slice.call($fsLogo.querySelectorAll('path'));
+	var len = els.length;
+	var dur = 2000;
+	var off = 5;
 
 	anime.timeline({ loop: true })
 	.add({
-		targets: els,
-		translateX: [-40, 0],
+		targets: els.reverse(),
+		translateX: [-40,0],
 		translateZ: 0,
-		opacity: [0, 1],
+		opacity: [0,1],
 		easing: "easeOutExpo",
-		duration: 1200,
-		delay: function (el, i) {
-			return 500 + 30 * i;
+		duration: dur,
+		delay: function(el, i) {
+		  	return dur / len / off * i;
 		}
 	});
 
 	var sub = document.querySelector('.sub');
 	var split = splitText(sub.innerHTML);
-	console.log(split)
 	sub.innerHTML = split;
-	console.log(sub.childNodes)
 
 	anime.timeline({ loop: true })
 	.add({

@@ -117,6 +117,11 @@ $(document).ready(function () {
 	var dur = 2000;
 	var off = 5;
 
+	var sub = document.querySelector('.sub');
+	var split = splitText(sub.innerHTML);
+	sub.innerHTML = split;
+
+
 	anime.timeline({ loop: true })
 	.add({
 		targets: els.reverse(),
@@ -128,25 +133,19 @@ $(document).ready(function () {
 		delay: function(el, i) {
 		  	return dur / len / off * i;
 		}
-	});
-
-	var sub = document.querySelector('.sub');
-	var split = splitText(sub.innerHTML);
-	sub.innerHTML = split;
-
-	anime.timeline({ loop: true })
+	})
 	.add({
 		targets: sub.childNodes,
 		translateX: [-40, 0],
 		translateZ: 0,
 		opacity: [0, 1],
 		easing: "easeOutExpo",
-		duration: 1200,
+		duration: 800,
+		offset: 20,
 		delay: function (el, i) {
 			return 500 + 30 * i;
 		}
-	})
-
+	});
 
 	// $hiddenLogo = $('#landing hgroup img');
 
@@ -206,10 +205,7 @@ $(document).ready(function () {
 	if ($loaded) {
 		$x = e.pageX;
 		$y = e.pageY;
-		twister.radius = 0.15;
-		twister.angle = -1.5;
-		twister.offset.x = $x / $winW;
-		twister.offset.y = $y / $winH;
+		
 		$texture5.position.x = $x;
 		$texture5.position.y = $y;
 
@@ -271,7 +267,6 @@ function mouseEnd($mX, $mY) {
 var $resizer;
 $(window)
 .load(function () {
-	debugger
 	$winW = $(window).width();
 	$winH = $(window).height();
 	$body.addClass('loaded');
@@ -406,46 +401,35 @@ function setBackground() {
 	name.anchor.x = 0.5;
 	name.anchor.y = 0.5;
 
+	$colorMatrix = new PIXI.filters.ColorMatrixFilter();
+	$colorMatrix.lsd();
+
 	$texture1 = new PIXI.Sprite.fromImage("assets/images/textures/dis1.jpg");
 	$texture2 = new PIXI.Sprite.fromImage("assets/images/textures/dis2.jpg");
 	$texture3 = new PIXI.Sprite.fromImage("assets/images/textures/dis1.jpg");
 	$texture4 = new PIXI.Sprite.fromImage("assets/images/textures/dis2.jpg");
 	$texture5 = new PIXI.Sprite.fromImage("assets/images/textures/dis2.jpg");
 
+	$texture1.filters= [$colorMatrix];
+	$texture2.filters= [$colorMatrix];
+	$texture3.filters= [$colorMatrix];
+	$texture4.filters= [$colorMatrix];
+	$texture5.filters= [$colorMatrix];
+
 	var bgs = [
-		"assets/images/photo/1-dis.jpg",
-		"assets/images/photo/2-dis.jpg",
-		"assets/images/photo/3-dis.jpg",
-		"assets/images/photo/4-dis.jpg",
-		"assets/images/photo/5-dis.jpg",
+		"assets/images/photo/1-dis.jpg"
+		// "assets/images/photo/2-dis.jpg",
+		// "assets/images/photo/3-dis.jpg",
+		// "assets/images/photo/4-dis.jpg",
+		// "assets/images/photo/5-dis.jpg",
 	];
 	var bg = bgs[Math.floor(Math.random() * bgs.length)];
 
 	$image1 = PIXI.Sprite.fromImage(bg);
-	$container1 = new PIXI.Container();
-	$container1wrap = new PIXI.Container();
 	$size = 1024;
-
-	twister = new PIXI.filters.TwistFilter();
-	twister.radius = 0;
-	twister.angle = 0;
-	twister.width = $logoH;
-	twister.height = $logoH;
-	$displacement5 = new PIXI.filters.DisplacementFilter($texture5);
-	$displacement5.width = $logoH;
-	$displacement5.height = $logoH;
-	$displacement5.scale.x = 5;
-	$displacement5.scale.y = 5;
-
 
 	$image2 = PIXI.Sprite.fromImage(bg);
 	$container2 = new PIXI.Container();
-	$displacement1 = new PIXI.filters.DisplacementFilter($texture1);
-	$displacement2 = new PIXI.filters.DisplacementFilter($texture2);
-	$displacement1.scale.x = $size / 2;
-	$displacement1.scale.y = $size / 2;
-	$displacement2.scale.x = $size / 4;
-	$displacement2.scale.y = $size / 4;
 
 	$displacement3 = new PIXI.filters.DisplacementFilter($texture3);
 	$displacement4 = new PIXI.filters.DisplacementFilter($texture4);
@@ -454,13 +438,6 @@ function setBackground() {
 	$displacement4.scale.x = $size / 4;
 	$displacement4.scale.y = $size / 4;
 
-	$image1.filters = [$displacement1, $displacement2];
-	$image1.position.x = $fillX;
-	$image1.position.y = $fillY;
-	$image1.width = $fillW;
-	$image1.height = $fillH;
-	$image1.alpha = 1;
-
 	$image2.filters = [$displacement3, $displacement4];
 	$image2.position.x = $fillX;
 	$image2.position.y = $fillY;
@@ -468,38 +445,12 @@ function setBackground() {
 	$image2.height = $fillH;
 	$image2.alpha = 0.5;
 
-	$whiteFill = new PIXI.Graphics();
-	$whiteFill.beginFill(0xffffff);
-	$whiteFill.drawRect(0, 0, $winW, $winH);
-	$whiteFill.alpha = 0.05;
-
-	$whiteFillMask = new PIXI.Graphics();
-	$whiteFillMask.beginFill(0xffffff);
-	$whiteFillMask.drawRect(0, 0, $winW, $winH);
-	$whiteFillMask.position.y = $winH / 2 + $logoH / 2;
-	$whiteFillMask.alpha = 1;
-
-
-	$container1.addChild($texture1);
-	$container1.addChild($texture2);
-	$container1.addChild($texture5);
-	//$container1.addChild($image1);
-	//$container1.addChild($whiteFillMask);
-	//$container1.addChild(name);
-	$container1.mask = name;
-	//$container1.alpha = 0;	
-	$container1wrap.addChild($container1);
-	$container1wrap.filters = [twister, $displacement5];
 	$container2.addChild($texture3);
 	$container2.addChild($texture4);
-	$container2.addChild($whiteFill);
 	$container2.addChild($image2);
 	$container2.alpha = 0;
 
 	$stage.addChild($container2);
-	if ($winW > 767) {
-		$stage.addChild($container1wrap);
-	}
 
 	$('#texture').append($renderer.view);
 

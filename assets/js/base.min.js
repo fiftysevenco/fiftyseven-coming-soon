@@ -111,6 +111,12 @@ function splitText(s) {
 }
 
 $(document).ready(function () {
+	var $fsMonogram = document.getElementById('fs-monogram');
+	var $fsEls = Array.prototype.slice.call($fsMonogram.querySelectorAll('path'));
+
+	var $loader = document.getElementById('loader');
+	var $loaderInner = $loader.querySelector('.loader-inner');
+	
 	var $fsLogo = document.getElementById('fs-logo');
 	var els = Array.prototype.slice.call($fsLogo.querySelectorAll('path'));
 	var len = els.length;
@@ -121,8 +127,7 @@ $(document).ready(function () {
 	var split = splitText(sub.innerHTML);
 	sub.innerHTML = split;
 
-
-	anime.timeline({ loop: true })
+	var landingAnimation = anime.timeline({ loop: false, autoplay: false })
 	.add({
 		targets: els.reverse(),
 		translateX: [-40,0],
@@ -147,6 +152,53 @@ $(document).ready(function () {
 		}
 	});
 
+	anime.timeline({ loop: false })
+	.add({
+		targets: $fsEls,
+		translateX: [-10, 0],
+		translateZ: 0,
+		opacity: [0, 1],
+		easing: 'easeOutExpo',
+		duration: 2000,
+		delay: function (el, i) {
+			return 150 * i;
+		}
+	})
+	.add({
+		targets: $loader,
+		opacity: [0, 1],
+		easing: 'easeOutExpo',
+		duration: 1200,
+		offset: 0
+	})
+	.add({
+		targets: $loaderInner,
+		width: '100%',
+		easing: 'easeOutExpo',
+		duration: 1000,
+		offset: '-=1200'
+	})
+	.add({
+		targets: $loader,
+		opacity: 0,
+		easing: 'easeOutExpo',
+		duration: 1200,
+		offset: '+=200'
+	})
+	.add({
+		targets: $fsEls,
+		translateX: [0, -10],
+		translateZ: 0,
+		opacity: 0,
+		easing: 'easeOutExpo',
+		duration: 2000,
+		offset: '-=1200',
+		delay: function (el, i) {
+			return 150 * i;
+		}
+	})
+	.finished.then(landingAnimation.play);
+
 	// $hiddenLogo = $('#landing hgroup img');
 
 	swipedetect(el, function (swipedir) {
@@ -156,7 +208,7 @@ $(document).ready(function () {
 			History.pushState({ state: 1 }, $title, '/');
 		}
 	})
-	
+
 	//$(document).prop('title', 'Loading...');
 
 	$winW = $(window).width();
@@ -189,65 +241,65 @@ $(document).ready(function () {
 	});
 
 })
-.mousemove(function (e) {
-	if (e.pageX < $winW * .2 || e.pageX > $winW * .8 || e.pageY < $winH * .2 || e.pageY > $winH * .8) {
-		if ($loaded && !$body.hasClass('contact')) {
-			$body.addClass('mouse-edge');
-			$edgeTimeout = setTimeout(function () {
-				$logoH = $('#landing hgroup img').height();
-				// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
-				// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
-			}, 1100);
+	.mousemove(function (e) {
+		if (e.pageX < $winW * .2 || e.pageX > $winW * .8 || e.pageY < $winH * .2 || e.pageY > $winH * .8) {
+			if ($loaded && !$body.hasClass('contact')) {
+				$body.addClass('mouse-edge');
+				$edgeTimeout = setTimeout(function () {
+					$logoH = $('#landing hgroup img').height();
+					// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
+					// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
+				}, 1100);
+			}
+		} else {
+			clearTimeout($edgeTimeout);
 		}
-	} else {
-		clearTimeout($edgeTimeout);
-	}
-	if ($loaded) {
-		$x = e.pageX;
-		$y = e.pageY;
-		
-		$texture5.position.x = $x;
-		$texture5.position.y = $y;
+		if ($loaded) {
+			$x = e.pageX;
+			$y = e.pageY;
 
-	}
-	if ($winW < 767) {
-		if (typeof (last_position.x) != 'undefined') {
-			var deltaX = last_position.x - event.clientX,
-				deltaY = last_position.y - event.clientY;
+			$texture5.position.x = $x;
+			$texture5.position.y = $y;
 
-			//check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
-			if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX > 0 && !$body.hasClass('contact')) {
-				$goContact = true;
-				$goHome = false;
-			} else if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < 0 && $body.hasClass('contact')) {
-				$goContact = false;
-				$goHome = true;
+		}
+		if ($winW < 767) {
+			if (typeof (last_position.x) != 'undefined') {
+				var deltaX = last_position.x - event.clientX,
+					deltaY = last_position.y - event.clientY;
+
+				//check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
+				if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX > 0 && !$body.hasClass('contact')) {
+					$goContact = true;
+					$goHome = false;
+				} else if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < 0 && $body.hasClass('contact')) {
+					$goContact = false;
+					$goHome = true;
+				}
+			}
+
+			//set the new last position to the current for next time
+			last_position = {
+				x: event.clientX,
+				y: event.clientY
+			};
+
+		}
+		clearTimeout($mouseEnd);
+		myX = e.pageX;
+		myY = e.pageY;
+		$mouseEnd = setTimeout(function () {
+			mouseEnd(myX, myY);
+		}, 600);
+	})
+	.mouseup(function () {
+		if ($winW < 767) {
+			if ($goContact) {
+				History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
+			} else if ($goHome) {
+				History.pushState({ state: 1 }, $title, '/');
 			}
 		}
-
-		//set the new last position to the current for next time
-		last_position = {
-			x: event.clientX,
-			y: event.clientY
-		};
-
-	}
-	clearTimeout($mouseEnd);
-	myX = e.pageX;
-	myY = e.pageY;
-	$mouseEnd = setTimeout(function () {
-		mouseEnd(myX, myY);
-	}, 600);
-})
-.mouseup(function () {
-	if ($winW < 767) {
-		if ($goContact) {
-			History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
-		} else if ($goHome) {
-			History.pushState({ state: 1 }, $title, '/');
-		}
-	}
-});
+	});
 
 function mouseEnd($mX, $mY) {
 	if (oldX < $mX) {
@@ -266,41 +318,41 @@ function mouseEnd($mX, $mY) {
 
 var $resizer;
 $(window)
-.load(function () {
-	$winW = $(window).width();
-	$winH = $(window).height();
-	$body.addClass('loaded');
+	.load(function () {
+		$winW = $(window).width();
+		$winH = $(window).height();
+		$body.addClass('loaded');
 
-	var url = $(location).attr('href').split('/').splice(0, 5).join('/');
-	var segments = url.split('/');
-	var action = segments[3];
-	if (action == 'contact') {
-		$contact = true;
-		$(document).prop('title', 'Contact. ' + $title);
-	} else {
-		$(document).prop('title', $title);
-	}
-	setBackground();
-
-})
-.resize(function () {
-	$body.addClass('resizing');
-	$body.removeClass('texture-loaded');
-
-	$winW = $(window).width();
-	$winH = $(window).height();
-	if ($renderer) {
-		$renderer.destroy();
-		$renderer = null;
-		$('#texture canvas').remove();
-		if (!$('#sound-btn').hasClass('muted') && soundPlaying) {
-			stopSound();
+		var url = $(location).attr('href').split('/').splice(0, 5).join('/');
+		var segments = url.split('/');
+		var action = segments[3];
+		if (action == 'contact') {
+			$contact = true;
+			$(document).prop('title', 'Contact. ' + $title);
+		} else {
+			$(document).prop('title', $title);
 		}
-	}
-	clearInterval($visualizer);
-	clearTimeout($resizer);
-	$resizer = setTimeout(resizeEnd, 600);
-});
+		setBackground();
+
+	})
+	.resize(function () {
+		$body.addClass('resizing');
+		$body.removeClass('texture-loaded');
+
+		$winW = $(window).width();
+		$winH = $(window).height();
+		if ($renderer) {
+			$renderer.destroy();
+			$renderer = null;
+			$('#texture canvas').remove();
+			if (!$('#sound-btn').hasClass('muted') && soundPlaying) {
+				stopSound();
+			}
+		}
+		clearInterval($visualizer);
+		clearTimeout($resizer);
+		$resizer = setTimeout(resizeEnd, 600);
+	});
 
 function goHome() {
 	$body.removeClass('contact-loaded');
@@ -410,11 +462,11 @@ function setBackground() {
 	$texture4 = new PIXI.Sprite.fromImage("assets/images/textures/dis2.jpg");
 	$texture5 = new PIXI.Sprite.fromImage("assets/images/textures/dis2.jpg");
 
-	$texture1.filters= [$colorMatrix];
-	$texture2.filters= [$colorMatrix];
-	$texture3.filters= [$colorMatrix];
-	$texture4.filters= [$colorMatrix];
-	$texture5.filters= [$colorMatrix];
+	$texture1.filters = [$colorMatrix];
+	$texture2.filters = [$colorMatrix];
+	$texture3.filters = [$colorMatrix];
+	$texture4.filters = [$colorMatrix];
+	$texture5.filters = [$colorMatrix];
 
 	var bgs = [
 		"assets/images/photo/1-dis.jpg"

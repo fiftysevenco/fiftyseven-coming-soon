@@ -11,6 +11,8 @@ $output-bourbon-deprecation-warnings: false;
 @import "_parts/contact";
 
 #projects {
+	margin-top: 50px;
+
     a {
         font-family: Norwester;
         color: white;
@@ -65,17 +67,14 @@ $output-bourbon-deprecation-warnings: false;
     }
 }
 
-#latest {
-    background-image: linear-gradient(120deg, rgba(227, 227, 227, 0.2) 0%, rgba(227, 227, 227, 0.3) 100%);
-    background-repeat: no-repeat;
-    background-size: 99% 0.75em;
-    background-position: 0 45%;
-    padding-bottom: 10px;
-    padding-left: 3px;
-    margin-top: 20px;
-    animation: load 0.8s ease-in;
-    -webkit-animation-delay: 1.8s;
-    animation-delay: 1.8s;
+#stardust {
+	margin-top: 60px;
+	padding-bottom: 10px;
+	padding-left: 3px;
+	background: linear-gradient(120deg, rgba(227, 227, 227, 0.2) 0%, rgba(227, 227, 227, 0.3) 100%) no-repeat 0 45% /99% 0.75em;
+	font-size: 16px;
+	font-family: $norwester;
+	letter-spacing: 0.65em;
 }
 
 #contact article ul a {
@@ -157,22 +156,44 @@ figure {
     visibility: hidden;
 }
 
-#fs-logo {
-	width: 80%;
-	max-width: 920px;
-	overflow: visible;
-	path {
-		fill: white;
-	}
-}
-
 .sub {
 	font-family: $norwester;
 	text-transform: uppercase;
-	letter-spacing: 2em;
 }
 
 .letter {
 	position: relative;
 	display: inline-block;
+}
+
+#fs-logo {
+	width: 920px;
+	margin-top: 80px;
+	margin-bottom: 20px;
+	overflow: visible;
+}
+
+#intro {
+	@include container-center;
+}
+
+#fs-monogram {
+	display: block;
+	width: 420px;
+	margin-bottom: 50px;
+	overflow: visible;
+}
+
+.loader {
+	position: relative;
+	width: 100%;
+	height: 2px;
+	background-color: rgba(#ffffff, 0.5);
+
+	&-inner {
+		position: absolute;
+		width: 0;
+		height: 100%;
+		background-color: white;
+	}
 }

@@ -112,24 +112,24 @@ function splitText(s) {
 
 $(document).ready(function () {
 	var $fsMonogram = document.getElementById('fs-monogram');
-	var $fsEls = Array.prototype.slice.call($fsMonogram.querySelectorAll('path'));
+	var $fsMonogramEls = Array.prototype.slice.call($fsMonogram.querySelectorAll('path'));
 
 	var $loader = document.getElementById('loader');
 	var $loaderInner = $loader.querySelector('.loader-inner');
 	
 	var $fsLogo = document.getElementById('fs-logo');
-	var els = Array.prototype.slice.call($fsLogo.querySelectorAll('path'));
-	var len = els.length;
+	var $fsLogoEls = Array.prototype.slice.call($fsLogo.querySelectorAll('path'));
+	var len = $fsLogoEls.length;
 	var dur = 2000;
 	var off = 5;
 
-	var sub = document.querySelector('.sub');
-	var split = splitText(sub.innerHTML);
-	sub.innerHTML = split;
+	var $fsLogoSub = document.querySelector('.sub');
+	var split = splitText($fsLogoSub.innerHTML);
+	$fsLogoSub.innerHTML = split;
 
 	var landingAnimation = anime.timeline({ loop: false, autoplay: false })
 	.add({
-		targets: els.reverse(),
+		targets: $fsLogoEls.reverse(),
 		translateX: [-40,0],
 		translateZ: 0,
 		opacity: [0,1],
@@ -140,7 +140,7 @@ $(document).ready(function () {
 		}
 	})
 	.add({
-		targets: sub.childNodes,
+		targets: $fsLogoSub.childNodes,
 		translateX: [-40, 0],
 		translateZ: 0,
 		opacity: [0, 1],
@@ -154,14 +154,14 @@ $(document).ready(function () {
 
 	anime.timeline({ loop: false })
 	.add({
-		targets: $fsEls,
+		targets: $fsMonogramEls,
 		translateX: [-10, 0],
 		translateZ: 0,
 		opacity: [0, 1],
 		easing: 'easeOutExpo',
-		duration: 2000,
+		duration: 1200,
 		delay: function (el, i) {
-			return 150 * i;
+			return 100 * i;
 		}
 	})
 	.add({
@@ -186,19 +186,18 @@ $(document).ready(function () {
 		offset: '+=200'
 	})
 	.add({
-		targets: $fsEls,
-		translateX: [0, -10],
+		targets: $fsMonogramEls,
+		translateX: [0, 10],
 		translateZ: 0,
 		opacity: 0,
 		easing: 'easeOutExpo',
-		duration: 2000,
+		duration: 1200,
 		offset: '-=1200',
 		delay: function (el, i) {
-			return 150 * i;
+			return 100 * i;
 		}
 	})
 	.finished.then(landingAnimation.play);
-
 	// $hiddenLogo = $('#landing hgroup img');
 
 	swipedetect(el, function (swipedir) {

@@ -152,6 +152,10 @@ $output-bourbon-deprecation-warnings: false;
     }
 }
 
+.outer {
+	overflow: hidden;
+}
+
 figure {
     visibility: hidden;
 }
@@ -161,6 +165,7 @@ figure {
 	text-transform: uppercase;
 }
 
+.blast,
 .letter {
 	position: relative;
 	display: inline-block;

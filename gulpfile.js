@@ -68,9 +68,9 @@ gulp.task('js:vendor', function () {
 gulp.task('js', function (cb) {
 	pump([
 		gulp.src('src/js/*.js'),
-		// sourcemaps.init(),
-		// uglify(),
-		// sourcemaps.write(),
+		sourcemaps.init(),
+		uglify(),
+		sourcemaps.write(),
 		rename('base.min.js'),
 		gulp.dest('./app/assets/js') ],
 		cb

@@ -21,7 +21,7 @@ var vendor_libs = [
 	vendor_dir + 'modernizr.js',
 	vendor_dir + 'gsap.js',
 	vendor_dir + 'jquery.js',
-	
+	vendor_dir + 'jquery.blast.js',
 	vendor_dir + 'history.js',
 	vendor_dir + 'actual.js',
 	vendor_dir + 'fittext.js',

@@ -18,6 +18,7 @@ var src = {
 
 var vendor_dir = './app/assets/js/vendor/';
 var vendor_libs = [
+	vendor_dir + 'lodash.custom.js',
 	vendor_dir + 'modernizr.js',
 	vendor_dir + 'gsap.js',
 	vendor_dir + 'jquery.js',

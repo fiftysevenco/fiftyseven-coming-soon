@@ -1,49 +1,17 @@
-$title = 'FiftySeven® — Design Studio.';
+// override blast.js defaults
+if (_.hasIn(jQuery, 'fn.blast')) {
+	_.extendWith(jQuery.fn.blast.defaults, {
+		delimiter: 'character',
+		customClass: 'letter'
+	});
+}
 
-$body = $('body');
-$winW = $(window).width();
-$winH = $(window).height();
-$renderer = null;
-$bm = $('#bm');
-var $animate;
-$audio = false;
-var $visualizer;
-var $showHome;
-var $mouseEnd;
-var $whiteFill;
-var $whiteFillMask;
-var $container1;
-var $backgroundTimeout;
-var $edgeTimeout;
-var $texture1;
-var $texture2;
-var $texture3;
-var $texture4;
-var $texture5;
-var $hideLogo;
-var $moveTimeout;
-var $contactLoaded;
-var $hiddenLogo;
-
-swipeVal = 0;
-soundPlaying = false;
-$goContact = false;
-$goHome = false;
-var last_position = {};
-$contact = false;
-$loaded = false;
-$playing = false;
-a = document.createElement('audio');
-$audio = !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
-isMobile = false;
-is_safari = false;
-
-var Elements = (function($, window, document, undefined) {
+Elements = (function($, window, document, undefined) {
 	var initialized = false;
 	var sections = ['global', 'landing', 'contact'];
 	var map = {};
 	var currentKey = null;
-
+	
 	function initialize() {
 		var id = '';
 		var els = [];
@@ -91,6 +59,45 @@ var Elements = (function($, window, document, undefined) {
 		}
 	};
 })(jQuery, window, document);
+
+$title = 'FiftySeven® — Design Studio.';
+$body = $('body');
+$winW = $(window).width();
+$winH = $(window).height();
+$renderer = null;
+$bm = $('#bm');
+var $animate;
+$audio = false;
+var $visualizer;
+var $showHome;
+var $mouseEnd;
+var $whiteFill;
+var $whiteFillMask;
+var $container1;
+var $backgroundTimeout;
+var $edgeTimeout;
+var $texture1;
+var $texture2;
+var $texture3;
+var $texture4;
+var $texture5;
+var $hideLogo;
+var $moveTimeout;
+var $contactLoaded;
+var $hiddenLogo;
+
+swipeVal = 0;
+soundPlaying = false;
+$goContact = false;
+$goHome = false;
+var last_position = {};
+$contact = false;
+$loaded = false;
+$playing = false;
+a = document.createElement('audio');
+$audio = !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
+isMobile = false;
+is_safari = false;
 
 if (
 	navigator.userAgent.indexOf('Safari') != -1 &&
@@ -251,9 +258,10 @@ function landingAnimation() {
 	var dur = 2000;
 	var off = 5;
 
-	var $fsLogoSub = document.querySelector('.sub');
-	var split = splitText($fsLogoSub.innerHTML);
-	$fsLogoSub.innerHTML = split;
+	var $$fsLogoSub = $(Elements.get('landing').value('fsLogoSub'));
+	$$fsLogoSub.blast({ delimiter: 'character' });
+
+	// $fsLogoSub.innerHTML = split
 
 	var landingAnimation = anime
 		.timeline({ loop: false, autoplay: false })
@@ -269,7 +277,7 @@ function landingAnimation() {
 			}
 		})
 		.add({
-			targets: $fsLogoSub.childNodes,
+			targets: $$fsLogoSub.children().get(),
 			translateX: [-40, 0],
 			translateZ: 0,
 			opacity: [0, 1],

@@ -20,7 +20,7 @@
 			letter-spacing: $letter-spacing;
 		}
 
-		.letter:last-child {
+		.letter:last-of-type {
 			letter-spacing: 0px;
 		}
 	}

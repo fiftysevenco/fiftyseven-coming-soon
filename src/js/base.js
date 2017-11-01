@@ -1,29 +1,59 @@
-// override blast.js defaults
-if (_.hasIn(jQuery, 'fn.blast')) {
-	_.extendWith(jQuery.fn.blast.defaults, {
-		delimiter: 'character',
-		customClass: 'letter'
-	});
-}
+/* global window, document, jQuery, $, _, anime */
 
-Elements = (function($, window, document, undefined) {
+var $title = 'FiftySeven® — Design Studio.';
+var $body = $('body');
+var $winW = $(window).width();
+var $winH = $(window).height();
+var $renderer = null;
+var $visualizer;
+var $showHome;
+var $mouseEnd;
+var $backgroundTimeout;
+var $edgeTimeout;
+var $texture1;
+var $texture2;
+var $texture3;
+var $texture4;
+var $texture5;
+var $hideLogo;
+var $moveTimeout;
+var $contactLoaded;
+var swipeVal = 0;
+var soundPlaying = false;
+var $goContact = false;
+var $goHome = false;
+var lastPosition = {};
+var $contact = false;
+var $loaded = false;
+var $playing = false;
+var a = document.createElement('audio');
+var $audio = !!(
+	a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, '')
+);
+var isMobile = false;
+var isSafari = false;
+var $resizer;
+var res = 0;
+var $ie = false;
+
+var Elements = (function ($, window, document) {
 	var initialized = false;
 	var sections = ['global', 'landing', 'contact'];
 	var map = {};
 	var currentKey = null;
-	
-	function initialize() {
+
+	function initialize () {
 		var id = '';
 		var els = [];
 
-		_.forEach(sections, function(key) {
+		_.forEach(sections, function (key) {
 			els = Array.prototype.slice.call(
 				document.querySelectorAll('#' + key + ' [id]')
 			);
 
 			map[key] = _.reduce(
 				els,
-				function(prev, curr) {
+				function (prev, curr) {
 					id = _.camelCase(curr.getAttribute('id'));
 					prev[id] = curr;
 					return prev;
@@ -36,7 +66,7 @@ Elements = (function($, window, document, undefined) {
 	}
 
 	return {
-		get: function(key) {
+		get: function (key) {
 			currentKey = null;
 
 			if (!initialized) {
@@ -50,7 +80,7 @@ Elements = (function($, window, document, undefined) {
 
 			return map;
 		},
-		value: function(key) {
+		value: function (key) {
 			if (key === undefined) {
 				return map[currentKey];
 			}
@@ -60,56 +90,26 @@ Elements = (function($, window, document, undefined) {
 	};
 })(jQuery, window, document);
 
-$title = 'FiftySeven® — Design Studio.';
-$body = $('body');
-$winW = $(window).width();
-$winH = $(window).height();
-$renderer = null;
-$bm = $('#bm');
-var $animate;
-$audio = false;
-var $visualizer;
-var $showHome;
-var $mouseEnd;
-var $whiteFill;
-var $whiteFillMask;
-var $container1;
-var $backgroundTimeout;
-var $edgeTimeout;
-var $texture1;
-var $texture2;
-var $texture3;
-var $texture4;
-var $texture5;
-var $hideLogo;
-var $moveTimeout;
-var $contactLoaded;
-var $hiddenLogo;
-
-swipeVal = 0;
-soundPlaying = false;
-$goContact = false;
-$goHome = false;
-var last_position = {};
-$contact = false;
-$loaded = false;
-$playing = false;
-a = document.createElement('audio');
-$audio = !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
-isMobile = false;
-is_safari = false;
+// override blast.js defaults
+if (_.hasIn(jQuery, 'fn.blast')) {
+	_.extendWith(jQuery.fn.blast.defaults, {
+		delimiter: 'character',
+		customClass: 'letter'
+	});
+}
 
 if (
-	navigator.userAgent.indexOf('Safari') != -1 &&
-	navigator.userAgent.indexOf('Chrome') == -1
+	navigator.userAgent.indexOf('Safari') !== -1 &&
+	navigator.userAgent.indexOf('Chrome') === -1
 ) {
-	is_safari = true;
+	isSafari = true;
 }
-if (is_safari) {
+if (isSafari) {
 	res = 1;
 } else {
 	res = 1;
 }
+
 if (
 	/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(
 		navigator.userAgent
@@ -117,9 +117,10 @@ if (
 	/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(
 		navigator.userAgent.substr(0, 4)
 	)
-)
+) {
 	isMobile = true;
-$ie = false;
+}
+
 if (isMobile) {
 	$audio = false;
 }
@@ -127,7 +128,7 @@ if (document.documentMode || /Edge/.test(navigator.userAgent)) {
 	$ie = true;
 }
 var ua = navigator.userAgent.toLowerCase();
-var isAndroid = ua.indexOf('android') > -1; //&& ua.indexOf("mobile");
+var isAndroid = ua.indexOf('android') > -1; // && ua.indexOf("mobile");
 
 if ('CSS' in window && 'supports' in window.CSS) {
 	var support = window.CSS.supports('mix-blend-mode', 'difference');
@@ -157,16 +158,16 @@ if ($audio) {
 	}
 }
 
-History.Adapter.bind(window, 'statechange', function() {
+History.Adapter.bind(window, 'statechange', function () {
 	var State = History.getState();
 	$code = State.data.state;
 	switch ($code) {
-		case 1:
-			goHome();
-			break;
-		case 2:
-			goContact();
-			break;
+	case 1:
+		goHome();
+		break;
+	case 2:
+		goContact();
+		break;
 	}
 });
 $x = 0;
@@ -179,11 +180,11 @@ var myX = 0;
 var myY = 0;
 var el = $(document);
 
-function splitText(s) {
+function splitText (s) {
 	return s.replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>");
 }
 
-function revealAnimation(callback) {
+function revealAnimation (callback) {
 	var $fsMonogram = document.getElementById('fs-monogram');
 	var $fsMonogramEls = Array.prototype.slice.call(
 		$fsMonogram.querySelectorAll('path')
@@ -195,7 +196,7 @@ function revealAnimation(callback) {
 		.timeline({
 			loop: false,
 			autoplay: false,
-			complete: function() {
+			complete: function () {
 				if (callback instanceof Function) {
 					callback.call();
 				}
@@ -208,7 +209,7 @@ function revealAnimation(callback) {
 			opacity: [0, 1],
 			easing: 'easeOutExpo',
 			duration: 1200,
-			delay: function(el, i) {
+			delay: function (el, i) {
 				return 100 * i;
 			}
 		})
@@ -241,7 +242,7 @@ function revealAnimation(callback) {
 			easing: 'easeOutExpo',
 			duration: 1200,
 			offset: '-=1200',
-			delay: function(el, i) {
+			delay: function (el, i) {
 				return 100 * i;
 			}
 		});
@@ -249,7 +250,7 @@ function revealAnimation(callback) {
 	return timeline;
 }
 
-function landingAnimation() {
+function landingAnimation () {
 	var $fsLogo = document.getElementById('fs-logo');
 	var $fsLogoEls = Array.prototype.slice.call(
 		$fsLogo.querySelectorAll('path')
@@ -272,7 +273,7 @@ function landingAnimation() {
 			opacity: [0, 1],
 			easing: 'easeOutExpo',
 			duration: dur,
-			delay: function(el, i) {
+			delay: function (el, i) {
 				return dur / len / off * i;
 			}
 		})
@@ -284,7 +285,7 @@ function landingAnimation() {
 			easing: 'easeOutExpo',
 			duration: 800,
 			offset: 20,
-			delay: function(el, i) {
+			delay: function (el, i) {
 				return 500 + 30 * i;
 			}
 		});
@@ -293,9 +294,9 @@ function landingAnimation() {
 }
 
 $(document)
-	.ready(function() {
+	.ready(function () {
 		console.log(Elements.get());
-		swipedetect(el, function(swipedir) {
+		swipedetect(el, function (swipedir) {
 			if (swipedir == 'left' && !$body.hasClass('contact')) {
 				History.pushState(
 					{ state: 2 },
@@ -310,7 +311,7 @@ $(document)
 		$winW = $(window).width();
 		$winH = $(window).height();
 
-		$('#sound-btn').click(function() {
+		$('#sound-btn').click(function () {
 			if ($(this).hasClass('muted')) {
 				loadSound('assets/audio/loop.mp3');
 				$(this).removeClass('muted');
@@ -320,7 +321,7 @@ $(document)
 			}
 		});
 
-		$('#contact-btn, #contact-btn *').click(function(e) {
+		$('#contact-btn, #contact-btn *').click(function (e) {
 			if ($body.hasClass('contact')) {
 				History.pushState({ state: 1 }, $title, '/');
 			} else {
@@ -332,7 +333,7 @@ $(document)
 			}
 		});
 
-		$('#swipe').on('touchend', function() {
+		$('#swipe').on('touchend', function () {
 			if ($body.hasClass('contact')) {
 				History.pushState({ state: 1 }, $title, '/');
 			} else {
@@ -344,7 +345,7 @@ $(document)
 			}
 		});
 	})
-	.mousemove(function(e) {
+	.mousemove(function (e) {
 		if (
 			e.pageX < $winW * 0.2 ||
 			e.pageX > $winW * 0.8 ||
@@ -353,7 +354,7 @@ $(document)
 		) {
 			if ($loaded && !$body.hasClass('contact')) {
 				$body.addClass('mouse-edge');
-				$edgeTimeout = setTimeout(function() {
+				$edgeTimeout = setTimeout(function () {
 					$logoH = $('#landing hgroup img').height();
 					// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
 					// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
@@ -370,11 +371,11 @@ $(document)
 			$texture5.position.y = $y;
 		}
 		if ($winW < 767) {
-			if (typeof last_position.x != 'undefined') {
-				var deltaX = last_position.x - event.clientX,
-					deltaY = last_position.y - event.clientY;
+			if (typeof lastPosition.x !== 'undefined') {
+				var deltaX = lastPosition.x - event.clientX,
+					deltaY = lastPosition.y - event.clientY;
 
-				//check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
+				// check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
 				if (
 					Math.abs(deltaX) > Math.abs(deltaY) &&
 					deltaX > 0 &&
@@ -392,8 +393,8 @@ $(document)
 				}
 			}
 
-			//set the new last position to the current for next time
-			last_position = {
+			// set the new last position to the current for next time
+			lastPosition = {
 				x: event.clientX,
 				y: event.clientY
 			};
@@ -401,11 +402,11 @@ $(document)
 		clearTimeout($mouseEnd);
 		myX = e.pageX;
 		myY = e.pageY;
-		$mouseEnd = setTimeout(function() {
+		$mouseEnd = setTimeout(function () {
 			mouseEnd(myX, myY);
 		}, 600);
 	})
-	.mouseup(function() {
+	.mouseup(function () {
 		if ($winW < 767) {
 			if ($goContact) {
 				History.pushState(
@@ -419,7 +420,7 @@ $(document)
 		}
 	});
 
-function mouseEnd($mX, $mY) {
+function mouseEnd ($mX, $mY) {
 	if (oldX < $mX) {
 		xDirection = 'right';
 	} else {
@@ -434,9 +435,8 @@ function mouseEnd($mX, $mY) {
 	oldY = $mY;
 }
 
-var $resizer;
 $(window)
-	.on('load', function() {
+	.on('load', function () {
 		$winW = $(window).width();
 		$winH = $(window).height();
 		$body.addClass('loaded');
@@ -448,14 +448,14 @@ $(window)
 			.join('/');
 		var segments = url.split('/');
 		var action = segments[3];
-		if (action == 'contact') {
+		if (action === 'contact') {
 			$contact = true;
 			$(document).prop('title', 'Contact. ' + $title);
 		} else {
 			$(document).prop('title', $title);
 		}
 
-		setBackground(function() {
+		setBackground(function () {
 			var lAnim = landingAnimation().play;
 			revealAnimation(lAnim).play();
 		});
@@ -470,7 +470,7 @@ $(window)
 				translateY: ['100%', 0],
 				easing: 'easeOutExpo',
 				duration: 800,
-				delay: function(el, i) {
+				delay: function (el, i) {
 					return 20 * i;
 				}
 			})
@@ -479,12 +479,12 @@ $(window)
 				translateY: ['100%', 0],
 				easing: 'easeOutExpo',
 				duration: 600,
-				delay: function(el, i) {
+				delay: function (el, i) {
 					return 20 * i;
 				}
 			});
 	})
-	.resize(function() {
+	.resize(function () {
 		$body.addClass('resizing');
 		$body.removeClass('texture-loaded');
 
@@ -503,13 +503,13 @@ $(window)
 		$resizer = setTimeout(resizeEnd, 600);
 	});
 
-function goHome() {
+function goHome () {
 	$body.removeClass('contact-loaded');
 	$body.removeClass('contact');
 	clearTimeout($showHome);
 	clearTimeout($contactLoaded);
 	clearTimeout($hideLogo);
-	$showHome = setTimeout(function() {
+	$showHome = setTimeout(function () {
 		// TweenLite.to($container1, .5, { ease: Power2.easeOut, alpha: 1 });
 		$body.addClass('mouse-edge');
 		$logoH = $('#landing hgroup img').height();
@@ -519,18 +519,18 @@ function goHome() {
 	ga('send', 'pageview');
 }
 
-function goContact() {
+function goContact () {
 	$body.addClass('mouse-edge');
 	// TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });
 	clearTimeout($hideLogo);
 	clearTimeout($contactLoaded);
 	clearTimeout($showHome);
 	$body.addClass('contact');
-	$hideLogo = setTimeout(function() {
+	$hideLogo = setTimeout(function () {
 		$logoH = $('#landing hgroup img').height();
 		// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 - $logoH }, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 });
 		// TweenLite.to($container1, 3, { ease: Power2.easeOut, alpha: 0 });
-		$contactLoaded = setTimeout(function() {
+		$contactLoaded = setTimeout(function () {
 			$body.addClass('contact-loaded');
 		}, 1600);
 	}, 600);
@@ -538,7 +538,7 @@ function goContact() {
 	ga('send', 'pageview');
 }
 
-function resizeEnd() {
+function resizeEnd () {
 	if ($renderer) {
 		$displacement1.scale.x = $size;
 		$displacement1.scale.y = $size;
@@ -562,14 +562,14 @@ function resizeEnd() {
 	setBackground();
 }
 
-function setBackground(callback) {
+function setBackground (callback) {
 	$winW = $(window).width();
 	$winH = $(window).height();
-	//var res = window.devicePixelRatio;
+	// var res = window.devicePixelRatio;
 
 	$renderer = PIXI.autoDetectRenderer($winW, $winH, {
 		transparent: false,
-		//'resolution': res,
+		// 'resolution': res,
 		autoResize: true
 	});
 	$fill = sxsw.fillscreen($winW * 2, $winH * 2, 1024, 1024);
@@ -598,7 +598,7 @@ function setBackground(callback) {
 		2.0
 	);
 	name.position.x = $winW / 2;
-	//name.position.y = $winH/2;
+	// name.position.y = $winH/2;
 	// name.position.y = $hiddenLogo.offset().top + $logoH / 2;
 	name.scale.x = 1;
 	name.scale.y = 1;
@@ -661,7 +661,7 @@ function setBackground(callback) {
 
 	$('#texture').append($renderer.view);
 
-	function $animate() {
+	function $animate () {
 		var $renderCanvas = requestAnimationFrame($animate);
 		if ($winW > 767) {
 			$texture1.position.y += 0.25;
@@ -681,14 +681,14 @@ function setBackground(callback) {
 	$loaded = true;
 	clearTimeout($backgroundTimeout);
 
-	var onComplete = function() {
+	var onComplete = function () {
 		// $body.addClass('texture-loaded');
 		if (callback instanceof Function) {
 			callback();
 		}
 	};
 
-	$backgroundTimeout = setTimeout(function() {
+	$backgroundTimeout = setTimeout(function () {
 		if ($winW > 767) {
 			anime({
 				targets: $container2,
@@ -731,7 +731,7 @@ function setBackground(callback) {
 if (window.DeviceOrientationEvent && $winW <= 767) {
 	window.addEventListener(
 		'deviceorientation',
-		function(eventData) {
+		function (eventData) {
 			var tiltLR = eventData.gamma;
 			var tiltFB = eventData.beta;
 			var dir = eventData.alpha;
@@ -743,23 +743,23 @@ if (window.DeviceOrientationEvent && $winW <= 767) {
 	);
 }
 
-function deviceOrientationHandler(tiltLR, tiltFB, dir) {
+function deviceOrientationHandler (tiltLR, tiltFB, dir) {
 	$texture3.position.y = tiltFB;
 	$texture4.position.y = -tiltFB;
 }
 
-function loadSound(url) {
+function loadSound (url) {
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
 	request.responseType = 'arraybuffer';
-	request.onload = function() {
+	request.onload = function () {
 		soundPlaying = true;
-		audioContext.decodeAudioData(request.response, function(buffer) {
+		audioContext.decodeAudioData(request.response, function (buffer) {
 			var soundLength = buffer.duration;
 			sampleBuffer = buffer;
 			playSound(0);
 
-			$visualizer = setInterval(function() {
+			$visualizer = setInterval(function () {
 				if ($audio && $playing && $body.hasClass('texture-loaded')) {
 					array = new Uint8Array(analyser.frequencyBinCount);
 					analyser.getByteFrequencyData(array);
@@ -772,7 +772,7 @@ function loadSound(url) {
 	request.send();
 }
 
-function setupSound() {
+function setupSound () {
 	sound = audioContext.createBufferSource();
 	sound.buffer = sampleBuffer;
 	sound.loop = loop;
@@ -786,13 +786,13 @@ function setupSound() {
 	sound.playbackRate.value = 1;
 }
 
-function playSound(time) {
+function playSound (time) {
 	setupSound();
 	sound.start(time);
 	$playing = true;
 }
 
-function stopSound() {
+function stopSound () {
 	$playing = false;
 	soundPlaying = false;
 	gainNode.gain.exponentialRampToValueAtTime(
@@ -804,7 +804,7 @@ function stopSound() {
 }
 
 var sxsw = {
-	fillscreen: function(boxWidth, boxHeight, imgWidth, imgHeight) {
+	fillscreen: function (boxWidth, boxHeight, imgWidth, imgHeight) {
 		var initW = imgWidth;
 		var initH = imgHeight;
 		var ratio = initH / initW;
@@ -821,23 +821,23 @@ var sxsw = {
 	}
 };
 
-function swipedetect(el, callback) {
+function swipedetect (el, callback) {
 	var touchsurface = el[0],
 		swipedir,
 		startX,
 		startY,
 		distX,
 		distY,
-		threshold = 150, //required min distance traveled to be considered swipe
+		threshold = 150, // required min distance traveled to be considered swipe
 		restraint = 100, // maximum distance allowed at the same time in perpendicular direction
 		allowedTime = 2000, // maximum time allowed to travel that distance
 		elapsedTime,
 		startTime,
-		handleswipe = callback || function(swipedir) {};
+		handleswipe = callback || function (swipedir) {};
 
 	touchsurface.addEventListener(
 		'touchstart',
-		function(e) {
+		function (e) {
 			var touchobj = e.changedTouches[0];
 			swipedir = 'none';
 			dist = 0;
@@ -845,14 +845,14 @@ function swipedetect(el, callback) {
 			startX = touchobj.pageX;
 			startY = touchobj.pageY;
 			startTime = new Date().getTime(); // record time when finger first makes contact with surface
-			//e.preventDefault()
+			// e.preventDefault()
 		},
 		false
 	);
 
 	touchsurface.addEventListener(
 		'touchmove',
-		function(e) {
+		function (e) {
 			var touchobj = e.changedTouches[0];
 			swipeVal = touchobj.pageX;
 			$body.addClass('swiping');
@@ -882,7 +882,7 @@ function swipedetect(el, callback) {
 
 	touchsurface.addEventListener(
 		'touchend',
-		function(e) {
+		function (e) {
 			$body.removeClass('swiping');
 			clearTimeout($moveTimeout);
 			var touchobj = e.changedTouches[0];
@@ -905,12 +905,12 @@ function swipedetect(el, callback) {
 					swipedir = distY < 0 ? 'up' : 'down'; // if dist traveled is negative, it indicates up swipe
 				}
 			}
-			$moveTimeout = setTimeout(function() {
+			$moveTimeout = setTimeout(function () {
 				$('#white-fill').animate({ left: 0 }, 250);
 				$('#slider').animate({ width: '80px' }, 250);
 			}, 1000);
 			handleswipe(swipedir);
-			//e.preventDefault()
+			// e.preventDefault()
 		},
 		false
 	);

@@ -1,0 +1,9 @@
+{
+	"extends": "standard",
+	"rules": {
+		"no-tabs": "off",
+		"indent": ["error", "tab"],
+		"semi": "off",
+		"no-useless-escape": "off"
+	}
+}

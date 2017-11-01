@@ -3,4 +3,5 @@ TODO
 
 [x] add anime js
 [x] vendor js concat
-[] remove gsap dependency
+[x] remove gsap dependency
+[] mousemove needed (?)

@@ -1,4 +1,5 @@
-/* global window, document, jQuery, $, _, anime */
+/* global window, document, location, History, XMLHttpRequest,
+requestAnimationFrame, cancelAnimationFrame, jQuery, $, _, anime, PIXI, ga */
 
 var $title = 'FiftySeven® — Design Studio.';
 var $body = $('body');
@@ -148,30 +149,32 @@ if ($audio) {
 	var frequencyData;
 	var analyser;
 	var gainNode;
+
 	if (!$ie) {
-		var analyser = audioContext.createAnalyser();
-		var gainNode = audioContext.createGain();
+		analyser = audioContext.createAnalyser();
+		gainNode = audioContext.createGain();
 		gainNode.gain.value = 1;
 		analyser.fftSize = 32;
-		var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+		frequencyData = new Uint8Array(analyser.frequencyBinCount);
 		analyser.getByteFrequencyData(frequencyData);
 	}
 }
 
 History.Adapter.bind(window, 'statechange', function () {
 	var State = History.getState();
-	$code = State.data.state;
+	var $code = State.data.state;
+
 	switch ($code) {
-	case 1:
-		goHome();
-		break;
-	case 2:
-		goContact();
-		break;
+		case 1:
+			goHome();
+			break;
+		case 2:
+			goContact();
+			break;
 	}
 });
-$x = 0;
-$y = 0;
+// $x = 0;
+// $y = 0;
 var xDirection = '';
 var yDirection = '';
 var oldX = 0;
@@ -179,10 +182,6 @@ var oldY = 0;
 var myX = 0;
 var myY = 0;
 var el = $(document);
-
-function splitText (s) {
-	return s.replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>");
-}
 
 function revealAnimation (callback) {
 	var $fsMonogram = document.getElementById('fs-monogram');
@@ -297,13 +296,13 @@ $(document)
 	.ready(function () {
 		console.log(Elements.get());
 		swipedetect(el, function (swipedir) {
-			if (swipedir == 'left' && !$body.hasClass('contact')) {
+			if (swipedir === 'left' && !$body.hasClass('contact')) {
 				History.pushState(
 					{ state: 2 },
 					'Contact. ' + $title,
 					'/contact'
 				);
-			} else if (swipedir == 'right' && $body.hasClass('contact')) {
+			} else if (swipedir === 'right' && $body.hasClass('contact')) {
 				History.pushState({ state: 1 }, $title, '/');
 			}
 		});
@@ -346,65 +345,66 @@ $(document)
 		});
 	})
 	.mousemove(function (e) {
-		if (
-			e.pageX < $winW * 0.2 ||
-			e.pageX > $winW * 0.8 ||
-			e.pageY < $winH * 0.2 ||
-			e.pageY > $winH * 0.8
-		) {
-			if ($loaded && !$body.hasClass('contact')) {
-				$body.addClass('mouse-edge');
-				$edgeTimeout = setTimeout(function () {
-					$logoH = $('#landing hgroup img').height();
-					// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
-					// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
-				}, 1100);
-			}
-		} else {
-			clearTimeout($edgeTimeout);
-		}
-		if ($loaded) {
-			$x = e.pageX;
-			$y = e.pageY;
+		// TODO: mousemove
+		// if (
+		// 	e.pageX < $winW * 0.2 ||
+		// 	e.pageX > $winW * 0.8 ||
+		// 	e.pageY < $winH * 0.2 ||
+		// 	e.pageY > $winH * 0.8
+		// ) {
+		// 	if ($loaded && !$body.hasClass('contact')) {
+		// 		$body.addClass('mouse-edge');
+		// 		$edgeTimeout = setTimeout(function () {
+		// 			$logoH = $('#landing hgroup img').height();
+		// 			// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
+		// 			// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
+		// 		}, 1100);
+		// 	}
+		// } else {
+		// 	clearTimeout($edgeTimeout);
+		// }
+		// if ($loaded) {
+		// 	var $x = e.pageX;
+		// 	var $y = e.pageY;
 
-			$texture5.position.x = $x;
-			$texture5.position.y = $y;
-		}
-		if ($winW < 767) {
-			if (typeof lastPosition.x !== 'undefined') {
-				var deltaX = lastPosition.x - event.clientX,
-					deltaY = lastPosition.y - event.clientY;
+		// 	$texture5.position.x = $x;
+		// 	$texture5.position.y = $y;
+		// }
+		// if ($winW < 767) {
+		// 	if (typeof lastPosition.x !== 'undefined') {
+		// 		var deltaX = lastPosition.x - event.clientX,
+		// 			deltaY = lastPosition.y - event.clientY;
 
-				// check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
-				if (
-					Math.abs(deltaX) > Math.abs(deltaY) &&
-					deltaX > 0 &&
-					!$body.hasClass('contact')
-				) {
-					$goContact = true;
-					$goHome = false;
-				} else if (
-					Math.abs(deltaX) > Math.abs(deltaY) &&
-					deltaX < 0 &&
-					$body.hasClass('contact')
-				) {
-					$goContact = false;
-					$goHome = true;
-				}
-			}
+		// 		// check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
+		// 		if (
+		// 			Math.abs(deltaX) > Math.abs(deltaY) &&
+		// 			deltaX > 0 &&
+		// 			!$body.hasClass('contact')
+		// 		) {
+		// 			$goContact = true;
+		// 			$goHome = false;
+		// 		} else if (
+		// 			Math.abs(deltaX) > Math.abs(deltaY) &&
+		// 			deltaX < 0 &&
+		// 			$body.hasClass('contact')
+		// 		) {
+		// 			$goContact = false;
+		// 			$goHome = true;
+		// 		}
+		// 	}
 
-			// set the new last position to the current for next time
-			lastPosition = {
-				x: event.clientX,
-				y: event.clientY
-			};
-		}
-		clearTimeout($mouseEnd);
-		myX = e.pageX;
-		myY = e.pageY;
-		$mouseEnd = setTimeout(function () {
-			mouseEnd(myX, myY);
-		}, 600);
+		// 	// set the new last position to the current for next time
+		// 	lastPosition = {
+		// 		x: event.clientX,
+		// 		y: event.clientY
+		// 	};
+		// }
+		// clearTimeout($mouseEnd);
+		// myX = e.pageX;
+		// myY = e.pageY;
+		// $mouseEnd = setTimeout(function () {
+		// 	mouseEnd(myX, myY);
+		// }, 600);
 	})
 	.mouseup(function () {
 		if ($winW < 767) {
@@ -456,6 +456,7 @@ $(window)
 		}
 
 		setBackground(function () {
+			$body.addClass('texture-loaded');
 			var lAnim = landingAnimation().play;
 			revealAnimation(lAnim).play();
 		});
@@ -559,7 +560,9 @@ function resizeEnd () {
 		$renderer = null;
 	}
 
-	setBackground();
+	setBackground(function () {
+		$body.addClass('texture-loaded');
+	});
 }
 
 function setBackground (callback) {
@@ -755,13 +758,13 @@ function loadSound (url) {
 	request.onload = function () {
 		soundPlaying = true;
 		audioContext.decodeAudioData(request.response, function (buffer) {
-			var soundLength = buffer.duration;
+			// var soundLength = buffer.duration;
 			sampleBuffer = buffer;
 			playSound(0);
 
 			$visualizer = setInterval(function () {
 				if ($audio && $playing && $body.hasClass('texture-loaded')) {
-					array = new Uint8Array(analyser.frequencyBinCount);
+					var array = new Uint8Array(analyser.frequencyBinCount);
 					analyser.getByteFrequencyData(array);
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, x: 2560 * array[4] / 150 });
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, xy: 2560 * array[4] / 150 });
@@ -840,7 +843,6 @@ function swipedetect (el, callback) {
 		function (e) {
 			var touchobj = e.changedTouches[0];
 			swipedir = 'none';
-			dist = 0;
 			swipeVal = 0;
 			startX = touchobj.pageX;
 			startY = touchobj.pageY;

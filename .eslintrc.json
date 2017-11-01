@@ -2,8 +2,11 @@
 	"extends": "standard",
 	"rules": {
 		"no-tabs": "off",
-		"indent": ["error", "tab"],
+		"indent": ["error", "tab", {
+			"SwitchCase": 1
+		}],
 		"semi": "off",
-		"no-useless-escape": "off"
+		"no-useless-escape": "off",
+		"one-var": "off"
 	}
 }

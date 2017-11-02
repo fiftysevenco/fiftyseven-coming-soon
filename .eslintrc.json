@@ -1,0 +1,17 @@
+{
+	"extends": "standard",
+	"rules": {
+		"no-tabs": "off",
+		"indent": ["error", "tab", {
+			"SwitchCase": 1,
+			"MemberExpression": "off"
+		}],
+		"semi": "off",
+		"no-useless-escape": "off",
+		"one-var": "off",
+		"no-use-before-define": "error",
+		"new-cap": ["error", {
+			"properties": false
+		}]
+	}
+}

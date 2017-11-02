@@ -14,21 +14,21 @@ body {
 }
 ::selection {
 	color: white;
-	background: white; 
+	background: white;
 }
 ::-moz-selection {
 	color: white;
-	background: white; 
+	background: white;
 }
 .contact{
 ::selection {
 	color: white;
-	background: white; 
+	background: white;
 }
 ::-moz-selection {
 	color: white;
-	background: white; 
-}	
+	background: white;
+}
 }
 nav#global{
 	position: fixed;
@@ -44,9 +44,11 @@ nav#global{
 	text-transform: uppercase;
 	font-size: 12px;
 	line-height: 12px;
-	@include opacity(1);
+	// @include opacity(1);
 	//@include transform(translateY(100%));
+
 	@include transition(opacity 1s $ease-in-out-expo 1s, transform 1s $ease-in-out-expo 1s);
+
 	span.outer{
 		position: relative;
 		overflow: hidden;
@@ -64,7 +66,7 @@ nav#global{
 			position: absolute;
 			cursor: pointer;
 			left:0;
-			text-indent: $pad/6;		
+			text-indent: $pad/6;
 			display: inline-block;
 			@include opacity(0);
 			//@include backface-visibility(hidden);
@@ -82,9 +84,10 @@ nav#global{
 		padding-left: $pad*1.25;
 		z-index: 100;
 		cursor: pointer;
-		text-indent: $pad/12;		
-		@include transform(translateY(100%));
-		@include transition(color 0.5s $ease 0s, opacity 0.5s $ease, visibility 0.5s $ease, transform 0.5s $ease);
+		text-indent: $pad/12;
+		// @include transform(translateY(100%));
+		// @include transition(color 0.5s $ease 0s, opacity 0.5s $ease, visibility 0.5s $ease, transform 0.5s $ease);
+
 		span.outer{
 			visibility: visible;
 			cursor: pointer;
@@ -93,9 +96,9 @@ nav#global{
 			&:nth-of-type(2){
 				position: absolute;
 				@include opacity(0);
-				//visibility: hidden;		
-				left:0;			
-				text-indent: $pad/12;		
+				//visibility: hidden;
+				left:0;
+				text-indent: $pad/12;
 				padding-left: $pad*1.25;
 				//@include transform(translateX(100%));
 				span:nth-of-type(2){
@@ -153,7 +156,7 @@ nav#global{
 					@include opacity(1);
 					@include transform(translateY(-50%) translateX(0%));
 					@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0.6s $ease 0s, transform 0.6s $ease 0s);
-				}				
+				}
 			}
 			span.outer{
 				span:nth-of-type(1){
@@ -179,15 +182,16 @@ nav#global{
 		//display: none;
 		visibility: hidden;
 		cursor: pointer;
-		@include transform(translateY(100%));		
-		@include opacity(1);
-		@include transition(color 0.5s $ease-in-out-expo 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo,  padding-right 0.5s $ease-in-out-expo);
+		// @include transform(translateY(100%));
+		// @include opacity(1);
+		// @include transition(color 0.5s $ease-in-out-expo 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo,  padding-right 0.5s $ease-in-out-expo);
+
 		span.outer{
 			visibility: visible;
 			cursor: pointer;
 			@include opacity(1);
 			span{
-				text-indent: 0;	
+				text-indent: 0;
 			}
 		}
 		.dash{
@@ -225,7 +229,7 @@ nav#global{
 				@include transform(translateY(-50%) translateX(125%));
 				@include backface-visibility(hidden);
 				@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0s $ease-in-out-expo 0s, transform 0s $ease-in-out-expo 0s, width 0.5s $ease-in-out-expo);
-			}			
+			}
 		}
 		&:not(.muted):hover{
 			.dash{
@@ -238,7 +242,7 @@ nav#global{
 					@include opacity(1);
 					@include transform(translateY(-50%) translateX(0%));
 					@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0.6s $ease 0s, transform 0.6s $ease 0s, width 0.5s $ease-in-out-expo);
-				}				
+				}
 			}
 			span.outer{
 				span:nth-of-type(1){
@@ -251,7 +255,7 @@ nav#global{
 					//@include transform(translateY(0%));
 				}
 			}
-		}		
+		}
 		&.muted{
 			padding-right: 0px;
 			//@include transition-delay(1s);
@@ -277,8 +281,8 @@ nav#global{
 					@include transform(translateY(-50%) translateX(0%));
 					@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0s $ease-in-out-expo 0s, transform 0s $ease-in-out-expo, width 0.5s $ease-in-out-expo 0.5s);
 				}
-				
-			}		
+
+			}
 			&:hover{
 				//@include transition(0s $ease);
 				&:after{
@@ -302,7 +306,7 @@ nav#global{
 						//@include transform(translateY(150%));
 					}
 				}*/
-			}				
+			}
 		}
 	}
 	p{
@@ -311,9 +315,9 @@ nav#global{
 		font-size: 9px;
 		line-height: 12px;
 		position: relative;
-		@include transform(translateY(100%));		
-		@include opacity(0.4);
-		@include transition(color 0.5s $ease 0s, transform 0.5s $ease 0s);			
+		// @include transform(translateY(100%));
+		// @include opacity(0.4);
+		// @include transition(color 0.5s $ease 0s, transform 0.5s $ease 0s);
 	}
 	@include breakpoint(mobile){
 		#contact-btn,
@@ -323,7 +327,7 @@ nav#global{
 		p{
 			@include opacity(0.4);
 			margin-bottom: $pad*2;
-			@include transform(translateY(0%));	
+			@include transform(translateY(0%));
 		}
 	}
 	@include breakpoint(mobile-landscape){
@@ -331,7 +335,7 @@ nav#global{
 		@include transform(rotate(-90deg) translateX(25%) translateY(50%));
 		p{
 			margin-bottom: $pad;
-		}		
+		}
 	}
 }
 nav#swipe{
@@ -425,8 +429,8 @@ nav#swipe{
 			width: 38%;
 			z-index: 10;
 			height: 1px;
-		    background: url(../images/ui/border-white.png) no-repeat center top;	
-		    @include background-size(100% auto);	
+		    background: url(../images/ui/border-white.png) no-repeat center top;
+		    @include background-size(100% auto);
 			overflow: hidden;
 			@include transform(translateY(-50%));
 			@include opacity(0);
@@ -440,8 +444,8 @@ nav#swipe{
 			z-index: 10;
 			width: 38%;
 			height: 1px;
-		    background: url(../images/ui/border-white.png) no-repeat center top;	
-		    @include background-size(100% auto);	
+		    background: url(../images/ui/border-white.png) no-repeat center top;
+		    @include background-size(100% auto);
 			overflow: hidden;
 			@include transform(translateY(-50%));
 			@include transition(max-width 0.2s $ease-in-out-expo, left 1s $ease-in-out-expo, transform 1s $ease-in-out-expo, opacity 0.5s $ease-in-out-expo);
@@ -494,7 +498,7 @@ nav#swipe{
 			&:after,
 			&:before{
 				//@include opacity(0);
-			}	
+			}
 		}
 	}
 }
@@ -506,76 +510,79 @@ nav#swipe{
 		}
 	}
 }
-.texture-loaded{
-	nav#global{
-		//@include opacity(1);
-		//@include transform(translateY(0));
-		//@include transition(opacity 1s $ease 1s, transform 1s $ease 1s);
-		#contact-btn{
-			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease 1s, visibility 0.5s $ease 0s, transform 0.5s $ease 0.5s);
-			@include transform(translateY(0%));
-		}
-		p{
-			@include transition(color 0.5s $ease 0s, transform 0.5s $ease 1s);			
-			@include transform(translateY(0%));
-			
-		}
-		#sound-btn{
-			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease 1.5s,  padding-right 1s $ease-in-out-expo);
-			@include transform(translateY(0%));
-		}
-	}
-	&.resizing{
-		nav#global{
-			@include opacity(0);
-			@include transform(translateY(100%));
-			@include transition(opacity 1s $ease, transform 1s $ease 1s);
-		}		
-	}
-	@include breakpoint(mobile){
-		nav#global{
-			@include transition(opacity 1s $ease 1s, transform 0s $ease 0s);			
-		}
-		nav#swipe{
-			@include opacity(1);
-			@include transform(translateY(0));
-			@include transition(opacity 1s $ease 1s, transform 1s $ease 1s);			
-		}
-		&.resizing{
-			nav#swipe{
-				@include opacity(0);
-				@include transform(translateY(100%));
-				@include transition(opacity 1s $ease, transform 1s $ease 1s);
-			}		
-		}
-	}	
-	@include breakpoint(mobile-landscape){
-		nav#global{
-			@include transform(rotate(-90deg) translateX(25%) translateY(-50%));
-			@include transition(opacity 1s $ease 1s, transform 0s $ease 0s);
-		}
-	}
-}
+
+
+// .texture-loaded{
+// 	nav#global{
+// 		//@include opacity(1);
+// 		//@include transform(translateY(0));
+// 		//@include transition(opacity 1s $ease 1s, transform 1s $ease 1s);
+// 		#contact-btn{
+// 			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease 1s, visibility 0.5s $ease 0s, transform 0.5s $ease 0.5s);
+// 			@include transform(translateY(0%));
+// 		}
+// 		p{
+// 			@include transition(color 0.5s $ease 0s, transform 0.5s $ease 1s);
+// 			@include transform(translateY(0%));
+
+// 		}
+// 		#sound-btn{
+// 			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease 1.5s,  padding-right 1s $ease-in-out-expo);
+// 			@include transform(translateY(0%));
+// 		}
+// 	}
+// 	&.resizing{
+// 		nav#global{
+// 			@include opacity(0);
+// 			@include transform(translateY(100%));
+// 			@include transition(opacity 1s $ease, transform 1s $ease 1s);
+// 		}
+// 	}
+// 	@include breakpoint(mobile){
+// 		nav#global{
+// 			@include transition(opacity 1s $ease 1s, transform 0s $ease 0s);
+// 		}
+// 		nav#swipe{
+// 			@include opacity(1);
+// 			@include transform(translateY(0));
+// 			@include transition(opacity 1s $ease 1s, transform 1s $ease 1s);
+// 		}
+// 		&.resizing{
+// 			nav#swipe{
+// 				@include opacity(0);
+// 				@include transform(translateY(100%));
+// 				@include transition(opacity 1s $ease, transform 1s $ease 1s);
+// 			}
+// 		}
+// 	}
+// 	@include breakpoint(mobile-landscape){
+// 		nav#global{
+// 			@include transform(rotate(-90deg) translateX(25%) translateY(-50%));
+// 			@include transition(opacity 1s $ease 1s, transform 0s $ease 0s);
+// 		}
+// 	}
+// }
+
 .contact{
 	nav#global{
 		//@include opacity(0);
 		//@include transition(opacity 1s $ease-in-out-expo);
 		#sound-btn{
 			@include opacity(0);
-			@include transform(translateY(100%));		
+			@include transform(translateY(100%));
 			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo,  padding-right 1s $ease-in-out-expo);
-		
-		}		
+
+		}
 		#contact-btn{
 			@include opacity(0);
-			@include transform(translateY(100%));		
+			@include transform(translateY(100%));
 			@include transition(color 0.5s $ease 0s, opacity 0.5s $ease-in-out-expo 1s, transform 0.5s $ease-in-out-expo 1s);
-		
+
 		}
 		p{
 			@include opacity(0);
-			@include transition(color 0.5s $ease 0s, transform 0.5s $ease-in-out-expo .5s, opacity 0.5s $ease-in-out-expo .5s);			
-			@include transform(translateY(100%));				
+			@include transition(color 0.5s $ease 0s, transform 0.5s $ease-in-out-expo .5s, opacity 0.5s $ease-in-out-expo .5s);
+			@include transform(translateY(100%));
 		}
 	}
 	nav#swipe{
@@ -596,30 +603,30 @@ nav#swipe{
 			//@include transition(opacity 0.5s $ease-in-out-expo, max-width 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo 1s);
 			#target{
 				//left:100%;
-				//@include transform(translateX(-100%));	
-				//border-color: black;	
-				@include transform(scale(0));		
+				//@include transform(translateX(-100%));
+				//border-color: black;
+				@include transform(scale(0));
 				@include transition(transform 1s $ease-in-out-expo 0.5s);
 				&:after{
 					//background: black;
 					//@include transition(background 1s $ease-in-out-expo .5s);
 				}
 				&:before{
-					border-color: white;	
+					border-color: white;
 				}
 			}
 			&:after{
 				//left:12px;
 				//max-width: 0;
 				@include opacity(0);
-				//@include transform(translateY(-50%) translateX(0px) scaleX(-1));		
+				//@include transform(translateY(-50%) translateX(0px) scaleX(-1));
 				@include transition(opacity 0.5s $ease-in-out-expo);
 			}
 			&:before{
 				//left:12px;
 				//max-width: 0;
 				@include opacity(0);
-				//@include transform(translateY(-50%) translateX(0px) scaleX(-1));		
+				//@include transform(translateY(-50%) translateX(0px) scaleX(-1));
 				@include transition(opacity 0.5s $ease-in-out-expo);
 			}
 
@@ -632,66 +639,66 @@ nav#swipe{
 			}
 		}
 
-	}		
+	}
 
 	&.contact-loaded{
 		nav#global{
 			#sound-btn{
 				@include opacity(1);
-				@include transform(translateY(0%));		
+				@include transform(translateY(0%));
 				@include transition(color 1s $ease 0s, opacity 0.5s $ease-in-out-expo 1s, transform 0.5s $ease-in-out-expo 1s,  padding-right 1s $ease-in-out-expo);
-			
-			}		
+
+			}
 			#contact-btn{
 				@include opacity(1);
-				@include transform(translateY(0%));		
+				@include transform(translateY(0%));
 				@include transition(color 1s $ease 0s, opacity 0.5s $ease-in-out-expo 0s, transform 0.5s $ease-in-out-expo 0s);
-			
+
 			}
 			p{
 				@include opacity(0.5);
-				@include transition(color 1s $ease 0s,  opacity 0.5s $ease-in-out-expo 0.5s, transform 0.5s $ease-in-out-expo 0.5s);			
-				@include transform(translateY(0%));				
+				@include transition(color 1s $ease 0s,  opacity 0.5s $ease-in-out-expo 0.5s, transform 0.5s $ease-in-out-expo 0.5s);
+				@include transform(translateY(0%));
 			}
 
 			#contact-btn{
-				//@include transition(color 1s $ease 0s, opacity 1s $ease 0s, visibility 1s $ease 0s, transform 1s $ease 0s );		
+				//@include transition(color 1s $ease 0s, opacity 1s $ease 0s, visibility 1s $ease 0s, transform 1s $ease 0s );
 				color: white;
 				span.outer:nth-of-type(1){
 					//visibility: hidden;
-					@include opacity(0);				
-				}	
+					@include opacity(0);
+				}
 				span.outer:nth-of-type(2){
 					//visibility: visible;
-					@include opacity(1);				
+					@include opacity(1);
 				}
 			}
 			#contact-btn .dash:after,
-			#contact-btn .dash:before{			
+			#contact-btn .dash:before{
 				background: white;
 				@include transition(background 1s $ease 0s, opacity 0s $ease-in-out-expo, transform 0s $ease-in-out-expo);
-			}	
+			}
 			#contact-btn:hover{
 				.dash{
 					&:before,
 					&:after{
 						@include transition(background 1s $ease 0s, opacity 0.6s $ease, transform  0.6s $ease);
 					}
-				}				
-			}	
+				}
+			}
 			#sound-btn{
-				//@include transition(color 1s $ease-in-out-expo 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo, padding-right 1s $ease-in-out-expo);			
+				//@include transition(color 1s $ease-in-out-expo 0s, opacity 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo, padding-right 1s $ease-in-out-expo);
 				color: white;
 				&.muted{
 					&:before{
 						@include transition(background 0.5s $ease-in-out-expo 0s, opacity 0.5s $ease-in-out-expo 0s, transform 0.5s $ease-in-out-expo, width 0.5s $ease-in-out-expo 0.5s);
-					}					
+					}
 				}
 			}
 			#sound-btn .dash:after,
 			#sound-btn .dash:before{
 				background: white;
-				@include transition(background 1s $ease 0s, opacity 0s $ease-in-out-expo, transform 0s $ease-in-out-expo, width 0.5s $ease-in-out-expo 0s);			
+				@include transition(background 1s $ease 0s, opacity 0s $ease-in-out-expo, transform 0s $ease-in-out-expo, width 0.5s $ease-in-out-expo 0s);
 			}
 			#sound-btn:not(.muted):hover{
 				.dash{
@@ -699,11 +706,11 @@ nav#swipe{
 					&:after{
 						@include transition(background 1s $ease 0s, opacity 0.6s $ease, transform 0.6s $ease);
 					}
-				}				
-			}	
+				}
+			}
 			p{
 				color: white;
-				//@include transition(color 1s $ease 0s, transform 1s $ease 0s);			
+				//@include transition(color 1s $ease 0s, transform 1s $ease 0s);
 			}
 		}
 
@@ -716,8 +723,8 @@ nav#swipe{
 			#slider{
 				#target{
 					left:93%;
-					@include transform(translateX(-100%));	
-					border-color: white;			
+					@include transform(translateX(-100%));
+					border-color: white;
 					@include transition(transform 1s $ease-in-out-expo .5s, left 1s $ease-in-out-expo .5s, border-color 1s $ease-in-out-expo .5s);
 					&:after{
 						background: white;
@@ -732,17 +739,17 @@ nav#swipe{
 					left:12px;
 					//max-width: 0;
 					@include opacity(1);
-					//@include transform(translateY(-50%) translateX(0px) scaleX(-1));		
+					//@include transform(translateY(-50%) translateX(0px) scaleX(-1));
 					@include transition(transform 1s $ease-in-out-expo .5s, opacity 1s $ease-in-out-expo .5s);
 				}
 				&:before{
 					left:12px;
 					//max-width: 0;
 					@include opacity(0);
-					//@include transform(translateY(-50%) translateX(0px) scaleX(-1));		
+					//@include transform(translateY(-50%) translateX(0px) scaleX(-1));
 					@include transition(transform 1s $ease-in-out-expo .5s, opacity 1s $ease-in-out-expo .5s);
 				}
-	
+
 				#dot{
 					left:0%;
 					background: white;
@@ -751,15 +758,15 @@ nav#swipe{
 					@include transition(transform 1s $ease-in-out-expo .5s, left 1s $ease-in-out-expo .5s, background 1s $ease-in-out-expo .5s, opacity 1s $ease-in-out-expo .5s);
 				}
 			}
-	
-		}		
+
+		}
 		&.swiping{
 			nav#swipe{
 				#slider{
 					&:after,
 					&:before{
 						//@include opacity(0);
-					}	
+					}
 				}
 			}
 		}

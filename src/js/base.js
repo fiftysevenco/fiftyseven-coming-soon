@@ -8,14 +8,17 @@ var $winH = $(window).height();
 var $renderer = null;
 var $visualizer;
 var $showHome;
-var $mouseEnd;
 var $backgroundTimeout;
-var $edgeTimeout;
+var $size = 1024;
 var $texture1;
 var $texture2;
 var $texture3;
 var $texture4;
 var $texture5;
+var $displacement1;
+var $displacement2;
+var $displacement3;
+var $displacement4;
 var $hideLogo;
 var $moveTimeout;
 var $contactLoaded;
@@ -23,8 +26,6 @@ var swipeVal = 0;
 var soundPlaying = false;
 var $goContact = false;
 var $goHome = false;
-var lastPosition = {};
-var $contact = false;
 var $loaded = false;
 var $playing = false;
 var a = document.createElement('audio');
@@ -32,9 +33,7 @@ var $audio = !!(
 	a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, '')
 );
 var isMobile = false;
-var isSafari = false;
 var $resizer;
-var res = 0;
 var $ie = false;
 
 var Elements = (function ($, window, document) {
@@ -100,18 +99,6 @@ if (_.hasIn(jQuery, 'fn.blast')) {
 }
 
 if (
-	navigator.userAgent.indexOf('Safari') !== -1 &&
-	navigator.userAgent.indexOf('Chrome') === -1
-) {
-	isSafari = true;
-}
-if (isSafari) {
-	res = 1;
-} else {
-	res = 1;
-}
-
-if (
 	/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(
 		navigator.userAgent
 	) ||
@@ -173,14 +160,7 @@ History.Adapter.bind(window, 'statechange', function () {
 			break;
 	}
 });
-// $x = 0;
-// $y = 0;
-var xDirection = '';
-var yDirection = '';
-var oldX = 0;
-var oldY = 0;
-var myX = 0;
-var myY = 0;
+
 var el = $(document);
 
 function revealAnimation (callback) {
@@ -293,147 +273,146 @@ function landingAnimation () {
 }
 
 $(document)
-	.ready(function () {
-		console.log(Elements.get());
-		swipedetect(el, function (swipedir) {
-			if (swipedir === 'left' && !$body.hasClass('contact')) {
-				History.pushState(
-					{ state: 2 },
-					'Contact. ' + $title,
-					'/contact'
-				);
-			} else if (swipedir === 'right' && $body.hasClass('contact')) {
-				History.pushState({ state: 1 }, $title, '/');
-			}
-		});
-
-		$winW = $(window).width();
-		$winH = $(window).height();
-
-		$('#sound-btn').click(function () {
-			if ($(this).hasClass('muted')) {
-				loadSound('assets/audio/loop.mp3');
-				$(this).removeClass('muted');
-			} else {
-				stopSound();
-				$(this).addClass('muted');
-			}
-		});
-
-		$('#contact-btn, #contact-btn *').click(function (e) {
-			if ($body.hasClass('contact')) {
-				History.pushState({ state: 1 }, $title, '/');
-			} else {
-				History.pushState(
-					{ state: 2 },
-					'Contact. ' + $title,
-					'/contact'
-				);
-			}
-		});
-
-		$('#swipe').on('touchend', function () {
-			if ($body.hasClass('contact')) {
-				History.pushState({ state: 1 }, $title, '/');
-			} else {
-				History.pushState(
-					{ state: 2 },
-					'Contact. ' + $title,
-					'/contact'
-				);
-			}
-		});
-	})
-	.mousemove(function (e) {
-		// TODO: mousemove
-		// if (
-		// 	e.pageX < $winW * 0.2 ||
-		// 	e.pageX > $winW * 0.8 ||
-		// 	e.pageY < $winH * 0.2 ||
-		// 	e.pageY > $winH * 0.8
-		// ) {
-		// 	if ($loaded && !$body.hasClass('contact')) {
-		// 		$body.addClass('mouse-edge');
-		// 		$edgeTimeout = setTimeout(function () {
-		// 			$logoH = $('#landing hgroup img').height();
-		// 			// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
-		// 			// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
-		// 		}, 1100);
-		// 	}
-		// } else {
-		// 	clearTimeout($edgeTimeout);
-		// }
-		// if ($loaded) {
-		// 	var $x = e.pageX;
-		// 	var $y = e.pageY;
-
-		// 	$texture5.position.x = $x;
-		// 	$texture5.position.y = $y;
-		// }
-		// if ($winW < 767) {
-		// 	if (typeof lastPosition.x !== 'undefined') {
-		// 		var deltaX = lastPosition.x - event.clientX,
-		// 			deltaY = lastPosition.y - event.clientY;
-
-		// 		// check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
-		// 		if (
-		// 			Math.abs(deltaX) > Math.abs(deltaY) &&
-		// 			deltaX > 0 &&
-		// 			!$body.hasClass('contact')
-		// 		) {
-		// 			$goContact = true;
-		// 			$goHome = false;
-		// 		} else if (
-		// 			Math.abs(deltaX) > Math.abs(deltaY) &&
-		// 			deltaX < 0 &&
-		// 			$body.hasClass('contact')
-		// 		) {
-		// 			$goContact = false;
-		// 			$goHome = true;
-		// 		}
-		// 	}
-
-		// 	// set the new last position to the current for next time
-		// 	lastPosition = {
-		// 		x: event.clientX,
-		// 		y: event.clientY
-		// 	};
-		// }
-		// clearTimeout($mouseEnd);
-		// myX = e.pageX;
-		// myY = e.pageY;
-		// $mouseEnd = setTimeout(function () {
-		// 	mouseEnd(myX, myY);
-		// }, 600);
-	})
-	.mouseup(function () {
-		if ($winW < 767) {
-			if ($goContact) {
-				History.pushState(
-					{ state: 2 },
-					'Contact. ' + $title,
-					'/contact'
-				);
-			} else if ($goHome) {
-				History.pushState({ state: 1 }, $title, '/');
-			}
+.ready(function () {
+	swipedetect(el, function (swipedir) {
+		if (swipedir === 'left' && !$body.hasClass('contact')) {
+			History.pushState(
+				{ state: 2 },
+				'Contact. ' + $title,
+				'/contact'
+			);
+		} else if (swipedir === 'right' && $body.hasClass('contact')) {
+			History.pushState({ state: 1 }, $title, '/');
 		}
 	});
 
-function mouseEnd ($mX, $mY) {
-	if (oldX < $mX) {
-		xDirection = 'right';
-	} else {
-		xDirection = 'left';
+	$winW = $(window).width();
+	$winH = $(window).height();
+
+	$('#sound-btn').click(function () {
+		if ($(this).hasClass('muted')) {
+			loadSound('assets/audio/loop.mp3');
+			$(this).removeClass('muted');
+		} else {
+			stopSound();
+			$(this).addClass('muted');
+		}
+	});
+
+	$('#contact-btn, #contact-btn *').click(function (e) {
+		if ($body.hasClass('contact')) {
+			History.pushState({ state: 1 }, $title, '/');
+		} else {
+			History.pushState(
+				{ state: 2 },
+				'Contact. ' + $title,
+				'/contact'
+			);
+		}
+	});
+
+	$('#swipe').on('touchend', function () {
+		if ($body.hasClass('contact')) {
+			History.pushState({ state: 1 }, $title, '/');
+		} else {
+			History.pushState(
+				{ state: 2 },
+				'Contact. ' + $title,
+				'/contact'
+			);
+		}
+	});
+})
+.mousemove(function (e) {
+	// TODO: mousemove
+	// if (
+	// 	e.pageX < $winW * 0.2 ||
+	// 	e.pageX > $winW * 0.8 ||
+	// 	e.pageY < $winH * 0.2 ||
+	// 	e.pageY > $winH * 0.8
+	// ) {
+	// 	if ($loaded && !$body.hasClass('contact')) {
+	// 		$body.addClass('mouse-edge');
+	// 		$edgeTimeout = setTimeout(function () {
+	// 			$logoH = $('#landing hgroup img').height();
+	// 			// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
+	// 			// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
+	// 		}, 1100);
+	// 	}
+	// } else {
+	// 	clearTimeout($edgeTimeout);
+	// }
+	// if ($loaded) {
+	// 	var $x = e.pageX;
+	// 	var $y = e.pageY;
+
+	// 	$texture5.position.x = $x;
+	// 	$texture5.position.y = $y;
+	// }
+	// if ($winW < 767) {
+	// 	if (typeof lastPosition.x !== 'undefined') {
+	// 		var deltaX = lastPosition.x - event.clientX,
+	// 			deltaY = lastPosition.y - event.clientY;
+
+	// 		// check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
+	// 		if (
+	// 			Math.abs(deltaX) > Math.abs(deltaY) &&
+	// 			deltaX > 0 &&
+	// 			!$body.hasClass('contact')
+	// 		) {
+	// 			$goContact = true;
+	// 			$goHome = false;
+	// 		} else if (
+	// 			Math.abs(deltaX) > Math.abs(deltaY) &&
+	// 			deltaX < 0 &&
+	// 			$body.hasClass('contact')
+	// 		) {
+	// 			$goContact = false;
+	// 			$goHome = true;
+	// 		}
+	// 	}
+
+	// 	// set the new last position to the current for next time
+	// 	lastPosition = {
+	// 		x: event.clientX,
+	// 		y: event.clientY
+	// 	};
+	// }
+	// clearTimeout($mouseEnd);
+	// myX = e.pageX;
+	// myY = e.pageY;
+	// $mouseEnd = setTimeout(function () {
+	// 	mouseEnd(myX, myY);
+	// }, 600);
+})
+.mouseup(function () {
+	if ($winW < 767) {
+		if ($goContact) {
+			History.pushState(
+				{ state: 2 },
+				'Contact. ' + $title,
+				'/contact'
+			);
+		} else if ($goHome) {
+			History.pushState({ state: 1 }, $title, '/');
+		}
 	}
-	if (oldY < $mY) {
-		yDirection = 'down';
-	} else {
-		yDirection = 'up';
-	}
-	oldX = $mX;
-	oldY = $mY;
-}
+});
+
+// function mouseEnd ($mX, $mY) {
+// 	if (oldX < $mX) {
+// 		xDirection = 'right';
+// 	} else {
+// 		xDirection = 'left';
+// 	}
+// 	if (oldY < $mY) {
+// 		yDirection = 'down';
+// 	} else {
+// 		yDirection = 'up';
+// 	}
+// 	oldX = $mX;
+// 	oldY = $mY;
+// }
 
 $(window)
 	.on('load', function () {
@@ -449,7 +428,7 @@ $(window)
 		var segments = url.split('/');
 		var action = segments[3];
 		if (action === 'contact') {
-			$contact = true;
+			// $contact = true;
 			$(document).prop('title', 'Contact. ' + $title);
 		} else {
 			$(document).prop('title', $title);
@@ -512,8 +491,8 @@ function goHome () {
 	clearTimeout($hideLogo);
 	$showHome = setTimeout(function () {
 		// TweenLite.to($container1, .5, { ease: Power2.easeOut, alpha: 1 });
-		$body.addClass('mouse-edge');
-		$logoH = $('#landing hgroup img').height();
+		// $body.addClass('mouse-edge');
+		// $logoH = $('#landing hgroup img').height();
 		// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 }, { ease: Power2.easeOut, y: $winH / 2 - $logoH });
 	}, 1200);
 	ga('set', { page: window.location.pathname, title: 'Home' });
@@ -527,8 +506,9 @@ function goContact () {
 	clearTimeout($contactLoaded);
 	clearTimeout($showHome);
 	$body.addClass('contact');
+
 	$hideLogo = setTimeout(function () {
-		$logoH = $('#landing hgroup img').height();
+		// $logoH = $('#landing hgroup img').height();
 		// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 - $logoH }, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 });
 		// TweenLite.to($container1, 3, { ease: Power2.easeOut, alpha: 0 });
 		$contactLoaded = setTimeout(function () {
@@ -575,11 +555,11 @@ function setBackground (callback) {
 		// 'resolution': res,
 		autoResize: true
 	});
-	$fill = sxsw.fillscreen($winW * 2, $winH * 2, 1024, 1024);
-	$fillW = $fill.width;
-	$fillH = $fill.height;
-	$fillX = $winW * -0.5;
-	$fillY = ($fillH - $winH) * -0.5;
+	var $fill = sxsw.fillscreen($winW * 2, $winH * 2, 1024, 1024);
+	var $fillW = $fill.width;
+	var $fillH = $fill.height;
+	var $fillX = $winW * -0.5;
+	var $fillY = ($fillH - $winH) * -0.5;
 
 	PIXI.RESOLUTION = window.devicePixelRatio;
 
@@ -589,29 +569,9 @@ function setBackground (callback) {
 	$renderer.view.style.width = '100%';
 	$renderer.view.style.height = '100%';
 
-	$stage = new PIXI.Container();
+	var $stage = new PIXI.Container();
 
-	$logoW = $('#landing hgroup img').width();
-	$logoH = $('#landing hgroup img').height();
-
-	var name = PIXI.Sprite.fromImage(
-		'assets/images/type/fifty-seven.svg',
-		undefined,
-		undefined,
-		2.0
-	);
-	name.position.x = $winW / 2;
-	// name.position.y = $winH/2;
-	// name.position.y = $hiddenLogo.offset().top + $logoH / 2;
-	name.scale.x = 1;
-	name.scale.y = 1;
-
-	name.width = $logoW;
-	name.height = $logoH;
-	name.anchor.x = 0.5;
-	name.anchor.y = 0.5;
-
-	$colorMatrix = new PIXI.filters.ColorMatrixFilter();
+	var $colorMatrix = new PIXI.filters.ColorMatrixFilter();
 	$colorMatrix.lsd();
 
 	$texture1 = new PIXI.Sprite.fromImage('assets/images/textures/dis1.jpg');
@@ -633,13 +593,10 @@ function setBackground (callback) {
 		'assets/images/photo/4-dis.jpg',
 		'assets/images/photo/5-dis.jpg'
 	];
+
 	var bg = bgs[Math.floor(Math.random() * bgs.length)];
-
-	$image1 = PIXI.Sprite.fromImage(bg);
-	$size = 1024;
-
-	$image2 = PIXI.Sprite.fromImage(bg);
-	$container2 = new PIXI.Container();
+	var $image2 = PIXI.Sprite.fromImage(bg);
+	var $container2 = new PIXI.Container();
 
 	$displacement3 = new PIXI.filters.DisplacementFilter($texture3);
 	$displacement4 = new PIXI.filters.DisplacementFilter($texture4);
@@ -705,7 +662,7 @@ function setBackground (callback) {
 				targets: $container2,
 				duration: 5,
 				alpha: [0, 1.0],
-				easing: [0.17, 0.67, 0.83, 0.67],
+				easing: [0.17, 0.67, 0.83, 0],
 				complete: onComplete
 			});
 		}

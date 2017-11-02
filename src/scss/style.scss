@@ -1,4 +1,5 @@
 $output-bourbon-deprecation-warnings: false;
+
 @import "bourbon";
 @import "_base/variables";
 @import "_base/mixins";
@@ -124,6 +125,19 @@ $output-bourbon-deprecation-warnings: false;
 //         opacity: 0;
 //     }
 // }
+
+.page-section {
+	visibility: hidden;
+}
+
+[data-section="intro"] #intro{
+	visibility: visible;
+}
+
+[data-section="landing"] #landing {
+	visibility: visible;
+}
+
 .outer {
     overflow: hidden;
 }
@@ -168,8 +182,10 @@ figure {
 }
 
 #fs-monogram {
+	// position: relative;
+	// top: 52px;
     display: block;
-    width: 360px;
+    width: 412px;
     margin-bottom: 50px;
     overflow: visible;
 }

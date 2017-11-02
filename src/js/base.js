@@ -7,7 +7,7 @@ var $winW = $(window).width();
 var $winH = $(window).height();
 var $renderer = null;
 var $visualizer;
-var $showHome;
+// var $showHome;
 var $backgroundTimeout;
 var $size = 1024;
 var $texture1;
@@ -19,13 +19,13 @@ var $displacement1;
 var $displacement2;
 var $displacement3;
 var $displacement4;
-var $hideLogo;
+// var $hideLogo;
 var $moveTimeout;
-var $contactLoaded;
+// var $contactLoaded;
 var swipeVal = 0;
 var soundPlaying = false;
-var $goContact = false;
-var $goHome = false;
+// var $goContact = false;
+// var $goHome = false;
 var $loaded = false;
 var $playing = false;
 var a = document.createElement('audio');
@@ -35,6 +35,7 @@ var $audio = !!(
 var isMobile = false;
 var $resizer;
 var $ie = false;
+var $document = $(document);
 
 var Elements = (function ($, window, document) {
 	var initialized = false;
@@ -161,7 +162,7 @@ History.Adapter.bind(window, 'statechange', function () {
 	}
 });
 
-var el = $(document);
+var tlReaveal;
 
 function revealAnimation (callback) {
 	var $fsMonogram = document.getElementById('fs-monogram');
@@ -188,6 +189,10 @@ function revealAnimation (callback) {
 			opacity: [0, 1],
 			easing: 'easeOutExpo',
 			duration: 1200,
+			offset: 1000,
+			begin: function () {
+				$body.attr('data-section', 'intro');
+			},
 			delay: function (el, i) {
 				return 100 * i;
 			}
@@ -221,6 +226,9 @@ function revealAnimation (callback) {
 			easing: 'easeOutExpo',
 			duration: 1200,
 			offset: '-=1200',
+			complete: function () {
+				$body.attr('data-section', 'landing');
+			},
 			delay: function (el, i) {
 				return 100 * i;
 			}
@@ -241,10 +249,14 @@ function landingAnimation () {
 	var $$fsLogoSub = $(Elements.get('landing').value('fsLogoSub'));
 	$$fsLogoSub.blast({ delimiter: 'character' });
 
-	// $fsLogoSub.innerHTML = split
+	$('#cruise-universe').blast({ delimiter: 'character' });
+	$('#stardust').blast({ delimiter: 'character' });
 
 	var landingAnimation = anime
-		.timeline({ loop: false, autoplay: false })
+		.timeline({
+			loop: false,
+			autoplay: false
+		})
 		.add({
 			targets: $fsLogoEls.reverse(),
 			translateX: [-40, 0],
@@ -267,137 +279,157 @@ function landingAnimation () {
 			delay: function (el, i) {
 				return 500 + 30 * i;
 			}
+		})
+		.add({
+			targets: $('#cruise-universe .blast').get(),
+			translateY: ['100%', 0],
+			easing: 'easeOutExpo',
+			duration: 800,
+			offset: 1000,
+			delay: function (el, i) {
+				return 20 * i;
+			}
+		})
+		.add({
+			targets: $('#stardust .blast').get(),
+			translateY: ['100%', 0],
+			easing: 'easeOutExpo',
+			duration: 600,
+			offset: '-=1400',
+			delay: function (el, i) {
+				return 20 * i;
+			}
 		});
 
 	return landingAnimation;
 }
 
 $(document)
-.ready(function () {
-	swipedetect(el, function (swipedir) {
-		if (swipedir === 'left' && !$body.hasClass('contact')) {
-			History.pushState(
-				{ state: 2 },
-				'Contact. ' + $title,
-				'/contact'
-			);
-		} else if (swipedir === 'right' && $body.hasClass('contact')) {
-			History.pushState({ state: 1 }, $title, '/');
-		}
+	.ready(function () {
+		swipedetect($document, function (swipedir) {
+			if (swipedir === 'left' && !$body.hasClass('contact')) {
+				History.pushState(
+					{ state: 2 },
+					'Contact. ' + $title,
+					'/contact'
+				);
+			} else if (swipedir === 'right' && $body.hasClass('contact')) {
+				History.pushState({ state: 1 }, $title, '/');
+			}
+		});
+
+		$winW = $(window).width();
+		$winH = $(window).height();
+
+		$('#sound-btn').click(function () {
+			if ($(this).hasClass('muted')) {
+				loadSound('assets/audio/loop.mp3');
+				$(this).removeClass('muted');
+			} else {
+				stopSound();
+				$(this).addClass('muted');
+			}
+		});
+
+		$('#contact-btn, #contact-btn *').click(function (e) {
+			if ($body.hasClass('contact')) {
+				History.pushState({ state: 1 }, $title, '/');
+			} else {
+				History.pushState(
+					{ state: 2 },
+					'Contact. ' + $title,
+					'/contact'
+				);
+			}
+		});
+
+		$('#swipe').on('touchend', function () {
+			if ($body.hasClass('contact')) {
+				History.pushState({ state: 1 }, $title, '/');
+			} else {
+				History.pushState(
+					{ state: 2 },
+					'Contact. ' + $title,
+					'/contact'
+				);
+			}
+		});
+	})
+	.mousemove(function (e) {
+		// TODO: mousemove
+		// if (
+		// 	e.pageX < $winW * 0.2 ||
+		// 	e.pageX > $winW * 0.8 ||
+		// 	e.pageY < $winH * 0.2 ||
+		// 	e.pageY > $winH * 0.8
+		// ) {
+		// 	if ($loaded && !$body.hasClass('contact')) {
+		// 		$body.addClass('mouse-edge');
+		// 		$edgeTimeout = setTimeout(function () {
+		// 			$logoH = $('#landing hgroup img').height();
+		// 			// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
+		// 			// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
+		// 		}, 1100);
+		// 	}
+		// } else {
+		// 	clearTimeout($edgeTimeout);
+		// }
+		// if ($loaded) {
+		// 	var $x = e.pageX;
+		// 	var $y = e.pageY;
+
+		// 	$texture5.position.x = $x;
+		// 	$texture5.position.y = $y;
+		// }
+		// if ($winW < 767) {
+		// 	if (typeof lastPosition.x !== 'undefined') {
+		// 		var deltaX = lastPosition.x - event.clientX,
+		// 			deltaY = lastPosition.y - event.clientY;
+
+		// 		// check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
+		// 		if (
+		// 			Math.abs(deltaX) > Math.abs(deltaY) &&
+		// 			deltaX > 0 &&
+		// 			!$body.hasClass('contact')
+		// 		) {
+		// 			$goContact = true;
+		// 			$goHome = false;
+		// 		} else if (
+		// 			Math.abs(deltaX) > Math.abs(deltaY) &&
+		// 			deltaX < 0 &&
+		// 			$body.hasClass('contact')
+		// 		) {
+		// 			$goContact = false;
+		// 			$goHome = true;
+		// 		}
+		// 	}
+
+		// 	// set the new last position to the current for next time
+		// 	lastPosition = {
+		// 		x: event.clientX,
+		// 		y: event.clientY
+		// 	};
+		// }
+		// clearTimeout($mouseEnd);
+		// myX = e.pageX;
+		// myY = e.pageY;
+		// $mouseEnd = setTimeout(function () {
+		// 	mouseEnd(myX, myY);
+		// }, 600);
+	})
+	.mouseup(function () {
+		// if ($winW < 767) {
+		// 	if ($goContact) {
+		// 		History.pushState(
+		// 			{ state: 2 },
+		// 			'Contact. ' + $title,
+		// 			'/contact'
+		// 		);
+		// 	} else if ($goHome) {
+		// 		History.pushState({ state: 1 }, $title, '/');
+		// 	}
+		// }
 	});
-
-	$winW = $(window).width();
-	$winH = $(window).height();
-
-	$('#sound-btn').click(function () {
-		if ($(this).hasClass('muted')) {
-			loadSound('assets/audio/loop.mp3');
-			$(this).removeClass('muted');
-		} else {
-			stopSound();
-			$(this).addClass('muted');
-		}
-	});
-
-	$('#contact-btn, #contact-btn *').click(function (e) {
-		if ($body.hasClass('contact')) {
-			History.pushState({ state: 1 }, $title, '/');
-		} else {
-			History.pushState(
-				{ state: 2 },
-				'Contact. ' + $title,
-				'/contact'
-			);
-		}
-	});
-
-	$('#swipe').on('touchend', function () {
-		if ($body.hasClass('contact')) {
-			History.pushState({ state: 1 }, $title, '/');
-		} else {
-			History.pushState(
-				{ state: 2 },
-				'Contact. ' + $title,
-				'/contact'
-			);
-		}
-	});
-})
-.mousemove(function (e) {
-	// TODO: mousemove
-	// if (
-	// 	e.pageX < $winW * 0.2 ||
-	// 	e.pageX > $winW * 0.8 ||
-	// 	e.pageY < $winH * 0.2 ||
-	// 	e.pageY > $winH * 0.8
-	// ) {
-	// 	if ($loaded && !$body.hasClass('contact')) {
-	// 		$body.addClass('mouse-edge');
-	// 		$edgeTimeout = setTimeout(function () {
-	// 			$logoH = $('#landing hgroup img').height();
-	// 			// TweenLite.to($whiteFillMask.position, 1, {ease: Power2.easeOut, y: $winH/2 - $logoH});
-	// 			// TweenLite.to($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $hiddenLogo.offset().top });
-	// 		}, 1100);
-	// 	}
-	// } else {
-	// 	clearTimeout($edgeTimeout);
-	// }
-	// if ($loaded) {
-	// 	var $x = e.pageX;
-	// 	var $y = e.pageY;
-
-	// 	$texture5.position.x = $x;
-	// 	$texture5.position.y = $y;
-	// }
-	// if ($winW < 767) {
-	// 	if (typeof lastPosition.x !== 'undefined') {
-	// 		var deltaX = lastPosition.x - event.clientX,
-	// 			deltaY = lastPosition.y - event.clientY;
-
-	// 		// check which direction had the highest amplitude and then figure out direction by checking if the value is greater or less than zero
-	// 		if (
-	// 			Math.abs(deltaX) > Math.abs(deltaY) &&
-	// 			deltaX > 0 &&
-	// 			!$body.hasClass('contact')
-	// 		) {
-	// 			$goContact = true;
-	// 			$goHome = false;
-	// 		} else if (
-	// 			Math.abs(deltaX) > Math.abs(deltaY) &&
-	// 			deltaX < 0 &&
-	// 			$body.hasClass('contact')
-	// 		) {
-	// 			$goContact = false;
-	// 			$goHome = true;
-	// 		}
-	// 	}
-
-	// 	// set the new last position to the current for next time
-	// 	lastPosition = {
-	// 		x: event.clientX,
-	// 		y: event.clientY
-	// 	};
-	// }
-	// clearTimeout($mouseEnd);
-	// myX = e.pageX;
-	// myY = e.pageY;
-	// $mouseEnd = setTimeout(function () {
-	// 	mouseEnd(myX, myY);
-	// }, 600);
-})
-.mouseup(function () {
-	if ($winW < 767) {
-		if ($goContact) {
-			History.pushState(
-				{ state: 2 },
-				'Contact. ' + $title,
-				'/contact'
-			);
-		} else if ($goHome) {
-			History.pushState({ state: 1 }, $title, '/');
-		}
-	}
-});
 
 // function mouseEnd ($mX, $mY) {
 // 	if (oldX < $mX) {
@@ -425,10 +457,11 @@ $(window)
 			.split('/')
 			.splice(0, 5)
 			.join('/');
+
 		var segments = url.split('/');
 		var action = segments[3];
+
 		if (action === 'contact') {
-			// $contact = true;
 			$(document).prop('title', 'Contact. ' + $title);
 		} else {
 			$(document).prop('title', $title);
@@ -436,33 +469,34 @@ $(window)
 
 		setBackground(function () {
 			$body.addClass('texture-loaded');
-			var lAnim = landingAnimation().play;
-			revealAnimation(lAnim).play();
+			var lAnim = landingAnimation().play
+			tlReaveal = revealAnimation(lAnim);
+			tlReaveal.play();
 		});
 
-		$('#cruise-universe').blast({ delimiter: 'character' });
-		$('#stardust').blast({ delimiter: 'character' });
+		// $('#cruise-universe').blast({ delimiter: 'character' });
+		// $('#stardust').blast({ delimiter: 'character' });
 
-		anime
-			.timeline()
-			.add({
-				targets: $('#cruise-universe .blast').get(),
-				translateY: ['100%', 0],
-				easing: 'easeOutExpo',
-				duration: 800,
-				delay: function (el, i) {
-					return 20 * i;
-				}
-			})
-			.add({
-				targets: $('#stardust .blast').get(),
-				translateY: ['100%', 0],
-				easing: 'easeOutExpo',
-				duration: 600,
-				delay: function (el, i) {
-					return 20 * i;
-				}
-			});
+		// anime
+		// 	.timeline()
+		// 	.add({
+		// 		targets: $('#cruise-universe .blast').get(),
+		// 		translateY: ['100%', 0],
+		// 		easing: 'easeOutExpo',
+		// 		duration: 800,
+		// 		delay: function (el, i) {
+		// 			return 20 * i;
+		// 		}
+		// 	})
+		// 	.add({
+		// 		targets: $('#stardust .blast').get(),
+		// 		translateY: ['100%', 0],
+		// 		easing: 'easeOutExpo',
+		// 		duration: 600,
+		// 		delay: function (el, i) {
+		// 			return 20 * i;
+		// 		}
+		// 	});
 	})
 	.resize(function () {
 		$body.addClass('resizing');
@@ -484,37 +518,41 @@ $(window)
 	});
 
 function goHome () {
-	$body.removeClass('contact-loaded');
-	$body.removeClass('contact');
-	clearTimeout($showHome);
-	clearTimeout($contactLoaded);
-	clearTimeout($hideLogo);
-	$showHome = setTimeout(function () {
-		// TweenLite.to($container1, .5, { ease: Power2.easeOut, alpha: 1 });
-		// $body.addClass('mouse-edge');
-		// $logoH = $('#landing hgroup img').height();
-		// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 }, { ease: Power2.easeOut, y: $winH / 2 - $logoH });
-	}, 1200);
+	// $body.removeClass('contact-loaded');
+	// $body.removeClass('contact');
+	// clearTimeout($showHome);
+	// clearTimeout($contactLoaded);
+	// clearTimeout($hideLogo);
+
+	// $showHome = setTimeout(function () {
+	// TweenLite.to($container1, .5, { ease: Power2.easeOut, alpha: 1 });
+	// $body.addClass('mouse-edge');
+	// $logoH = $('#landing hgroup img').height();
+	// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 }, { ease: Power2.easeOut, y: $winH / 2 - $logoH });
+	// }, 1200);
+
 	ga('set', { page: window.location.pathname, title: 'Home' });
 	ga('send', 'pageview');
 }
 
 function goContact () {
-	$body.addClass('mouse-edge');
+	// $body.addClass('mouse-edge');
 	// TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });
-	clearTimeout($hideLogo);
-	clearTimeout($contactLoaded);
-	clearTimeout($showHome);
-	$body.addClass('contact');
+	// clearTimeout($hideLogo);
+	// clearTimeout($contactLoaded);
+	// clearTimeout($showHome);
 
-	$hideLogo = setTimeout(function () {
-		// $logoH = $('#landing hgroup img').height();
-		// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 - $logoH }, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 });
-		// TweenLite.to($container1, 3, { ease: Power2.easeOut, alpha: 0 });
-		$contactLoaded = setTimeout(function () {
-			$body.addClass('contact-loaded');
-		}, 1600);
-	}, 600);
+	// $body.addClass('contact');
+
+	// $hideLogo = setTimeout(function () {
+	// $logoH = $('#landing hgroup img').height();
+	// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 - $logoH }, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 });
+	// TweenLite.to($container1, 3, { ease: Power2.easeOut, alpha: 0 });
+	// $contactLoaded = setTimeout(function () {
+	// $body.addClass('contact-loaded');
+	// }, 1600);
+	// }, 600);
+
 	ga('set', { page: window.location.pathname, title: 'Contact' });
 	ga('send', 'pageview');
 }

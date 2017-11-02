@@ -7,10 +7,10 @@
     z-index: 1000;
     // @include opacity(0);
 	@include transition(opacity 1s $ease 1s);
-	
+
 	.sub {
 		$letter-spacing: 2.972em;
-		
+
 		margin-bottom: 50px;
 		font-size: 22px;
 		letter-spacing: $letter-spacing;
@@ -176,7 +176,7 @@
     }
 }
 
-.texture-loaded {
+// .texture-loaded {
     // #landing {
     //     @include opacity(1);
     //     @include breakpoint(mobile) {
@@ -295,7 +295,7 @@
     //         }
     //     }
 	// }
-	
+
     // &.resizing,
 	// &.contact,
     // &.contact.mouse-edge {
@@ -368,4 +368,4 @@
     //         }
     //     }
     // }
-}
+// }

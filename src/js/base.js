@@ -43,7 +43,7 @@ var Elements = (function ($, window, document) {
 	var map = {};
 	var currentKey = null;
 
-	function initialize () {
+	function initialize() {
 		var id = '';
 		var els = [];
 
@@ -163,8 +163,7 @@ History.Adapter.bind(window, 'statechange', function () {
 });
 
 var tlReaveal;
-
-function revealAnimation (callback) {
+function revealAnimation(callback) {
 	var $fsMonogram = document.getElementById('fs-monogram');
 	var $fsMonogramEls = Array.prototype.slice.call(
 		$fsMonogram.querySelectorAll('path')
@@ -237,11 +236,12 @@ function revealAnimation (callback) {
 	return timeline;
 }
 
-function landingAnimation () {
+function landingAnimation() {
 	var $fsLogo = document.getElementById('fs-logo');
 	var $fsLogoEls = Array.prototype.slice.call(
 		$fsLogo.querySelectorAll('path')
 	);
+	var $projects = $('#projects a').get();
 	var len = $fsLogoEls.length;
 	var dur = 2000;
 	var off = 5;
@@ -251,6 +251,8 @@ function landingAnimation () {
 
 	$('#cruise-universe').blast({ delimiter: 'character' });
 	$('#stardust').blast({ delimiter: 'character' });
+
+	var $globalEls = $('#global').children().get().reverse();
 
 	var landingAnimation = anime
 		.timeline({
@@ -299,9 +301,55 @@ function landingAnimation () {
 			delay: function (el, i) {
 				return 20 * i;
 			}
+		})
+		.add({
+			targets: $projects,
+			translateY: ['100%', 0],
+			opacity: [0, 1],
+			easing: 'easeOutExpo',
+			duration: 600,
+			delay: function (el, i) {
+				return i * 300;
+			}
+		})
+		.add({
+			targets: $globalEls,
+			translateY: ['100%', 0],
+			opacity: [0, 1],
+			easing: 'easeOutExpo',
+			duration: 600,
+			delay: function (el, i) {
+				return i * 200;
+			}
 		});
 
 	return landingAnimation;
+}
+
+function onResizeStart() {
+	if ($body.hasClass('resizing')) {
+		return;
+	}
+	var currentSection = $body.attr('data-section');
+	var $sectionEls = Elements.get(currentSection).value();
+
+	anime({
+		targets: _.values($sectionEls),
+		translateY: [0, '100%'],
+		duration: 1000
+	});
+}
+
+function onResizeEnd() {
+	console.log('kesa')
+	var currentSection = $body.attr('data-section');
+	var $sectionEls = Elements.get(currentSection).value();
+
+	anime({
+		targets: _.values($sectionEls),
+		translateY: 0,
+		duration: 1000
+	});
 }
 
 $(document)
@@ -499,6 +547,7 @@ $(window)
 		// 	});
 	})
 	.resize(function () {
+		onResizeStart();
 		$body.addClass('resizing');
 		$body.removeClass('texture-loaded');
 
@@ -517,7 +566,7 @@ $(window)
 		$resizer = setTimeout(resizeEnd, 600);
 	});
 
-function goHome () {
+function goHome() {
 	// $body.removeClass('contact-loaded');
 	// $body.removeClass('contact');
 	// clearTimeout($showHome);
@@ -535,7 +584,7 @@ function goHome () {
 	ga('send', 'pageview');
 }
 
-function goContact () {
+function goContact() {
 	// $body.addClass('mouse-edge');
 	// TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });
 	// clearTimeout($hideLogo);
@@ -557,7 +606,7 @@ function goContact () {
 	ga('send', 'pageview');
 }
 
-function resizeEnd () {
+function resizeEnd() {
 	if ($renderer) {
 		$displacement1.scale.x = $size;
 		$displacement1.scale.y = $size;
@@ -580,10 +629,11 @@ function resizeEnd () {
 
 	setBackground(function () {
 		$body.addClass('texture-loaded');
+		onResizeEnd();
 	});
 }
 
-function setBackground (callback) {
+function setBackground(callback) {
 	$winW = $(window).width();
 	$winH = $(window).height();
 	// var res = window.devicePixelRatio;
@@ -659,7 +709,7 @@ function setBackground (callback) {
 
 	$('#texture').append($renderer.view);
 
-	function $animate () {
+	function $animate() {
 		var $renderCanvas = requestAnimationFrame($animate);
 		if ($winW > 767) {
 			$texture1.position.y += 0.25;
@@ -741,12 +791,12 @@ if (window.DeviceOrientationEvent && $winW <= 767) {
 	);
 }
 
-function deviceOrientationHandler (tiltLR, tiltFB, dir) {
+function deviceOrientationHandler(tiltLR, tiltFB, dir) {
 	$texture3.position.y = tiltFB;
 	$texture4.position.y = -tiltFB;
 }
 
-function loadSound (url) {
+function loadSound(url) {
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
 	request.responseType = 'arraybuffer';
@@ -770,7 +820,7 @@ function loadSound (url) {
 	request.send();
 }
 
-function setupSound () {
+function setupSound() {
 	sound = audioContext.createBufferSource();
 	sound.buffer = sampleBuffer;
 	sound.loop = loop;
@@ -784,13 +834,13 @@ function setupSound () {
 	sound.playbackRate.value = 1;
 }
 
-function playSound (time) {
+function playSound(time) {
 	setupSound();
 	sound.start(time);
 	$playing = true;
 }
 
-function stopSound () {
+function stopSound() {
 	$playing = false;
 	soundPlaying = false;
 	gainNode.gain.exponentialRampToValueAtTime(
@@ -819,7 +869,7 @@ var sxsw = {
 	}
 };
 
-function swipedetect (el, callback) {
+function swipedetect(el, callback) {
 	var touchsurface = el[0],
 		swipedir,
 		startX,

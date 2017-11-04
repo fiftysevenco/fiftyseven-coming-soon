@@ -13,6 +13,7 @@ $output-bourbon-deprecation-warnings: false;
 #projects {
     margin-top: 50px;
     a {
+		display: block;
         font-family: Norwester;
         color: white;
         text-transform: uppercase;
@@ -178,19 +179,19 @@ figure {
 }
 
 #intro {
-    @include container-center;
+	@include container-center;
 }
 
 #fs-monogram {
-	// position: relative;
-	// top: 52px;
+	position: relative;
     display: block;
-    width: 412px;
-    margin-bottom: 50px;
+	width: 412px;
+	margin-bottom: 50px;
     overflow: visible;
 }
 
 #stardust {
+	display: block;
     margin-top: 60px;
     padding-bottom: 10px;
     padding-left: 3px;

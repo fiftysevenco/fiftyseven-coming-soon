@@ -1,7 +1,7 @@
 /**
  * @license
  * Lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash exports="global" include="map,forEach,reduce" category="string"`
+ * Build: `lodash include="forEach,values,reduce" category="string"`
  * Copyright JS Foundation and other contributors <https://js.foundation/>
  * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -2355,24 +2355,6 @@
   }
 
   /**
-   * The base implementation of `_.map` without support for iteratee shorthands.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the new mapped array.
-   */
-  function baseMap(collection, iteratee) {
-    var index = -1,
-        result = isArrayLike(collection) ? Array(collection.length) : [];
-
-    baseEach(collection, function(value, key, collection) {
-      result[++index] = iteratee(value, key, collection);
-    });
-    return result;
-  }
-
-  /**
    * The base implementation of `_.matches` which doesn't clone `source`.
    *
    * @private
@@ -3785,53 +3767,6 @@
   }
 
   /**
-   * Creates an array of values by running each element in `collection` thru
-   * `iteratee`. The iteratee is invoked with three arguments:
-   * (value, index|key, collection).
-   *
-   * Many lodash methods are guarded to work as iteratees for methods like
-   * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
-   *
-   * The guarded methods are:
-   * `ary`, `chunk`, `curry`, `curryRight`, `drop`, `dropRight`, `every`,
-   * `fill`, `invert`, `parseInt`, `random`, `range`, `rangeRight`, `repeat`,
-   * `sampleSize`, `slice`, `some`, `sortBy`, `split`, `take`, `takeRight`,
-   * `template`, `trim`, `trimEnd`, `trimStart`, and `words`
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Collection
-   * @param {Array|Object} collection The collection to iterate over.
-   * @param {Function} [iteratee=_.identity] The function invoked per iteration.
-   * @returns {Array} Returns the new mapped array.
-   * @example
-   *
-   * function square(n) {
-   *   return n * n;
-   * }
-   *
-   * _.map([4, 8], square);
-   * // => [16, 64]
-   *
-   * _.map({ 'a': 4, 'b': 8 }, square);
-   * // => [16, 64] (iteration order is not guaranteed)
-   *
-   * var users = [
-   *   { 'user': 'barney' },
-   *   { 'user': 'fred' }
-   * ];
-   *
-   * // The `_.property` iteratee shorthand.
-   * _.map(users, 'user');
-   * // => ['barney', 'fred']
-   */
-  function map(collection, iteratee) {
-    var func = isArray(collection) ? arrayMap : baseMap;
-    return func(collection, getIteratee(iteratee, 3));
-  }
-
-  /**
    * Reduces `collection` to a value which is the accumulated result of running
    * each element in `collection` thru `iteratee`, where each successive
    * invocation is supplied the return value of the previous. If `accumulator`
@@ -4611,6 +4546,36 @@
    */
   function keysIn(object) {
     return isArrayLike(object) ? arrayLikeKeys(object, true) : baseKeysIn(object);
+  }
+
+  /**
+   * Creates an array of the own enumerable string keyed property values of `object`.
+   *
+   * **Note:** Non-object values are coerced to objects.
+   *
+   * @static
+   * @since 0.1.0
+   * @memberOf _
+   * @category Object
+   * @param {Object} object The object to query.
+   * @returns {Array} Returns the array of property values.
+   * @example
+   *
+   * function Foo() {
+   *   this.a = 1;
+   *   this.b = 2;
+   * }
+   *
+   * Foo.prototype.c = 3;
+   *
+   * _.values(new Foo);
+   * // => [1, 2] (iteration order is not guaranteed)
+   *
+   * _.values('hi');
+   * // => ['h', 'i']
+   */
+  function values(object) {
+    return object == null ? [] : baseValues(object, keys(object));
   }
 
   /*------------------------------------------------------------------------*/
@@ -5915,10 +5880,10 @@
   lodash.iteratee = iteratee;
   lodash.keys = keys;
   lodash.keysIn = keysIn;
-  lodash.map = map;
   lodash.memoize = memoize;
   lodash.property = property;
   lodash.split = split;
+  lodash.values = values;
   lodash.words = words;
 
   // Add aliases.
@@ -5998,6 +5963,29 @@
 
   /*--------------------------------------------------------------------------*/
 
-  // Export to the global object.
-  root._ = lodash;
+  // Some AMD build optimizers, like r.js, check for condition patterns like:
+  if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
+    // Expose Lodash on the global object to prevent errors when Lodash is
+    // loaded by a script tag in the presence of an AMD loader.
+    // See http://requirejs.org/docs/errors.html#mismatch for more details.
+    // Use `_.noConflict` to remove Lodash from the global object.
+    root._ = lodash;
+
+    // Define as an anonymous module so, through path mapping, it can be
+    // referenced as the "underscore" module.
+    define(function() {
+      return lodash;
+    });
+  }
+  // Check for `exports` after `define` in case a build optimizer adds it.
+  else if (freeModule) {
+    // Export for Node.js.
+    (freeModule.exports = lodash)._ = lodash;
+    // Export for CommonJS support.
+    freeExports._ = lodash;
+  }
+  else {
+    // Export to the global object.
+    root._ = lodash;
+  }
 }.call(this));

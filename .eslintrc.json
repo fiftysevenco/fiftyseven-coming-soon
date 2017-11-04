@@ -12,6 +12,10 @@
 		"no-use-before-define": "error",
 		"new-cap": ["error", {
 			"properties": false
+		}],
+		"space-before-function-paren": ["error", {
+			"anonymous": "always",
+			"named": "never"
 		}]
 	}
 }

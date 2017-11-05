@@ -162,7 +162,8 @@ figure {
     position: relative;
     width: 100%;
     height: 2px;
-    background-color: rgba(#ffffff, 0.5);
+	background-color: rgba(#ffffff, 0.5);
+
     &-inner {
         position: absolute;
         width: 0;
@@ -172,9 +173,9 @@ figure {
 }
 
 #fs-logo {
-    width: 920px;
-    margin-top: 80px;
-    margin-bottom: 20px;
+	display: block;
+	width: 920px;
+	margin: 0 auto;
     overflow: visible;
 }
 
@@ -186,16 +187,31 @@ figure {
 	position: relative;
     display: block;
 	width: 412px;
-	margin-bottom: 50px;
+	margin-bottom: 50px	;
     overflow: visible;
 }
 
 #stardust {
 	display: block;
-    margin-top: 60px;
-    padding-bottom: 10px;
-    padding-left: 3px;
     font-size: 16px;
     font-family: $norwester;
-    letter-spacing: 0.65em; // background: linear-gradient(120deg, rgba(227, 227, 227, 0.2) 0%, rgba(227, 227, 227, 0.3) 100%) no-repeat 0 45% /99% 0.75em;
+	letter-spacing: 0.65em;
+	line-height: 2;
+	// background: linear-gradient(120deg, rgba(227, 227, 227, 0.2) 0%, rgba(227, 227, 227, 0.3) 100%) no-repeat 0 45% /99% 0.75em;
+}
+
+.wrapper {
+	&--fs-logo {
+		margin-top:80px;
+		margin-bottom:20px;
+	}
+
+	&--fs-logo-sub {
+		margin-bottom: 50px;
+	}
+
+	&--stardust {
+		margin-top: 60px;
+		padding-bottom: 10px;
+	}
 }

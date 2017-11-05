@@ -331,24 +331,35 @@ function onResizeStart() {
 		return;
 	}
 	var currentSection = $body.attr('data-section');
-	var $sectionEls = Elements.get(currentSection).value();
+	var $sectionEls = _.extendWith(
+		{},
+		Elements.get(currentSection).value(),
+		Elements.get('global').value()
+	);
 
 	anime({
 		targets: _.values($sectionEls),
 		translateY: [0, '100%'],
-		duration: 1000
+		opacity: [1, 0],
+		duration: 1000,
+		easing: [1, 0, 0, 1]
 	});
 }
 
 function onResizeEnd() {
-	console.log('kesa')
 	var currentSection = $body.attr('data-section');
-	var $sectionEls = Elements.get(currentSection).value();
+	var $sectionEls = _.extendWith(
+		{},
+		Elements.get(currentSection).value(),
+		Elements.get('global').value()
+	);
 
 	anime({
 		targets: _.values($sectionEls),
 		translateY: 0,
-		duration: 1000
+		opacity: [1],
+		duration: 1000,
+		easing: [1, 0, 0, 1]
 	});
 }
 

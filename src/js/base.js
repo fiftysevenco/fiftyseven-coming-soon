@@ -124,7 +124,8 @@ if ('CSS' in window && 'supports' in window.CSS) {
 	support = support ? 'mix-blend-mode' : 'no-mix-blend-mode';
 	if (isAndroid) {
 		$('html').addClass('no-mix-blend-mode');
-	} else {
+	}
+	else {
 		$('html').addClass(support);
 	}
 }
@@ -161,6 +162,21 @@ History.Adapter.bind(window, 'statechange', function () {
 			break;
 	}
 });
+
+function globalAnimation() {
+	var $globalEls = $('#global').children().get().reverse();
+
+	return {
+		targets: $globalEls,
+		translateY: ['100%', 0],
+		opacity: [0, 1],
+		easing: 'easeOutExpo',
+		duration: 600,
+		delay: function (el, i) {
+			return i * 200;
+		}
+	};
+}
 
 var tlReaveal;
 function revealAnimation(callback) {
@@ -236,7 +252,9 @@ function revealAnimation(callback) {
 	return timeline;
 }
 
-function landingAnimation() {
+function landingAnimation(reset) {
+	reset = reset === undefined ? false : reset;
+
 	var $fsLogo = document.getElementById('fs-logo');
 	var $fsLogoEls = Array.prototype.slice.call(
 		$fsLogo.querySelectorAll('path')
@@ -252,7 +270,10 @@ function landingAnimation() {
 	$('#cruise-universe').blast({ delimiter: 'character' });
 	$('#stardust').blast({ delimiter: 'character' });
 
-	var $globalEls = $('#global').children().get().reverse();
+	if (reset) {
+		var $elements = Elements.get('contact'.value());
+		console.log($elements)
+	}
 
 	var landingAnimation = anime
 		.timeline({
@@ -312,21 +333,12 @@ function landingAnimation() {
 				return i * 300;
 			}
 		})
-		.add({
-			targets: $globalEls,
-			translateY: ['100%', 0],
-			opacity: [0, 1],
-			easing: 'easeOutExpo',
-			duration: 600,
-			delay: function (el, i) {
-				return i * 200;
-			}
-		});
+		.add(globalAnimation());
 
 	return landingAnimation;
 }
 
-function onResizeStart() {
+function onResizeStart(callback) {
 	if ($body.hasClass('resizing')) {
 		return;
 	}
@@ -342,7 +354,12 @@ function onResizeStart() {
 		translateY: [0, '100%'],
 		opacity: [1, 0],
 		duration: 1000,
-		easing: [1, 0, 0, 1]
+		easing: [1, 0, 0, 1],
+		complete: function () {
+			if (callback instanceof Function) {
+				callback.call();
+			}
+		}
 	});
 }
 
@@ -372,7 +389,8 @@ $(document)
 					'Contact. ' + $title,
 					'/contact'
 				);
-			} else if (swipedir === 'right' && $body.hasClass('contact')) {
+			}
+			else if (swipedir === 'right' && $body.hasClass('contact')) {
 				History.pushState({ state: 1 }, $title, '/');
 			}
 		});
@@ -380,32 +398,40 @@ $(document)
 		$winW = $(window).width();
 		$winH = $(window).height();
 
-		$('#sound-btn').click(function () {
+		$('#sound-btn').on('click', function () {
 			if ($(this).hasClass('muted')) {
 				loadSound('assets/audio/loop.mp3');
 				$(this).removeClass('muted');
-			} else {
+			}
+			else {
 				stopSound();
 				$(this).addClass('muted');
 			}
 		});
 
-		$('#contact-btn, #contact-btn *').click(function (e) {
-			if ($body.hasClass('contact')) {
+		$('#contact-btn').on('click', function (e) {
+			if ($body.attr('data-section') === 'contact') {
 				History.pushState({ state: 1 }, $title, '/');
-			} else {
-				History.pushState(
-					{ state: 2 },
-					'Contact. ' + $title,
-					'/contact'
-				);
 			}
+			else {
+				History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
+			}
+			// if ($body.hasClass('contact')) {
+			// 	History.pushState({ state: 1 }, $title, '/');
+			// } else {
+			// 	History.pushState(
+			// 		{ state: 2 },
+			// 		'Contact. ' + $title,
+			// 		'/contact'
+			// 	);
+			// }
 		});
 
 		$('#swipe').on('touchend', function () {
 			if ($body.hasClass('contact')) {
 				History.pushState({ state: 1 }, $title, '/');
-			} else {
+			}
+			else {
 				History.pushState(
 					{ state: 2 },
 					'Contact. ' + $title,
@@ -522,7 +548,8 @@ $(window)
 
 		if (action === 'contact') {
 			$(document).prop('title', 'Contact. ' + $title);
-		} else {
+		}
+		else {
 			$(document).prop('title', $title);
 		}
 
@@ -578,6 +605,10 @@ $(window)
 	});
 
 function goHome() {
+	onResizeStart(function () {
+		$body.attr('data-section', 'landing');
+		landingAnimation().play();
+	});
 	// $body.removeClass('contact-loaded');
 	// $body.removeClass('contact');
 	// clearTimeout($showHome);
@@ -596,6 +627,19 @@ function goHome() {
 }
 
 function goContact() {
+	onResizeStart(function () {
+		$body.attr('data-section', 'contact');
+		var $elements = Elements.get('contact').value();
+
+		anime
+		.timeline()
+		.add({
+			targets: $elements['social'],
+			translateY: 0,
+			opacity: 1
+		})
+		.add(globalAnimation());
+	});
 	// $body.addClass('mouse-edge');
 	// TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });
 	// clearTimeout($hideLogo);
@@ -730,7 +774,8 @@ function setBackground(callback) {
 		}
 		if ($renderer) {
 			$renderer.render($stage);
-		} else {
+		}
+		else {
 			cancelAnimationFrame($renderCanvas);
 		}
 	}
@@ -756,7 +801,8 @@ function setBackground(callback) {
 				easing: [0.17, 0.67, 0.83, 0.67],
 				complete: onComplete
 			});
-		} else {
+		}
+		else {
 			anime({
 				targets: $container2,
 				duration: 5,
@@ -923,7 +969,8 @@ function swipedetect(el, callback) {
 					'width',
 					80 - Math.max((startX - swipeVal) / 75, 0) + 'px'
 				);
-			} else {
+			}
+			else {
 				$('#white-fill').css(
 					'left',
 					Math.min(0, (startX - swipeVal) / 10) + 'px'
@@ -955,7 +1002,8 @@ function swipedetect(el, callback) {
 				) {
 					// 2nd condition for horizontal swipe met
 					swipedir = distX < 0 ? 'left' : 'right'; // if dist traveled is negative, it indicates left swipe
-				} else if (
+				}
+				else if (
 					Math.abs(distY) >= threshold &&
 					Math.abs(distX) <= restraint
 				) {

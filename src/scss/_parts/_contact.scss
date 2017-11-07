@@ -1,145 +1,180 @@
-#contact{
+#contact {
+	@extend %clearfix;
 	z-index: 10000;
 	position: absolute;
-	top:0;
-	left:0;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	// visibility: hidden;
-	@include transition(0s $ease 2s);
+	// @include transition(0s $ease 2s);
 
-	article{
+	ul li {
+		font-size: 14px;
+	}
+
+	.section {
+		float: left;
+		margin-right: 110px;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	.section--1 {
+		max-width: 550px;
+
+		ul {
+			li {
+				display: inline-block;
+			}
+		}
+	}
+
+	article {
 		position: absolute;
-		top:50%;
-		left:0;
+		top: 50%;
+		left: 0;
 		width: 100%;
-		padding:$pad*6;
+		padding: $pad*6 9.0549vw;
 		@include transform(translateY(-50%));
 		@extend %clearfix;
-		span.outer{
+
+		span.outer {
 			position: relative;
 			overflow: hidden;
 			display: inline-block;
-			padding-right:30px;
-			span{
+			// padding-right: 30px;
+			line-height: 2;
+
+			span {
 				position: relative;
 				display: inline-block;
-				@include opacity(0);
-				@include transform(translateY(120%));
-				@include transition(transform 1s $ease 0.5s, opacity 0.5s $ease 0.5s);
+				// @include opacity(0);
+				// @include transform(translateY(120%));
+				// @include transition(transform 1s $ease 0.5s, opacity 0.5s $ease 0.5s);
 			}
 		}
-		hgroup{
+		hgroup {
 			position: relative;
 			padding-bottom: $pad*2;
 			margin-bottom: $pad*2;
-			h2{
+
+			h2 {
 				font-family: $stratum;
 				text-transform: uppercase;
 				letter-spacing: 10px;
-				font-size: 70px;
+				// font-size: 70px;
+				font-size: 112px;
 				line-height: 1;
 				position: relative;
 
-
+				span.outer {
+					line-height: 1;
+				}
 			}
-			&:before{
-				content:'';
+
+			&:before {
+				content: '';
 				width: $pad;
 				height: 1px;
 				background: white;
 				position: absolute;
 				bottom: $pad;
-				left:0;
+				left: 0;
 				@include transform(rotate(-60deg) translateX(-50%) scale(0));
 				@include transition(1s $ease 0s);
 			}
-			@include breakpoint(small){
-				h2{
+
+			@include breakpoint(small) {
+				h2 {
 					font-size: 60px;
 				}
 			}
 		}
-		h3{
-			font-family: $norwester;
-			letter-spacing: 4px;
-			text-transform: uppercase;
-			font-size: 9px;
-			margin-bottom: $pad/2;
-			@include opacity(0.4);
-		}
-		ul{
-			float: left;
-			width: 33.3%;
-			margin-bottom: $pad;
-			min-width: 250px;
+		h3 {
 			font-family: $norwester;
 			letter-spacing: 4px;
 			text-transform: uppercase;
 			font-size: 12px;
-			position: relative;
-			@extend %clearfix;
-			a{
+			margin-bottom: $pad/2;
+			@include opacity(0.4);
+		}
+		ul {
+			// float: left;
+			// width: 33.3%;
+			// margin-bottom: $pad;
+			// min-width: 250px;
+			font-family: $norwester;
+			letter-spacing: 4px;
+			// text-transform: uppercase;
+			font-size: 12px;
+			// position: relative;
+			// @extend %clearfix;
+
+			a {
 				text-decoration: none;
 				color: white;
 				position: relative;
 				@include transition(0.5s $ease);
-				strong:nth-of-type(1){
+				strong:nth-of-type(1) {
 					position: relative;
 					display: inline-block;
 					@include transition(0.5s $ease);
 				}
-				strong:nth-of-type(2){
+				strong:nth-of-type(2) {
 					position: absolute;
-					top:50%;
-					left:0;
+					top: 50%;
+					left: 0;
 					display: inline-block;
 					@include opacity(0);
 					@include transform(translateX(-150%) translateY(-50%));
 					@include transition(0.5s $ease);
 				}
-				&:after{
+				&:after {
 					@include opacity(1);
 					@include transform(translateY(-50%) translateX(-125%));
 				}
-				&:before{
+				&:before {
 					@include opacity(1);
 					@include transform(translateY(-50%) translateX(0%));
 				}
-				&:hover{
-					strong:nth-of-type(1){
+				&:hover {
+					strong:nth-of-type(1) {
 						//@include opacity(0);
 						//@include transform(translateX(110%));
 					}
-					strong:nth-of-type(2){
+					strong:nth-of-type(2) {
 						//@include opacity(1);
 						//@include transform(translateX(0%) translateY(-50%));
 					}
 				}
 			}
-			span span{
-				line-height: 2;
+			span span {
+				// line-height: 2;
 			}
-			&#social{
-				li{
+			&#social {
+				li {
 					position: relative;
 					padding-left: $pad*1.25;
 					overflow: hidden;
-					.dash{
+
+					.dash {
 						position: absolute;
 						width: $pad;
 						height: 100%;
-						top:0;
-						left:0;
+						top: 0;
+						left: 0;
 						overflow: hidden;
-						&:after{
-							content:'';
+						&:after {
+							content: '';
 							width: 100%;
 							height: 1px;
 							background: white;
-							position: absolute;;
-							left:0;
-							top:50%;
+							position: absolute;
+							left: 0;
+							top: 50%;
 							max-width: 0px;
 
 							@include backface-visibility(hidden);
@@ -147,62 +182,58 @@
 							@include transform(translateY(-50%) translateX(0));
 							@include transition(0.5s $ease-in-out-expo 0s);
 						}
-						&:before{
-							content:'';
+						&:before {
+							content: '';
 							width: 100%;
 							height: 1px;
 							background: white;
-							position: absolute;;
-							left:0;
-							top:50%;
+							position: absolute;
+							left: 0;
+							top: 50%;
 							max-width: 0px;
 							@include backface-visibility(hidden);
 							@include transform-origin(100% 0);
 							@include transform(translateY(-50%) translateX(-125%));
 							@include transition(0.5s $ease-in-out-expo 0s);
 						}
-
 					}
-
 				}
 			}
 		}
-
 	}
-	@include breakpoint(mobile){
+	@include breakpoint(mobile) {
 		overflow-x: hidden;
 		overflow-y: scroll;
 		-webkit-overflow-scrolling: touch;
-		article{
-			top:0;
+		article {
+			top: 0;
 			padding: 30px;
 			@include transform(translateY(0%));
-			hgroup{
-				h2{
+			hgroup {
+				h2 {
 					font-size: 24px;
 					letter-spacing: 4px;
 					white-space: nowrap;
-
 				}
-				&:before{
+				&:before {
 					width: $pad*1.5;
 				}
 			}
-			h3{
+			h3 {
 				padding-top: $pad*2;
 				@include opacity(0.6);
 			}
-			ul{
+			ul {
 				width: 100%;
 				clear: both;
 				margin-bottom: $pad*2;
-				&#social{
-					li{
+				&#social {
+					li {
 						width: auto;
 						float: left;
 						margin-right: $pad*2;
 						padding-left: $pad*2;
-						&:after{
+						&:after {
 							width: $pad*1.5;
 						}
 					}
@@ -210,39 +241,39 @@
 			}
 		}
 	}
-	@include breakpoint(mobile-landscape){
-		article{
+	@include breakpoint(mobile-landscape) {
+		article {
 			padding: 30px;
 			padding-bottom: 100px;
-			hgroup{
+			hgroup {
 				padding-bottom: 0;
 				margin-bottom: 15px;
-				&:before{
+				&:before {
 					display: none;
 				}
 			}
-			h3{
+			h3 {
 				margin-bottom: 15px;
 				padding-top: 0px;
 			}
-			ul{
+			ul {
 				width: 50%;
 				min-width: 0px;
 				clear: none;
 				margin-bottom: 15px;
-				&#social{
+				&#social {
 					margin-bottom: 0px;
-					li{
+					li {
 						width: 100%;
 					}
 				}
 			}
 		}
 	}
-	@include breakpoint(short){
-		article{
-			hgroup{
-				h2{
+	@include breakpoint(short) {
+		article {
+			hgroup {
+				h2 {
 					font-size: 16px;
 					letter-spacing: 4px;
 				}
@@ -401,24 +432,24 @@
 
 // }
 
-#white-fill{
+#white-fill {
 	background: #080707;
 	position: absolute;
-	top:0;
-	left:0;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	z-index: 1000;
 	@include transform(translateX(-100%));
 	@include transition(transform 0.5s $ease-in-out-expo 0.5s);
 }
-.mix-blend-mode{
-	#white-fill{
+.mix-blend-mode {
+	#white-fill {
 		mix-blend-mode: difference;
 	}
 }
-.no-mix-blend-mode{
-	#white-fill{
+.no-mix-blend-mode {
+	#white-fill {
 		opacity: 0.9;
 	}
 }

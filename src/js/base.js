@@ -252,28 +252,24 @@ function revealAnimation(callback) {
 	return timeline;
 }
 
-function landingAnimation(reset) {
-	reset = reset === undefined ? false : reset;
-
+function landingAnimation() {
 	var $fsLogo = document.getElementById('fs-logo');
 	var $fsLogoEls = Array.prototype.slice.call(
 		$fsLogo.querySelectorAll('path')
 	);
+
 	var $projects = $('#projects a').get();
 	var len = $fsLogoEls.length;
 	var dur = 2000;
 	var off = 5;
 
 	var $$fsLogoSub = $(Elements.get('landing').value('fsLogoSub'));
-	$$fsLogoSub.blast({ delimiter: 'character' });
+	$$fsLogoSub
+		.blast(false)
+		.blast({ delimiter: 'character' });
 
-	$('#cruise-universe').blast({ delimiter: 'character' });
-	$('#stardust').blast({ delimiter: 'character' });
-
-	if (reset) {
-		var $elements = Elements.get('contact'.value());
-		console.log($elements)
-	}
+	var $$cruiseUniverse = $('#cruise-universe');
+	var $$stardust = $('#stardust');
 
 	var landingAnimation = anime
 		.timeline({
@@ -304,7 +300,7 @@ function landingAnimation(reset) {
 			}
 		})
 		.add({
-			targets: $('#cruise-universe .blast').get(),
+			targets: $$cruiseUniverse.blast({ delimiter: 'character' }).get(),
 			translateY: ['100%', 0],
 			easing: 'easeOutExpo',
 			duration: 800,
@@ -314,7 +310,7 @@ function landingAnimation(reset) {
 			}
 		})
 		.add({
-			targets: $('#stardust .blast').get(),
+			targets: $$stardust.blast({ delimiter: 'character' }).get(),
 			translateY: ['100%', 0],
 			easing: 'easeOutExpo',
 			duration: 600,
@@ -329,6 +325,7 @@ function landingAnimation(reset) {
 			opacity: [0, 1],
 			easing: 'easeOutExpo',
 			duration: 600,
+			offset: '-=600',
 			delay: function (el, i) {
 				return i * 300;
 			}
@@ -555,9 +552,13 @@ $(window)
 
 		setBackground(function () {
 			$body.addClass('texture-loaded');
-			var lAnim = landingAnimation().play
-			tlReaveal = revealAnimation(lAnim);
-			tlReaveal.play();
+			// TODO: restore reveal animation
+			$body.attr('data-section', 'landing');
+			landingAnimation().play()
+
+			// var lAnim = landingAnimation().play
+			// tlReaveal = revealAnimation(lAnim);
+			// tlReaveal.play();
 		});
 
 		// $('#cruise-universe').blast({ delimiter: 'character' });
@@ -606,8 +607,23 @@ $(window)
 
 function goHome() {
 	onResizeStart(function () {
+		$(Elements.get('global').value('contactBtn'))
+			.find('.outer > span')
+			.text('about');
+
+		var tl = landingAnimation();
 		$body.attr('data-section', 'landing');
-		landingAnimation().play();
+
+		// Reset
+		anime({
+			targets: _.values(Elements.get('landing').value()),
+			translateY: 0,
+			opacity: 1,
+			duration: 0,
+			easing: 'linear'
+		});
+
+		tl.play();
 	});
 	// $body.removeClass('contact-loaded');
 	// $body.removeClass('contact');
@@ -628,17 +644,49 @@ function goHome() {
 
 function goContact() {
 	onResizeStart(function () {
+		$(Elements.get('global').value('contactBtn'))
+			.find('.outer > span')
+			.text('back');
+
 		$body.attr('data-section', 'contact');
 		var $elements = Elements.get('contact').value();
+		var $$imagination = $(Elements.get('contact').value('imagination'));
+		// Reset
+		anime({
+			targets: _.values($elements),
+			translateY: '100%',
+			opacity: 1,
+			duration: 0,
+			easing: 'linear'
+		});
 
-		anime
-		.timeline()
-		.add({
-			targets: $elements['social'],
-			translateY: 0,
-			opacity: 1
-		})
-		.add(globalAnimation());
+		anime.timeline()
+			.add({
+				targets: $$imagination.get(),
+				translateY: 0,
+				duration: 0
+			})
+			.add({
+				targets: $$imagination.blast().get(),
+				translateY: ['100%', 0],
+				opacity: [0, 1],
+				duration: 800,
+				easing: 'easeOutExpo',
+				delay: function (el, i) {
+					return 20 * i;
+				}
+			})
+			.add({
+				targets: $('#contact .section .outer > span').get(),
+				translateY: ['100%', 0],
+				duration: 600,
+				easing: 'easeOutExpo',
+				offset: '-=1000',
+				delay: function (el, i) {
+					return 50 * i;
+				}
+			})
+			.add(globalAnimation());
 	});
 	// $body.addClass('mouse-edge');
 	// TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });

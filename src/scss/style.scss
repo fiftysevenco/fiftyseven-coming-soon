@@ -139,8 +139,23 @@ $output-bourbon-deprecation-warnings: false;
 	visibility: visible;
 }
 
-[data-section="contact"] #contact {
-	visibility: visible;
+#white-fill {
+	transition: transform 1s cubic-bezier(1, 0, 0, 1) 0s;
+}
+
+[data-section="contact"] {
+	#texture {
+		opacity: 0.4;
+	}
+
+	#white-fill {
+		transform: translateX(0);
+		transition-delay: 0;
+	}
+
+	#contact {
+		visibility: visible;
+	}
 }
 
 .outer {

@@ -32,6 +32,19 @@
 		}
 	}
 
+	.section--4 {
+		ul {
+			li {
+				float: left;
+				width: 98px;
+
+				&:nth-child(3n + 3) {
+					clear: left;
+				}
+			}
+		}
+	}
+
 	article {
 		position: absolute;
 		top: 50%;

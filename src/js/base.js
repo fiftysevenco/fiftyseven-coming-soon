@@ -762,20 +762,18 @@ function setBackground(callback) {
 
 	var $stage = new PIXI.Container();
 
-	var $colorMatrix = new PIXI.filters.ColorMatrixFilter();
-	$colorMatrix.lsd();
+	var filter = new PIXI.filters.ColorMatrixFilter();
+	var nBrightness = 1.25;
 
 	$texture1 = new PIXI.Sprite.fromImage('assets/images/textures/dis1.jpg');
 	$texture2 = new PIXI.Sprite.fromImage('assets/images/textures/dis2.jpg');
 	$texture3 = new PIXI.Sprite.fromImage('assets/images/textures/dis1.jpg');
 	$texture4 = new PIXI.Sprite.fromImage('assets/images/textures/dis2.jpg');
-	$texture5 = new PIXI.Sprite.fromImage('assets/images/textures/dis2.jpg');
 
-	$texture1.filters = [$colorMatrix];
-	$texture2.filters = [$colorMatrix];
-	$texture3.filters = [$colorMatrix];
-	$texture4.filters = [$colorMatrix];
-	$texture5.filters = [$colorMatrix];
+	$texture1.filters = [filter.brightness(nBrightness)];
+	$texture2.filters = [filter.brightness(nBrightness)];
+	$texture3.filters = [filter.brightness(nBrightness)];
+	$texture4.filters = [filter.brightness(nBrightness)];
 
 	var bgs = [
 		'assets/images/photo/1-dis.jpg',
@@ -809,6 +807,7 @@ function setBackground(callback) {
 	$container2.alpha = 0;
 
 	$stage.addChild($container2);
+	$stage.filters = [filter];
 
 	$('#texture').append($renderer.view);
 

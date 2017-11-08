@@ -1,0 +1,20 @@
+.line {
+	position: fixed;
+	right: 0;
+	bottom: 70px;
+	left: 0;
+	max-width: 1864px;
+	width: calc(100% - 60px);
+	height: 3px;
+	margin-right: auto;
+	margin-left: auto;
+	overflow: hidden;
+
+	&--inner {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		background-color: #fff;
+		transform: translateX(100%);
+	}
+}

@@ -32,8 +32,12 @@ body {
 }
 nav#global{
 	position: fixed;
-	@include calc('width','100% -'$pad*2);
-	margin: $pad;
+	// @include calc('width','100% -'$pad*2);
+	max-width: 1864px;
+	width: calc(100% - 60px);
+	// margin: $pad auto;
+	margin: 30px auto;
+	right: 0;
 	bottom:0;
 	left:0;
 	overflow: hidden;

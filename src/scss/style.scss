@@ -9,6 +9,44 @@ $output-bourbon-deprecation-warnings: false;
 @import "_parts/texture";
 @import "_parts/landing";
 @import "_parts/contact";
+@import "_parts/line";
+
+a {
+	position: relative;
+	padding-bottom: 2px;
+	text-decoration: none;
+	overflow: hidden;
+
+	&:before,
+	&:after {
+		content: " ";
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		display: block;
+		// width: calc(100% - 3px);
+		width: 100%;
+		height: 1px;
+		background-color: #ffffff;
+		transform: translateX(0);
+		transition: transform 0.48s ease-out;
+	}
+
+	&:before {
+		transform: translateX(-105%);
+		transition-delay: 0.24s;
+	}
+
+	&:hover {
+		&:before {
+			transform: translateX(0);
+		}
+
+		&:after {
+			transform: translateX(105%);
+		}
+	}
+}
 
 #projects {
     margin-top: 50px;
@@ -193,7 +231,8 @@ figure {
 
 #fs-logo {
 	display: block;
-	width: 920px;
+	max-width: 920px;
+	width: 85%;
 	margin: 0 auto;
     overflow: visible;
 }
@@ -212,11 +251,16 @@ figure {
 
 #stardust {
 	display: block;
-    font-size: 16px;
+	font-size: 16px;
     font-family: $norwester;
 	letter-spacing: 0.65em;
 	line-height: 2;
 	// background: linear-gradient(120deg, rgba(227, 227, 227, 0.2) 0%, rgba(227, 227, 227, 0.3) 100%) no-repeat 0 45% /99% 0.75em;
+
+	@include breakpoint(tablet) {
+		font-size: 12px;
+		letter-spacing: 0.32em;
+	}
 }
 
 .wrapper {
@@ -231,6 +275,6 @@ figure {
 
 	&--stardust {
 		margin-top: 60px;
-		padding-bottom: 10px;
+		margin-bottom: 10px;
 	}
 }

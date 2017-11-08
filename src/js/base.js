@@ -163,15 +163,17 @@ History.Adapter.bind(window, 'statechange', function () {
 	}
 });
 
-function globalAnimation() {
-	var $globalEls = $('#global').children().get().reverse();
+function globalAnimation(reverse) {
+	reverse = reverse === undefined ? false : reverse;
+	var $globalEls = $('#global').children().get();
 
 	return {
-		targets: $globalEls,
+		targets: reverse ? $globalEls : $globalEls.reverse(),
 		translateY: ['100%', 0],
 		opacity: [0, 1],
 		easing: 'easeOutExpo',
-		duration: 600,
+		duration: 1200,
+		offset: '-=1200',
 		delay: function (el, i) {
 			return i * 200;
 		}
@@ -271,6 +273,9 @@ function landingAnimation() {
 	var $$cruiseUniverse = $('#cruise-universe');
 	var $$stardust = $('#stardust');
 
+	var $$line = $('#line');
+	console.log($$line.get())
+
 	var landingAnimation = anime
 		.timeline({
 			loop: false,
@@ -330,6 +335,14 @@ function landingAnimation() {
 				return i * 300;
 			}
 		})
+		.add({
+			targets: $$line.get(),
+			translateX: ['100%', 0],
+			opacity: [0, 1],
+			easing: 'easeOutExpo',
+			duration: 1200,
+			offset: '-=200'
+		})
 		.add(globalAnimation());
 
 	return landingAnimation;
@@ -343,7 +356,8 @@ function onResizeStart(callback) {
 	var $sectionEls = _.extendWith(
 		{},
 		Elements.get(currentSection).value(),
-		Elements.get('global').value()
+		Elements.get('global').value(),
+		{ line: $('#line').get() }
 	);
 
 	anime({
@@ -365,7 +379,8 @@ function onResizeEnd() {
 	var $sectionEls = _.extendWith(
 		{},
 		Elements.get(currentSection).value(),
-		Elements.get('global').value()
+		Elements.get('global').value(),
+		{ line: $('#line').get() }
 	);
 
 	anime({
@@ -383,7 +398,7 @@ $(document)
 			if (swipedir === 'left' && !$body.hasClass('contact')) {
 				History.pushState(
 					{ state: 2 },
-					'Contact. ' + $title,
+					'About. ' + $title,
 					'/contact'
 				);
 			}
@@ -651,6 +666,8 @@ function goContact() {
 		$body.attr('data-section', 'contact');
 		var $elements = Elements.get('contact').value();
 		var $$imagination = $(Elements.get('contact').value('imagination'));
+		var $$line = $('#line');
+
 		// Reset
 		anime({
 			targets: _.values($elements),
@@ -668,12 +685,12 @@ function goContact() {
 			})
 			.add({
 				targets: $$imagination.blast().get(),
-				translateY: ['100%', 0],
+				translateX: [-40, 0],
 				opacity: [0, 1],
 				duration: 800,
 				easing: 'easeOutExpo',
 				delay: function (el, i) {
-					return 20 * i;
+					return 500 + 30 * i;
 				}
 			})
 			.add({
@@ -686,7 +703,15 @@ function goContact() {
 					return 50 * i;
 				}
 			})
-			.add(globalAnimation());
+			.add({
+				targets: $$line.get(),
+				translateX: ['-100%', 0],
+				opacity: [0, 1],
+				easing: 'easeOutExpo',
+				duration: 1200,
+				offset: '-=200'
+			})
+			.add(globalAnimation(true));
 	});
 	// $body.addClass('mouse-edge');
 	// TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });

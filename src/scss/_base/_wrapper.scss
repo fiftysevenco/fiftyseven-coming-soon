@@ -51,7 +51,11 @@ nav#global{
 	// @include opacity(1);
 	//@include transform(translateY(100%));
 
-	@include transition(opacity 1s $ease-in-out-expo 1s, transform 1s $ease-in-out-expo 1s);
+	// @include transition(opacity 1s $ease-in-out-expo 1s, transform 1s $ease-in-out-expo 1s);
+
+	@include breakpoint(mobile) {
+		margin: 15px auto;
+	}
 
 	span.outer{
 		position: relative;
@@ -329,9 +333,9 @@ nav#global{
 			display: none!important;
 		}
 		p{
-			@include opacity(0.4);
-			margin-bottom: $pad*2;
-			@include transform(translateY(0%));
+			// @include opacity(0.4);
+			// margin-bottom: $pad*2;
+			// @include transform(translateY(0%));
 		}
 	}
 	@include breakpoint(mobile-landscape){

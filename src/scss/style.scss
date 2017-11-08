@@ -49,14 +49,23 @@ a {
 }
 
 #projects {
-    margin-top: 50px;
+	margin-top: 50px;
+
+	@include breakpoint(mobile) {
+		margin-top: 5px;
+	}
+
     a {
 		display: block;
         font-family: Norwester;
         color: white;
         text-transform: uppercase;
         font-size: 12px;
-        letter-spacing: 3px;
+		letter-spacing: 3px;
+
+		@include breakpoint(mobile) {
+			font-size: 10px;
+		}
     }
     li {
         display: inline;
@@ -267,14 +276,37 @@ figure {
 	&--fs-logo {
 		margin-top:80px;
 		margin-bottom:20px;
+
+		@include breakpoint(mobile) {
+			margin-top: 40px;
+			margin-bottom: 10px;
+		}
 	}
 
 	&--fs-logo-sub {
 		margin-bottom: 50px;
+
+		@include breakpoint(mobile) {
+			margin-bottom: 20px;
+		}
 	}
 
 	&--stardust {
 		margin-top: 60px;
 		margin-bottom: 10px;
+
+		@include breakpoint(mobile) {
+			margin-top: 30px;
+		}
 	}
+}
+
+#contact-btn,
+#sound-btn,
+#copyright {
+	opacity: 0;
+}
+
+.bullet {
+	padding-left: 3px;
 }

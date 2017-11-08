@@ -10,6 +10,10 @@
 	margin-left: auto;
 	overflow: hidden;
 
+	@include breakpoint(mobile) {
+		bottom: 40px;
+	}
+
 	&--inner {
 		position: relative;
 		width: 100%;

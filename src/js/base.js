@@ -272,9 +272,7 @@ function landingAnimation() {
 
 	var $$cruiseUniverse = $('#cruise-universe');
 	var $$stardust = $('#stardust');
-
 	var $$line = $('#line');
-	console.log($$line.get())
 
 	var landingAnimation = anime
 		.timeline({
@@ -568,12 +566,12 @@ $(window)
 		setBackground(function () {
 			$body.addClass('texture-loaded');
 			// TODO: restore reveal animation
-			$body.attr('data-section', 'landing');
-			landingAnimation().play()
+			// $body.attr('data-section', 'landing');
+			// landingAnimation().play()
 
-			// var lAnim = landingAnimation().play
-			// tlReaveal = revealAnimation(lAnim);
-			// tlReaveal.play();
+			var lAnim = landingAnimation().play
+			tlReaveal = revealAnimation(lAnim);
+			tlReaveal.play();
 		});
 
 		// $('#cruise-universe').blast({ delimiter: 'character' });

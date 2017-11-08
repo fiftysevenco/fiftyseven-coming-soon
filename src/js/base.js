@@ -1,6 +1,16 @@
 /* global window, document, location, History, XMLHttpRequest,
 requestAnimationFrame, cancelAnimationFrame, jQuery, $, _, anime, PIXI, ga */
 
+var TEXTURES = [
+	{ key: 'texture1', src: 'assets/images/textures/dis1.jpg' },
+	{ key: 'texture2', src: 'assets/images/textures/dis2.jpg' },
+	{ key: 'background0', src: 'assets/images/photo/1-dis.jpg' },
+	{ key: 'background1', src: 'assets/images/photo/2-dis.jpg' },
+	{ key: 'background2', src: 'assets/images/photo/3-dis.jpg' }
+];
+
+var RESOURCES = null;
+
 var $title = 'FiftySeven® — Design Studio.';
 var $body = $('body');
 var $winW = $(window).width();
@@ -14,7 +24,7 @@ var $texture1;
 var $texture2;
 var $texture3;
 var $texture4;
-var $texture5;
+// var $texture5;
 var $displacement1;
 var $displacement2;
 var $displacement3;
@@ -173,7 +183,7 @@ function globalAnimation(reverse) {
 		opacity: [0, 1],
 		easing: 'easeOutExpo',
 		duration: 1200,
-		offset: '-=1200',
+		offset: '-=1600',
 		delay: function (el, i) {
 			return i * 200;
 		}
@@ -192,12 +202,12 @@ function revealAnimation(callback) {
 	var timeline = anime
 		.timeline({
 			loop: false,
-			autoplay: false,
-			complete: function () {
-				if (callback instanceof Function) {
-					callback.call();
-				}
-			}
+			autoplay: false
+			// complete: function () {
+			// 	if (callback instanceof Function) {
+			// 		callback.call();
+			// 	}
+			// }
 		})
 		.add({
 			targets: $fsMonogramEls,
@@ -206,7 +216,7 @@ function revealAnimation(callback) {
 			opacity: [0, 1],
 			easing: 'easeOutExpo',
 			duration: 1200,
-			offset: 1000,
+			offset: 1500,
 			begin: function () {
 				$body.attr('data-section', 'intro');
 			},
@@ -228,12 +238,18 @@ function revealAnimation(callback) {
 			duration: 1000,
 			offset: '-=1200'
 		})
+		.add({ duration: 0, delay: 100 })
 		.add({
 			targets: $loader,
 			opacity: 0,
 			easing: 'easeOutExpo',
 			duration: 1200,
-			offset: '+=200'
+			complete: function () {
+				$body.attr('data-section', 'landing');
+				if (callback instanceof Function) {
+					callback.call();
+				}
+			}
 		})
 		.add({
 			targets: $fsMonogramEls,
@@ -243,9 +259,6 @@ function revealAnimation(callback) {
 			easing: 'easeOutExpo',
 			duration: 1200,
 			offset: '-=1200',
-			complete: function () {
-				$body.attr('data-section', 'landing');
-			},
 			delay: function (el, i) {
 				return 100 * i;
 			}
@@ -254,7 +267,9 @@ function revealAnimation(callback) {
 	return timeline;
 }
 
-function landingAnimation() {
+function landingAnimation(initial) {
+	initial = initial === undefined ? false : initial;
+
 	var $fsLogo = document.getElementById('fs-logo');
 	var $fsLogoEls = Array.prototype.slice.call(
 		$fsLogo.querySelectorAll('path')
@@ -333,15 +348,19 @@ function landingAnimation() {
 				return i * 300;
 			}
 		})
+
+	if (initial) {
+		landingAnimation
 		.add({
 			targets: $$line.get(),
 			translateX: ['100%', 0],
 			opacity: [0, 1],
 			easing: 'easeOutExpo',
 			duration: 1200,
-			offset: '-=200'
+			offset: '-=1600'
 		})
 		.add(globalAnimation());
+	}
 
 	return landingAnimation;
 }
@@ -353,9 +372,9 @@ function onResizeStart(callback) {
 	var currentSection = $body.attr('data-section');
 	var $sectionEls = _.extendWith(
 		{},
-		Elements.get(currentSection).value(),
-		Elements.get('global').value(),
-		{ line: $('#line').get() }
+		Elements.get(currentSection).value()
+		// Elements.get('global').value(),
+		// { line: $('#line').get() }
 	);
 
 	anime({
@@ -563,60 +582,54 @@ $(window)
 			$(document).prop('title', $title);
 		}
 
-		setBackground(function () {
-			$body.addClass('texture-loaded');
-			// TODO: restore reveal animation
-			// $body.attr('data-section', 'landing');
-			// landingAnimation().play()
-
-			var lAnim = landingAnimation().play
-			tlReaveal = revealAnimation(lAnim);
-			tlReaveal.play();
+		// Preload textures
+		var loader = PIXI.loader;
+		TEXTURES.forEach(function (value) {
+			loader.add(value.key, value.src);
 		});
 
-		// $('#cruise-universe').blast({ delimiter: 'character' });
-		// $('#stardust').blast({ delimiter: 'character' });
+		loader.load(function (loader, resources) {
+			RESOURCES = resources;
 
-		// anime
-		// 	.timeline()
-		// 	.add({
-		// 		targets: $('#cruise-universe .blast').get(),
-		// 		translateY: ['100%', 0],
-		// 		easing: 'easeOutExpo',
-		// 		duration: 800,
-		// 		delay: function (el, i) {
-		// 			return 20 * i;
-		// 		}
-		// 	})
-		// 	.add({
-		// 		targets: $('#stardust .blast').get(),
-		// 		translateY: ['100%', 0],
-		// 		easing: 'easeOutExpo',
-		// 		duration: 600,
-		// 		delay: function (el, i) {
-		// 			return 20 * i;
-		// 		}
-		// 	});
-	})
-	.resize(function () {
-		onResizeStart();
-		$body.addClass('resizing');
-		$body.removeClass('texture-loaded');
+			setBackground(function () {
+				$body.addClass('texture-loaded');
+				// TODO: restore reveal animation
+				// $body.attr('data-section', 'landing');
+				// landingAnimation().play()
 
-		$winW = $(window).width();
-		$winH = $(window).height();
-		if ($renderer) {
-			$renderer.destroy();
-			$renderer = null;
-			$('#texture canvas').remove();
-			if (!$('#sound-btn').hasClass('muted') && soundPlaying) {
-				stopSound();
-			}
-		}
-		clearInterval($visualizer);
-		clearTimeout($resizer);
-		$resizer = setTimeout(resizeEnd, 600);
+				var lAnim = landingAnimation(true).play
+				tlReaveal = revealAnimation(lAnim);
+				tlReaveal.add({
+					duration: 0,
+					complete: function () {
+						$(window).on('resize', resize);
+					}
+				})
+				tlReaveal.play();
+			},
+			RESOURCES);
+		});
 	});
+
+function resize() {
+	onResizeStart();
+	$body.addClass('resizing');
+	$body.removeClass('texture-loaded');
+
+	$winW = $(window).width();
+	$winH = $(window).height();
+	if ($renderer) {
+		$renderer.destroy();
+		$renderer = null;
+		$('#texture canvas').remove();
+		if (!$('#sound-btn').hasClass('muted') && soundPlaying) {
+			stopSound();
+		}
+	}
+	clearInterval($visualizer);
+	clearTimeout($resizer);
+	$resizer = setTimeout(resizeEnd, 600);
+}
 
 function goHome() {
 	onResizeStart(function () {
@@ -664,7 +677,7 @@ function goContact() {
 		$body.attr('data-section', 'contact');
 		var $elements = Elements.get('contact').value();
 		var $$imagination = $(Elements.get('contact').value('imagination'));
-		var $$line = $('#line');
+		// var $$line = $('#line');
 
 		// Reset
 		anime({
@@ -701,15 +714,15 @@ function goContact() {
 					return 50 * i;
 				}
 			})
-			.add({
-				targets: $$line.get(),
-				translateX: ['-100%', 0],
-				opacity: [0, 1],
-				easing: 'easeOutExpo',
-				duration: 1200,
-				offset: '-=200'
-			})
-			.add(globalAnimation(true));
+			// .add({
+			// 	targets: $$line.get(),
+			// 	translateX: ['-100%', 0],
+			// 	opacity: [0, 1],
+			// 	easing: 'easeOutExpo',
+			// 	duration: 1200,
+			// 	offset: '-=200'
+			// });
+			// .add(globalAnimation(true));
 	});
 	// $body.addClass('mouse-edge');
 	// TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });
@@ -788,26 +801,18 @@ function setBackground(callback) {
 	var filter = new PIXI.filters.ColorMatrixFilter();
 	var nBrightness = 1.25;
 
-	$texture1 = new PIXI.Sprite.fromImage('assets/images/textures/dis1.jpg');
-	$texture2 = new PIXI.Sprite.fromImage('assets/images/textures/dis2.jpg');
-	$texture3 = new PIXI.Sprite.fromImage('assets/images/textures/dis1.jpg');
-	$texture4 = new PIXI.Sprite.fromImage('assets/images/textures/dis2.jpg');
+	$texture1 = new PIXI.Sprite(RESOURCES['texture1'].texture);
+	$texture2 = new PIXI.Sprite(RESOURCES['texture2'].texture);
+	$texture3 = new PIXI.Sprite(RESOURCES['texture1'].texture);
+	$texture4 = new PIXI.Sprite(RESOURCES['texture2'].texture);
 
 	$texture1.filters = [filter.brightness(nBrightness)];
 	$texture2.filters = [filter.brightness(nBrightness)];
 	$texture3.filters = [filter.brightness(nBrightness)];
 	$texture4.filters = [filter.brightness(nBrightness)];
 
-	var bgs = [
-		'assets/images/photo/1-dis.jpg',
-		'assets/images/photo/2-dis.jpg',
-		'assets/images/photo/3-dis.jpg',
-		'assets/images/photo/4-dis.jpg',
-		'assets/images/photo/5-dis.jpg'
-	];
-
-	var bg = bgs[Math.floor(Math.random() * bgs.length)];
-	var $image2 = PIXI.Sprite.fromImage(bg);
+	var idx = Math.floor(Math.random() * 3);
+	var $image = new PIXI.Sprite(RESOURCES['background' + idx].texture);
 	var $container2 = new PIXI.Container();
 
 	$displacement3 = new PIXI.filters.DisplacementFilter($texture3);
@@ -817,16 +822,16 @@ function setBackground(callback) {
 	$displacement4.scale.x = $size / 4;
 	$displacement4.scale.y = $size / 4;
 
-	$image2.filters = [$displacement3, $displacement4];
-	$image2.position.x = $fillX;
-	$image2.position.y = $fillY;
-	$image2.width = $fillW;
-	$image2.height = $fillH;
-	$image2.alpha = 0.5;
+	$image.filters = [$displacement3, $displacement4];
+	$image.position.x = $fillX;
+	$image.position.y = $fillY;
+	$image.width = $fillW;
+	$image.height = $fillH;
+	$image.alpha = 0.5;
 
 	$container2.addChild($texture3);
 	$container2.addChild($texture4);
-	$container2.addChild($image2);
+	$container2.addChild($image);
 	$container2.alpha = 0;
 
 	$stage.addChild($container2);

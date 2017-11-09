@@ -365,6 +365,44 @@ function landingAnimation(initial) {
 	return landingAnimation;
 }
 
+function contactAnimation(callback) {
+	var $$imagination = $(Elements.get('contact').value('imagination'));
+
+	return anime.timeline({
+		autoplay: false,
+		complete: function () {
+			if (callback instanceof Function) {
+				callback.call();
+			}
+		}
+	})
+	.add({
+		targets: $$imagination.get(),
+		translateY: 0,
+		duration: 0
+	})
+	.add({
+		targets: $$imagination.blast().get(),
+		translateX: [-40, 0],
+		opacity: [0, 1],
+		duration: 800,
+		easing: 'easeOutExpo',
+		delay: function (el, i) {
+			return 500 + 30 * i;
+		}
+	})
+	.add({
+		targets: $('#contact .section .outer > span').get(),
+		translateY: ['100%', 0],
+		duration: 600,
+		easing: 'easeOutExpo',
+		offset: '-=1000',
+		delay: function (el, i) {
+			return 50 * i;
+		}
+	});
+}
+
 function onResizeStart(callback) {
 	if ($body.hasClass('resizing')) {
 		return;
@@ -632,37 +670,48 @@ function resize() {
 }
 
 function goHome() {
-	onResizeStart(function () {
-		$(Elements.get('global').value('contactBtn'))
-			.find('.outer > span')
-			.text('about');
+	var $$imagination = $(Elements.get('contact').value('imagination'));
+	anime.timeline({
+		complete: function () {
+			$(Elements.get('global').value('contactBtn'))
+				.find('.outer > span')
+				.text('about');
 
-		var tl = landingAnimation();
-		$body.attr('data-section', 'landing');
+			var tl = landingAnimation();
+			$body.attr('data-section', 'landing');
 
-		// Reset
-		anime({
-			targets: _.values(Elements.get('landing').value()),
-			translateY: 0,
-			opacity: 1,
-			duration: 0,
-			easing: 'linear'
-		});
+			// Reset
+			anime({
+				targets: _.values(Elements.get('landing').value()),
+				translateY: 0,
+				opacity: 1,
+				duration: 0,
+				easing: 'linear'
+			});
 
-		tl.play();
+			tl.play();
+		}
+	})
+	.add({
+		targets: $('#contact .section .outer > span').get().reverse(),
+		translateY: [0, '100%'],
+		duration: 600,
+		easing: 'easeOutExpo',
+		delay: function (el, i) {
+			return 50 * i;
+		}
+	})
+	.add({
+		targets: $$imagination.blast().get().reverse(),
+		translateX: [0, -40],
+		opacity: [1, 0],
+		duration: 800,
+		easing: 'easeOutExpo',
+		offset: 400,
+		delay: function (el, i) {
+			return 500 + 30 * i;
+		}
 	});
-	// $body.removeClass('contact-loaded');
-	// $body.removeClass('contact');
-	// clearTimeout($showHome);
-	// clearTimeout($contactLoaded);
-	// clearTimeout($hideLogo);
-
-	// $showHome = setTimeout(function () {
-	// TweenLite.to($container1, .5, { ease: Power2.easeOut, alpha: 1 });
-	// $body.addClass('mouse-edge');
-	// $logoH = $('#landing hgroup img').height();
-	// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 }, { ease: Power2.easeOut, y: $winH / 2 - $logoH });
-	// }, 1200);
 
 	ga('set', { page: window.location.pathname, title: 'Home' });
 	ga('send', 'pageview');
@@ -676,8 +725,6 @@ function goContact() {
 
 		$body.attr('data-section', 'contact');
 		var $elements = Elements.get('contact').value();
-		var $$imagination = $(Elements.get('contact').value('imagination'));
-		// var $$line = $('#line');
 
 		// Reset
 		anime({
@@ -688,58 +735,8 @@ function goContact() {
 			easing: 'linear'
 		});
 
-		anime.timeline()
-			.add({
-				targets: $$imagination.get(),
-				translateY: 0,
-				duration: 0
-			})
-			.add({
-				targets: $$imagination.blast().get(),
-				translateX: [-40, 0],
-				opacity: [0, 1],
-				duration: 800,
-				easing: 'easeOutExpo',
-				delay: function (el, i) {
-					return 500 + 30 * i;
-				}
-			})
-			.add({
-				targets: $('#contact .section .outer > span').get(),
-				translateY: ['100%', 0],
-				duration: 600,
-				easing: 'easeOutExpo',
-				offset: '-=1000',
-				delay: function (el, i) {
-					return 50 * i;
-				}
-			})
-			// .add({
-			// 	targets: $$line.get(),
-			// 	translateX: ['-100%', 0],
-			// 	opacity: [0, 1],
-			// 	easing: 'easeOutExpo',
-			// 	duration: 1200,
-			// 	offset: '-=200'
-			// });
-			// .add(globalAnimation(true));
+		contactAnimation().play();
 	});
-	// $body.addClass('mouse-edge');
-	// TweenLite.to($whiteFill, 1, { ease: Power2.easeOut, alpha: 0 });
-	// clearTimeout($hideLogo);
-	// clearTimeout($contactLoaded);
-	// clearTimeout($showHome);
-
-	// $body.addClass('contact');
-
-	// $hideLogo = setTimeout(function () {
-	// $logoH = $('#landing hgroup img').height();
-	// TweenLite.fromTo($whiteFillMask.position, 1, { ease: Power2.easeOut, y: $winH / 2 - $logoH }, { ease: Power2.easeOut, y: $winH / 2 + $logoH / 2 + 10 });
-	// TweenLite.to($container1, 3, { ease: Power2.easeOut, alpha: 0 });
-	// $contactLoaded = setTimeout(function () {
-	// $body.addClass('contact-loaded');
-	// }, 1600);
-	// }, 600);
 
 	ga('set', { page: window.location.pathname, title: 'Contact' });
 	ga('send', 'pageview');

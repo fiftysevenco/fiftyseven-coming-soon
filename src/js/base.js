@@ -1,5 +1,6 @@
 /* global window, document, location, History, XMLHttpRequest,
-requestAnimationFrame, cancelAnimationFrame, jQuery, $, _, anime, PIXI, ga */
+requestAnimationFrame, cancelAnimationFrame, jQuery, $, _, anime, PIXI, ga,
+isMobile */
 
 var TEXTURES = [
 	{ key: 'texture1', src: 'assets/images/textures/dis1.jpg' },
@@ -1022,20 +1023,20 @@ function swipedetect(el, callback) {
 			swipeVal = touchobj.pageX;
 			$body.addClass('swiping');
 			if (!$body.hasClass('contact')) {
-				$('#white-fill').css(
-					'left',
-					Math.max((startX - swipeVal) / 10, 0) + 'px'
-				);
+				// $('#white-fill').css(
+				// 	'left',
+				// 	Math.max((startX - swipeVal) / 10, 0) + 'px'
+				// );
 				$('#slider').css(
 					'width',
 					80 - Math.max((startX - swipeVal) / 75, 0) + 'px'
 				);
 			}
 			else {
-				$('#white-fill').css(
-					'left',
-					Math.min(0, (startX - swipeVal) / 10) + 'px'
-				);
+				// $('#white-fill').css(
+				// 	'left',
+				// 	Math.min(0, (startX - swipeVal) / 10) + 'px'
+				// );
 				$('#slider').css(
 					'width',
 					80 - Math.min((startX - swipeVal) / 75, 0) * -1 + 'px'

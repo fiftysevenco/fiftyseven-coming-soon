@@ -372,10 +372,10 @@ nav#swipe{
 		left:50%;
 		top:0;
 		@include transform(translateY(-125%) translateX(-50%));
-		@include transition(opacity 1s $ease);
+		// @include transition(opacity 1s $ease);
 		&#back-cta{
 			color: white;
-			@include opacity(0);
+			// @include opacity(0);
 		}
 	}
 	@include breakpoint(mobile){

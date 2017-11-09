@@ -440,14 +440,16 @@ function onResizeEnd() {
 $(document)
 	.ready(function () {
 		swipedetect($document, function (swipedir) {
-			if (swipedir === 'left' && !$body.hasClass('contact')) {
+			var section = $body.attr('data-section');
+
+			if (swipedir === 'left' && section !== 'contact') {
 				History.pushState(
 					{ state: 2 },
 					'About. ' + $title,
 					'/contact'
 				);
 			}
-			else if (swipedir === 'right' && $body.hasClass('contact')) {
+			else if (swipedir === 'right' && section === 'contact') {
 				History.pushState({ state: 1 }, $title, '/');
 			}
 		});

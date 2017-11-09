@@ -179,6 +179,16 @@ a {
 	transition: opacity 0.32s ease;
 }
 
+@include breakpoint(mobile-landscape) {
+	nav#swipe #slider {
+		top: 15px;
+	}
+
+	[data-section="contact"] article {
+		height: 82% !important;
+	}
+}
+
 .mobile {
 	&[data-section="contact"],
 	&[data-section="landing"]  {

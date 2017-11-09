@@ -264,6 +264,14 @@
 			}
 		}
 	}
+
+	@include breakpoint(tablet-landscape) {
+		article {
+			height: 85%;
+			@include transform(translateY(-65%));
+		}
+	}
+
 	@include breakpoint(mobile) {
 		overflow-x: hidden;
 		overflow-y: scroll;

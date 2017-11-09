@@ -49,17 +49,31 @@
 		}
 	}
 
+	@include breakpoint(mobile) {
+		.section {
+			width: 100% !important;
+		}
+	}
+
 	.section--1 {
 		max-width: 35%;
-
-		@include breakpoint(tablet) {
-			max-width: none;
-		}
 
 		ul {
 			li {
 				display: inline-block;
+
+				@include breakpoint(mobile) {
+					display: block;
+
+					.bullet {
+						display: none;
+					}
+				}
 			}
+		}
+
+		@include breakpoint(tablet) {
+			max-width: none;
 		}
 	}
 
@@ -71,6 +85,10 @@
 
 				&:nth-child(3n + 3) {
 					clear: left;
+				}
+
+				@include breakpoint(mobile) {
+					float: none;
 				}
 			}
 		}

@@ -360,10 +360,11 @@ nav#swipe{
 	line-height: 2;
 	display: none;
 	height: 30px;
-	@include opacity(0);
-	@include transform(translateY(100%));
-	@include transition(opacity 1s $ease 1s, transform 1s $ease 1s);
-	span{
+	// @include opacity(0);
+	// @include transform(translateY(100%));
+	// @include transition(opacity 1s $ease 1s, transform 1s $ease 1s);
+
+	span {
 		color: white;
 		@include opacity(0.8);
 		position: absolute;

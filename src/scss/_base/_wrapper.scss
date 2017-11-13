@@ -391,7 +391,7 @@ nav#swipe{
 		width: 80px;
 		@include transform(translateX(-50%)  scale(0.75));
 		@include opacity(1);
-		max-width: 90px;
+		max-width: 80px;
 		@include transition(opacity 0.5s $ease-in-out-expo, max-width 0.5s $ease-in-out-expo, transform 0.5s $ease-in-out-expo);
 		#target{
 			position: absolute;

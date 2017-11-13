@@ -933,13 +933,13 @@ function loadSound(url) {
 				if ($audio && $playing && $body.hasClass('texture-loaded')) {
 					var array = new Uint8Array(analyser.frequencyBinCount);
 					analyser.getByteFrequencyData(array);
-					// anime({
-					// 	targets: $displacement3.scale,
-					// 	duration: 0.15,
-					// 	easing: [0.215, 0.61, 0.355, 1],
-					// 	x: 2560 * array[4] / 150,
-					// 	y: 2560 * array[4] / 150
-					// });
+					anime({
+						targets: $displacement3.scale,
+						duration: 0.15,
+						easing: [0.215, 0.61, 0.355, 1],
+						x: 2560 * array[4] / 150,
+						y: 2560 * array[4] / 150
+					});
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, x: 2560 * array[4] / 150 });
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, xy: 2560 * array[4] / 150 });
 				}
@@ -1031,25 +1031,35 @@ function swipedetect(el, callback) {
 		function (e) {
 			var touchobj = e.changedTouches[0];
 			swipeVal = touchobj.pageX;
+			var diff = startX - swipeVal;
+			var valToLeft = Math.min(Math.max(diff, 0), window.innerWidth / 4);
+			var valToRight = Math.max(Math.min(diff, 0), window.innerWidth / 4 * -1);
+
 			$body.addClass('swiping');
-			if (!$body.hasClass('contact')) {
+			if ($body.attr('data-section') !== 'contact') {
 				$('#white-fill').css(
 					'left',
-					Math.max((startX - swipeVal) / 10, 0) + 'px'
+					valToLeft + 'px'
 				);
 				$('#slider').css(
 					'width',
-					80 - Math.max((startX - swipeVal) / 75, 0) + 'px'
+					Math.max(
+						80 - Math.floor(Math.min(Math.max(diff, 0), window.innerWidth) / (window.innerWidth / 80) * 4),
+						17
+					)
 				);
 			}
 			else {
 				$('#white-fill').css(
 					'left',
-					Math.min(0, (startX - swipeVal) / 10) + 'px'
+					valToRight + 'px'
 				);
 				$('#slider').css(
 					'width',
-					80 - Math.min((startX - swipeVal) / 75, 0) * -1 + 'px'
+					Math.max(
+						80 + Math.floor(Math.max(Math.min(diff, 0), -window.innerWidth) / (window.innerWidth / 80) * 4),
+						17
+					)
 				);
 			}
 			// prevent scrolling when inside DIV

@@ -11,6 +11,10 @@ $output-bourbon-deprecation-warnings: false;
 @import "_parts/contact";
 @import "_parts/line";
 
+.clearfix {
+	@include clearfix;
+}
+
 a {
 	position: relative;
 	padding-bottom: 2px;
@@ -361,6 +365,18 @@ figure {
 #sound-btn,
 #copyright {
 	opacity: 0;
+}
+
+#copyright {
+	@include breakpoint('mobile') {
+		.pull--left {
+			float: left;
+		}
+
+		.pull--right {
+			float: right;
+		}
+	}
 }
 
 .bullet {

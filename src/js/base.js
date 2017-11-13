@@ -166,11 +166,12 @@ History.Adapter.bind(window, 'statechange', function () {
 function globalAnimation(reverse) {
 	reverse = reverse === undefined ? false : reverse;
 	var $globalEls = $('#global').children().get();
+	var opacity = isMobile.any === true ? 0.55 : 1;
 
 	return {
 		targets: reverse ? $globalEls : $globalEls.reverse(),
 		translateY: ['100%', 0],
-		opacity: [0, 1],
+		opacity: [0, opacity],
 		easing: 'easeOutExpo',
 		duration: 1200,
 		offset: '-=1600',
@@ -932,13 +933,13 @@ function loadSound(url) {
 				if ($audio && $playing && $body.hasClass('texture-loaded')) {
 					var array = new Uint8Array(analyser.frequencyBinCount);
 					analyser.getByteFrequencyData(array);
-					anime({
-						targets: $displacement3.scale,
-						duration: 0.15,
-						easing: [0.215, 0.61, 0.355, 1],
-						x: 2560 * array[4] / 150,
-						y: 2560 * array[4] / 150
-					});
+					// anime({
+					// 	targets: $displacement3.scale,
+					// 	duration: 0.15,
+					// 	easing: [0.215, 0.61, 0.355, 1],
+					// 	x: 2560 * array[4] / 150,
+					// 	y: 2560 * array[4] / 150
+					// });
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, x: 2560 * array[4] / 150 });
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, xy: 2560 * array[4] / 150 });
 				}

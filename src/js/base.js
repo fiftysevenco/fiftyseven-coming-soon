@@ -487,18 +487,18 @@ $(document)
 			// }
 		});
 
-		$('#swipe').on('touchend', function () {
-			if ($body.hasClass('contact')) {
-				History.pushState({ state: 1 }, $title, '/');
-			}
-			else {
-				History.pushState(
-					{ state: 2 },
-					'Contact. ' + $title,
-					'/contact'
-				);
-			}
-		});
+		// $('#swipe').on('touchend', function () {
+		// 	if ($body.hasClass('contact')) {
+		// 		History.pushState({ state: 1 }, $title, '/');
+		// 	}
+		// 	else {
+		// 		History.pushState(
+		// 			{ state: 2 },
+		// 			'Contact. ' + $title,
+		// 			'/contact'
+		// 		);
+		// 	}
+		// });
 	})
 	.mousemove(function (e) {
 		// TODO: mousemove
@@ -1033,26 +1033,27 @@ function swipedetect(el, callback) {
 			swipeVal = touchobj.pageX;
 			$body.addClass('swiping');
 			if (!$body.hasClass('contact')) {
-				// $('#white-fill').css(
-				// 	'left',
-				// 	Math.max((startX - swipeVal) / 10, 0) + 'px'
-				// );
+				$('#white-fill').css(
+					'left',
+					Math.max((startX - swipeVal) / 10, 0) + 'px'
+				);
 				$('#slider').css(
 					'width',
 					80 - Math.max((startX - swipeVal) / 75, 0) + 'px'
 				);
 			}
 			else {
-				// $('#white-fill').css(
-				// 	'left',
-				// 	Math.min(0, (startX - swipeVal) / 10) + 'px'
-				// );
+				$('#white-fill').css(
+					'left',
+					Math.min(0, (startX - swipeVal) / 10) + 'px'
+				);
 				$('#slider').css(
 					'width',
 					80 - Math.min((startX - swipeVal) / 75, 0) * -1 + 'px'
 				);
 			}
-			e.preventDefault(); // prevent scrolling when inside DIV
+			// prevent scrolling when inside DIV
+			// e.preventDefault();
 		},
 		false
 	);

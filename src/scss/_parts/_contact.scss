@@ -281,6 +281,7 @@
 			top: 0;
 			padding: 30px;
 			height: 70%;
+			// -webkit-overflow-scrolling: touch;
 
 			@include transform(translateY(0%));
 

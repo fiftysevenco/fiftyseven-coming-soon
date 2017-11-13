@@ -5,6 +5,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require('browser-sync').create();
+var autoprefixer = require('gulp-autoprefixer');
 
 var pump = require('pump');
 var reload = browserSync.reload;
@@ -54,6 +55,7 @@ gulp.task('sass', function () {
 		.pipe(sass({
 			includePaths: require('node-bourbon').includePaths
 		}).on('error', sass.logError))
+		.pipe(autoprefixer())
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(src.css))
 		.pipe(reload({ stream: true }));
@@ -74,8 +76,7 @@ gulp.task('js', function (cb) {
 		sourcemaps.write(),
 		rename('base.min.js'),
 		gulp.dest('./app/assets/js') ],
-		cb
-	);
+	cb);
 });
 
 gulp.task('default', ['serve']);

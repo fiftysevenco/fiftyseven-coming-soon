@@ -337,7 +337,7 @@ function landingAnimation(initial) {
 			delay: function (el, i) {
 				return i * 300;
 			}
-		})
+		});
 
 	if (initial) {
 		landingAnimation
@@ -627,14 +627,14 @@ $(window)
 				// $body.attr('data-section', 'landing');
 				// landingAnimation().play()
 
-				var lAnim = landingAnimation(true).play
+				var lAnim = landingAnimation(true).play;
 				tlReaveal = revealAnimation(lAnim);
 				tlReaveal.add({
 					duration: 0,
 					complete: function () {
 						$(window).on('resize', resize);
 					}
-				})
+				});
 				tlReaveal.play();
 			},
 			RESOURCES);
@@ -932,6 +932,13 @@ function loadSound(url) {
 				if ($audio && $playing && $body.hasClass('texture-loaded')) {
 					var array = new Uint8Array(analyser.frequencyBinCount);
 					analyser.getByteFrequencyData(array);
+					anime({
+						targets: $displacement3.scale,
+						duration: 0.15,
+						easing: [0.215, 0.61, 0.355, 1],
+						x: 2560 * array[4] / 150,
+						y: 2560 * array[4] / 150
+					});
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, x: 2560 * array[4] / 150 });
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, xy: 2560 * array[4] / 150 });
 				}

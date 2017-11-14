@@ -436,3 +436,42 @@ figure {
 		}
 	}
 }
+
+.wrapper--cross-dash {
+	position: absolute;
+	overflow: hidden;
+}
+
+.cross-dash {
+	width: $pad;
+	height: 1px;
+	background: white;
+	opacity: 0;
+	@include transform(scale(0));
+}
+
+#landing {
+	hgroup {
+		.wrapper--cross-dash:first-child {
+			top: -8.334vh;
+			left: 50%;
+			@include transform(rotate(-60deg) translateY(-50%));
+		}
+
+		.wrapper--cross-dash:last-child {
+			bottom: -8.334vh;
+			left: 50%;
+			@include transform(rotate(-60deg) translateY(-50%));
+		}
+	}
+}
+
+#contact {
+	hgroup {
+		.wrapper--cross-dash:last-child {
+			bottom: 10px;
+			left: 0;
+			@include transform(rotate(-60deg) translateY(-50%));
+		}
+	}
+}

@@ -293,6 +293,7 @@ function landingAnimation(initial) {
 	var $$stardust = $('#stardust');
 	var $$stardustLine = $('#stardust-line');
 	var $$line = $('#line');
+	var $$crossDash = $('#landing').find('.cross-dash');
 
 	var landingAnimation = anime
 		.timeline({
@@ -359,6 +360,13 @@ function landingAnimation(initial) {
 			delay: function (el, i) {
 				return i * 300;
 			}
+		})
+		.add({
+			targets: $$crossDash.get(),
+			scaleX: [0, 1],
+			opacity: [0, 1],
+			duration: 1000,
+			easing: [1, 0, 0, 1]
 		});
 
 	if (initial) {
@@ -379,6 +387,7 @@ function landingAnimation(initial) {
 
 function contactAnimation(callback) {
 	var $$imagination = $(Elements.get('contact').value('imagination'));
+	var $$crossDash = $('#contact').find('.cross-dash');
 
 	return anime.timeline({
 		autoplay: false,
@@ -404,6 +413,14 @@ function contactAnimation(callback) {
 		}
 	})
 	.add({
+		targets: $$crossDash.get(),
+		scaleX: [0, 1],
+		opacity: [0, 1],
+		duration: 1000,
+		offset: '-=1400',
+		easing: [1, 0, 0, 1]
+	})
+	.add({
 		targets: $('#contact .section .outer > span').get(),
 		translateY: ['100%', 0],
 		duration: 600,
@@ -426,13 +443,23 @@ function onResizeStart(callback) {
 		// Elements.get('global').value(),
 		// { line: $('#line').get() }
 	);
+	var $$crossDash = $('#' + currentSection).find('.cross-dash');
 
-	anime({
+	anime.timeline()
+	.add({
+		targets: $$crossDash.get(),
+		scaleX: [1, 0],
+		opacity: [1, 0],
+		duration: 1000,
+		easing: [1, 0, 0, 1]
+	})
+	.add({
 		targets: _.values($sectionEls),
 		translateY: [0, '100%'],
 		// opacity: [1, 0],
 		duration: 1000,
 		easing: [1, 0, 0, 1],
+		offset: 0,
 		complete: function () {
 			if (callback instanceof Function) {
 				callback.call();
@@ -450,12 +477,23 @@ function onResizeEnd() {
 		{ line: $('#line').get() }
 	);
 
-	anime({
+	var $$crossDash = $('#' + currentSection).find('.cross-dash');
+
+	anime.timeline()
+	.add({
+		targets: $$crossDash.get(),
+		scaleX: [0, 1],
+		opacity: [0, 1],
+		duration: 1000,
+		easing: [1, 0, 0, 1]
+	})
+	.add({
 		targets: _.values($sectionEls),
 		translateY: 0,
 		opacity: [1],
 		duration: 1000,
-		easing: [1, 0, 0, 1]
+		easing: [1, 0, 0, 1],
+		offset: 0
 	});
 }
 
@@ -685,6 +723,8 @@ function resize() {
 
 function goHome() {
 	var $$imagination = $(Elements.get('contact').value('imagination'));
+	var $$crossDash = $('#contact').find('.cross-dash');
+
 	anime.timeline({
 		complete: function () {
 			$(Elements.get('global').value('contactBtn'))
@@ -714,6 +754,13 @@ function goHome() {
 		delay: function (el, i) {
 			return 50 * i;
 		}
+	})
+	.add({
+		targets: $$crossDash.get(),
+		scaleX: [1, 0],
+		opacity: [1, 0],
+		duration: 1000,
+		easing: [1, 0, 0, 1]
 	})
 	.add({
 		targets: $$imagination.blast().get().reverse(),

@@ -291,6 +291,7 @@ function landingAnimation(initial) {
 
 	var $$cruiseUniverse = $('#cruise-universe');
 	var $$stardust = $('#stardust');
+	var $$stardustLine = $('#stardust-line');
 	var $$line = $('#line');
 
 	var landingAnimation = anime
@@ -340,6 +341,13 @@ function landingAnimation(initial) {
 			delay: function (el, i) {
 				return 20 * i;
 			}
+		})
+		.add({
+			targets: $$stardustLine.get(),
+			width: [0, '100%'],
+			easing: 'easeOutExpo',
+			offset: '-=1100',
+			duration: 600
 		})
 		.add({
 			targets: $projects,

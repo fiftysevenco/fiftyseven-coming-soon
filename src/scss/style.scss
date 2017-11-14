@@ -380,5 +380,36 @@ figure {
 }
 
 .bullet {
-	padding-left: 3px;
+	padding-left: 6px;
+}
+
+#contact-app-design {
+	letter-spacing: 0.315em;
+}
+
+#contact article .content {
+	@include clearfix;
+}
+
+@media (min-width: 767px) {
+	#contact article {
+		top: 0;
+		transform: none;
+		height: calc(100% - 100px) !important;
+		padding: 25vh 9.0549vw 0 9.0549vw;
+		overflow: hidden;
+		overflow-y: auto;
+
+		&::-webkit-scrollbar {
+			width: 4px;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: rgba(black, 0.1);
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: white;
+		}
+	}
 }

@@ -6,11 +6,16 @@ var TEXTURES = [
 	{ key: 'texture1', src: 'assets/images/textures/dis1.jpg' },
 	{ key: 'texture2', src: 'assets/images/textures/dis2.jpg' },
 	{ key: 'background0', src: 'assets/images/photo/1-dis.jpg' },
-	{ key: 'background1', src: 'assets/images/photo/2-dis.jpg' },
-	{ key: 'background2', src: 'assets/images/photo/3-dis.jpg' }
+	{ key: 'background1', src: 'assets/images/photo/4-dis.jpg' },
+	{ key: 'background2', src: 'assets/images/photo/3-dis.jpg' },
+	{ key: 'background3', src: 'assets/images/photo/5-dis.jpg' },
+	{ key: 'background4', src: 'assets/images/photo/6-dis.jpg' },
+	{ key: 'background5', src: 'assets/images/photo/7-dis.jpg' }
 ];
 
 var RESOURCES = null;
+
+var EASE_OUT = [0.000, 0.000, 0.580, 1.000];
 
 var $title = 'FiftySeven® — Design Studio.';
 var $body = $('body');
@@ -166,7 +171,7 @@ History.Adapter.bind(window, 'statechange', function () {
 function globalAnimation(reverse) {
 	reverse = reverse === undefined ? false : reverse;
 	var $globalEls = $('#global').children().get();
-	var opacity = isMobile.any === true ? 0.55 : 1;
+	var opacity = 0.57;
 
 	return {
 		targets: reverse ? $globalEls : $globalEls.reverse(),
@@ -177,6 +182,14 @@ function globalAnimation(reverse) {
 		offset: '-=1600',
 		delay: function (el, i) {
 			return i * 200;
+		},
+		complete: function () {
+			anime({
+				targets: [$globalEls[0], $globalEls[2]],
+				opacity: 1,
+				duration: 800,
+				easing: EASE_OUT
+			});
 		}
 	};
 }
@@ -409,7 +422,7 @@ function onResizeStart(callback) {
 	anime({
 		targets: _.values($sectionEls),
 		translateY: [0, '100%'],
-		opacity: [1, 0],
+		// opacity: [1, 0],
 		duration: 1000,
 		easing: [1, 0, 0, 1],
 		complete: function () {
@@ -425,7 +438,7 @@ function onResizeEnd() {
 	var $sectionEls = _.extendWith(
 		{},
 		Elements.get(currentSection).value(),
-		Elements.get('global').value(),
+		// Elements.get('global').value(),
 		{ line: $('#line').get() }
 	);
 
@@ -801,7 +814,7 @@ function setBackground(callback) {
 	$texture3.filters = [filter.brightness(nBrightness)];
 	$texture4.filters = [filter.brightness(nBrightness)];
 
-	var idx = Math.floor(Math.random() * 3);
+	var idx = Math.floor(Math.random() * 6);
 	var $image = new PIXI.Sprite(RESOURCES['background' + idx].texture);
 	var $container2 = new PIXI.Container();
 
@@ -928,17 +941,20 @@ function loadSound(url) {
 			// var soundLength = buffer.duration;
 			sampleBuffer = buffer;
 			playSound(0);
+			// var noiseVal = 2560;
 
 			$visualizer = setInterval(function () {
 				if ($audio && $playing && $body.hasClass('texture-loaded')) {
 					var array = new Uint8Array(analyser.frequencyBinCount);
 					analyser.getByteFrequencyData(array);
+					var scaleFactor = 640 * array[4] / 150;
+
 					anime({
 						targets: $displacement3.scale,
 						duration: 0.15,
 						easing: [0.215, 0.61, 0.355, 1],
-						x: 2560 * array[4] / 150,
-						y: 2560 * array[4] / 150
+						x: scaleFactor,
+						y: scaleFactor
 					});
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, x: 2560 * array[4] / 150 });
 					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, xy: 2560 * array[4] / 150 });
@@ -1032,15 +1048,15 @@ function swipedetect(el, callback) {
 			var touchobj = e.changedTouches[0];
 			swipeVal = touchobj.pageX;
 			var diff = startX - swipeVal;
-			var valToLeft = Math.min(Math.max(diff, 0), window.innerWidth / 4);
-			var valToRight = Math.max(Math.min(diff, 0), window.innerWidth / 4 * -1);
+			// var valToLeft = Math.min(Math.max(diff, 0), window.innerWidth / 4);
+			// var valToRight = Math.max(Math.min(diff, 0), window.innerWidth / 4 * -1);
 
 			$body.addClass('swiping');
 			if ($body.attr('data-section') !== 'contact') {
-				$('#white-fill').css(
-					'left',
-					valToLeft + 'px'
-				);
+				// $('#white-fill').css(
+				// 	'left',
+				// 	valToLeft + 'px'
+				// );
 				$('#slider').css(
 					'width',
 					Math.max(
@@ -1050,10 +1066,10 @@ function swipedetect(el, callback) {
 				);
 			}
 			else {
-				$('#white-fill').css(
-					'left',
-					valToRight + 'px'
-				);
+				// $('#white-fill').css(
+				// 	'left',
+				// 	valToRight + 'px'
+				// );
 				$('#slider').css(
 					'width',
 					Math.max(
@@ -1063,7 +1079,7 @@ function swipedetect(el, callback) {
 				);
 			}
 			// prevent scrolling when inside DIV
-			// e.preventDefault();
+			e.preventDefault();
 		},
 		false
 	);

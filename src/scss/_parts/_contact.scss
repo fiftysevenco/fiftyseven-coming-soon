@@ -16,6 +16,7 @@
 	.section {
 		float: left;
 		margin-right: 110px;
+		text-transform: uppercase;
 
 		@include breakpoint(tablet) {
 			float: none;
@@ -41,6 +42,10 @@
 					width: 65%;
 				}
 
+				&.section--1 {
+					padding-right: 10%;
+				}
+
 				&.section--2,
 				&.section--4 {
 					width: 35%;
@@ -62,7 +67,7 @@
 			li {
 				display: inline-block;
 
-				@include breakpoint(mobile) {
+				@include breakpoint(tablet) {
 					display: block;
 
 					.bullet {
@@ -267,8 +272,8 @@
 
 	@include breakpoint(tablet-landscape) {
 		article {
-			height: 85%;
-			@include transform(translateY(-65%));
+			height: 100%;
+			@include transform(translateY(-50%));
 		}
 	}
 
@@ -355,6 +360,44 @@
 				}
 			}
 		}
+	}
+}
+
+#contact .section--1 ul li:last-child .bullet {
+	display: none;
+}
+
+@media (min-width: 1920px) {
+	#contact .section--1 {
+		ul {
+			li {
+				&:last-child,
+				&:nth-child(4) {
+					.bullet {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+}
+
+@media (min-width: 1490px) and (max-width: 1919px) {
+	#contact .section--1 {
+		ul li:nth-child(5) .bullet { display: none; }
+	}
+}
+
+@media (min-width: 1120px) and (max-width: 1489px) {
+	#contact .section--1 {
+		ul li:nth-child(4) .bullet { display: none; }
+	}
+}
+
+@media (min-width: 1024px) and (max-width: 1119px) {
+	#contact .section--1 {
+		ul li:nth-child(3) .bullet { display: none; }
+		ul li:nth-child(6) .bullet { display: none; }
 	}
 }
 

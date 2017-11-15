@@ -1116,7 +1116,7 @@ function swipedetect(el, callback) {
 					'width',
 					Math.max(
 						80 - Math.floor(Math.min(Math.max(diff, 0), window.innerWidth) / (window.innerWidth / 80) * 4),
-						17
+						0
 					)
 				);
 			}
@@ -1129,7 +1129,7 @@ function swipedetect(el, callback) {
 					'width',
 					Math.max(
 						80 + Math.floor(Math.max(Math.min(diff, 0), -window.innerWidth) / (window.innerWidth / 80) * 4),
-						17
+						0
 					)
 				);
 			}

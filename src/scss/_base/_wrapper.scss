@@ -402,7 +402,7 @@ nav#swipe{
 			width: 30px;
 			border: solid white 1px;
 			@include border-radius(100%);
-			@include transition(transform 1s $ease-in-out-expo, left 1s $ease-in-out-expo, border-color 1s $ease-in-out-expo);
+			// @include transition(transform 1s $ease-in-out-expo, left 1s $ease-in-out-expo, border-color 1s $ease-in-out-expo);
 			&:after{
 				content:'';
 				width: 7px;
@@ -413,21 +413,7 @@ nav#swipe{
 				background: white;
 				@include border-radius(100%);
 				@include transform(translateX(-50%) translateY(-50%));
-				@include transition(background 1s $ease-in-out-expo);
-			}
-			&:before{
-				content:'';
-				width: 100%;
-				height: 100%;
-				position: absolute;
-				top:50%;
-				left:50%;
-				border: 1px solid white;
-				//@include opacity(0);
-				opacity: 0;
-				@include border-radius(100%);
-				@include transform(translateY(-50%) translateX(-50%));
-				@include animation(pulsate 2s $ease infinite);
+				// @include transition(background 1s $ease-in-out-expo);
 			}
 		}
 		&:after{
@@ -443,7 +429,7 @@ nav#swipe{
 			overflow: hidden;
 			@include transform(translateY(-50%));
 			@include opacity(0);
-			@include transition(max-width 0.2s $ease-in-out-expo, left 1s $ease-in-out-expo, transform 1s $ease-in-out-expo, opacity 0.5s $ease-in-out-expo);
+			// @include transition(max-width 0.2s $ease-in-out-expo, left 1s $ease-in-out-expo, transform 1s $ease-in-out-expo, opacity 0.5s $ease-in-out-expo);
 		}
 		&:before{
 			content:'';
@@ -457,21 +443,35 @@ nav#swipe{
 		    @include background-size(100% auto);
 			overflow: hidden;
 			@include transform(translateY(-50%));
-			@include transition(max-width 0.2s $ease-in-out-expo, left 1s $ease-in-out-expo, transform 1s $ease-in-out-expo, opacity 0.5s $ease-in-out-expo);
+			// @include transition(max-width 0.2s $ease-in-out-expo, left 1s $ease-in-out-expo, transform 1s $ease-in-out-expo, opacity 0.5s $ease-in-out-expo);
 		}
 		#dot{
 			position: absolute;
 			left:87.5%;
 			top:50%;
 			height: 50%;
-			width: 11px;
-			height: 11px;
+			width: 12px;
+			height: 12px;
 			z-index: 100;
 			background: white;
 			//margin-left: -20px;
-			@include border-radius(100%);
+			border-radius: 50%;
 			@include transform(translateX(-50%) translateY(-50%));
-			@include transition(transform 1s $ease-in-out-expo, left 1s $ease-in-out-expo, background 1s $ease-in-out-expo);
+			// @include transition(transform 1s $ease-in-out-expo, left 1s $ease-in-out-expo, background 1s $ease-in-out-expo);
+
+			&:before{
+				content:'';
+				width: 150%;
+				height: 150%;
+				position: absolute;
+				top:50%;
+				left:50%;
+				border: 1px solid white;
+				opacity: 0;
+				border-radius: 50%;
+				@include transform(translateY(-50%) translateX(-50%));
+				@include animation(pulsate 2s $ease infinite);
+			}
 		}
 	}
 	@include breakpoint(mobile-landscape){

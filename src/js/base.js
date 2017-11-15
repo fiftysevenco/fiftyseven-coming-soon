@@ -2,6 +2,30 @@
 requestAnimationFrame, cancelAnimationFrame, jQuery, $, _, anime, PIXI, ga,
 isMobile */
 
+;(function () {
+	function intersectRect(rectA, rectB) {
+		return !(
+			rectB.left >= rectA.right ||
+			rectB.right <= rectA.left ||
+			rectB.top >= rectA.bottom ||
+			rectB.bottom <= rectA.top
+		);
+	}
+
+	/* global define, window */
+	if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+		module.exports = intersectRect;
+	}
+	else if (typeof define === 'function' && define.amd) {
+		define([], function () {
+			return intersectRect;
+		});
+	}
+	else {
+		window.intersectRect = intersectRect;
+	}
+})();
+
 var TEXTURES = [
 	{ key: 'texture1', src: 'assets/images/textures/dis1.jpg' },
 	{ key: 'texture2', src: 'assets/images/textures/dis2.jpg' },
@@ -501,15 +525,20 @@ $(document)
 	.ready(function () {
 		swipedetect($document, function (swipedir) {
 			var section = $body.attr('data-section');
+			var $$target = $('#target');
+			var $$dot = $('#dot');
+			var intersect = window.intersectRect(
+				$$target.get(0).getBoundingClientRect(),
+				$$dot.get(0).getBoundingClientRect());
 
-			if (swipedir === 'left' && section !== 'contact') {
+			if (intersect && swipedir === 'right' && section !== 'contact') {
 				History.pushState(
 					{ state: 2 },
 					'About. ' + $title,
 					'/contact'
 				);
 			}
-			else if (swipedir === 'right' && section === 'contact') {
+			else if (intersect && swipedir === 'left' && section === 'contact') {
 				History.pushState({ state: 1 }, $title, '/');
 			}
 		});
@@ -1076,9 +1105,9 @@ function swipedetect(el, callback) {
 		startY,
 		distX,
 		distY,
-		threshold = 150, // required min distance traveled to be considered swipe
+		threshold = 60, // required min distance traveled to be considered swipe
 		restraint = 100, // maximum distance allowed at the same time in perpendicular direction
-		allowedTime = 2000, // maximum time allowed to travel that distance
+		allowedTime = 20000, // maximum time allowed to travel that distance
 		elapsedTime,
 		startTime,
 		handleswipe = callback || function (swipedir) {};
@@ -1107,7 +1136,7 @@ function swipedetect(el, callback) {
 			// var valToRight = Math.max(Math.min(diff, 0), window.innerWidth / 4 * -1);
 
 			$body.addClass('swiping');
-			if ($body.attr('data-section') !== 'contact') {
+			if ($body.attr('data-section') === 'contact') {
 				// $('#white-fill').css(
 				// 	'left',
 				// 	valToLeft + 'px'

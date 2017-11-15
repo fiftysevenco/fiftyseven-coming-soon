@@ -475,3 +475,20 @@ figure {
 		}
 	}
 }
+
+[data-section="contact"] {
+	nav#swipe #slider {
+		&:before {
+			left: 20px;
+		}
+
+		#target {
+			right: 0;
+			left: auto;
+		}
+
+		#dot {
+			left: 12.5%;
+		}
+	}
+}

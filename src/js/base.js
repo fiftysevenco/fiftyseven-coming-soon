@@ -28,15 +28,20 @@ isMobile */
 
 var TEXTURES = [
 	{ key: 'texture1', src: 'assets/images/textures/dis1.jpg' },
-	{ key: 'texture2', src: 'assets/images/textures/dis2.jpg' },
-	{ key: 'background0', src: 'assets/images/photo/1-dis.jpg' },
-	{ key: 'background1', src: 'assets/images/photo/4-dis.jpg' },
-	{ key: 'background2', src: 'assets/images/photo/3-dis.jpg' },
-	{ key: 'background3', src: 'assets/images/photo/5-dis.jpg' },
-	{ key: 'background4', src: 'assets/images/photo/6-dis.jpg' },
-	{ key: 'background5', src: 'assets/images/photo/7-dis.jpg' }
+	{ key: 'texture2', src: 'assets/images/textures/dis2.jpg' }
 ];
 
+var BACKGROUNDS = [
+	{ key: 'background', src: 'assets/images/photo/1-dis.jpg' },
+	{ key: 'background', src: 'assets/images/photo/4-dis.jpg' },
+	{ key: 'background', src: 'assets/images/photo/3-dis.jpg' },
+	{ key: 'background', src: 'assets/images/photo/5-dis.jpg' },
+	{ key: 'background', src: 'assets/images/photo/6-dis.jpg' },
+	{ key: 'background', src: 'assets/images/photo/7-dis.jpg' }
+];
+
+var BACKGROUND = BACKGROUNDS[Math.floor(Math.random() * 6)];
+TEXTURES.push(BACKGROUND);
 var RESOURCES = null;
 
 var EASE_OUT = [0.000, 0.000, 0.580, 1.000];
@@ -898,8 +903,9 @@ function setBackground(callback) {
 	$texture3.filters = [filter.brightness(nBrightness)];
 	$texture4.filters = [filter.brightness(nBrightness)];
 
-	var idx = Math.floor(Math.random() * 6);
-	var $image = new PIXI.Sprite(RESOURCES['background' + idx].texture);
+	// var idx = Math.floor(Math.random() * 6);
+	// var $image = new PIXI.Sprite(RESOURCES['background' + idx].texture);
+	var $image = new PIXI.Sprite(RESOURCES['background'].texture);
 	var $container2 = new PIXI.Container();
 
 	$displacement3 = new PIXI.filters.DisplacementFilter($texture3);

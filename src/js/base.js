@@ -570,7 +570,7 @@ $(document)
 				History.pushState({ state: 1 }, $title, '/');
 			}
 			else {
-				History.pushState({ state: 2 }, 'Contact. ' + $title, '/contact');
+				History.pushState({ state: 2 }, 'About. ' + $title, '/contact');
 			}
 			// if ($body.hasClass('contact')) {
 			// 	History.pushState({ state: 1 }, $title, '/');
@@ -703,7 +703,7 @@ $(window)
 		var action = segments[3];
 
 		if (action === 'contact') {
-			$(document).prop('title', 'Contact. ' + $title);
+			$(document).prop('title', 'About. ' + $title);
 		}
 		else {
 			$(document).prop('title', $title);
@@ -1144,6 +1144,21 @@ function swipedetect(el, callback) {
 			// var valToLeft = Math.min(Math.max(diff, 0), window.innerWidth / 4);
 			// var valToRight = Math.max(Math.min(diff, 0), window.innerWidth / 4 * -1);
 
+			var node = e.srcElement;
+			var canScroll = false;
+			while (node !== null && node.getAttribute !== undefined) {
+				if (node.getAttribute('data-scrollable') !== null) {
+					canScroll = true;
+					break;
+				}
+				node = node.parentNode;
+			}
+			if (canScroll) {
+				return;
+			}
+
+			e.preventDefault();
+
 			$body.addClass('swiping');
 			if ($body.attr('data-section') === 'contact') {
 				// $('#white-fill').css(
@@ -1154,7 +1169,7 @@ function swipedetect(el, callback) {
 					'width',
 					Math.max(
 						80 - Math.floor(Math.min(Math.max(diff, 0), window.innerWidth) / (window.innerWidth / 80) * 4),
-						0
+						18
 					)
 				);
 			}
@@ -1167,22 +1182,9 @@ function swipedetect(el, callback) {
 					'width',
 					Math.max(
 						80 + Math.floor(Math.max(Math.min(diff, 0), -window.innerWidth) / (window.innerWidth / 80) * 4),
-						0
+						18
 					)
 				);
-			}
-			// prevent scrolling when inside DIV
-			var node = e.srcElement;
-			var canScroll = false;
-			while (node !== null && node.getAttribute !== undefined) {
-				if (node.getAttribute('data-scrollable') !== null) {
-					canScroll = true;
-					break;
-				}
-				node = node.parentNode;
-			}
-			if (!canScroll) {
-				e.preventDefault();
 			}
 		},
 		false

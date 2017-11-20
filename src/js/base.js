@@ -288,7 +288,10 @@ function revealAnimation(callback) {
 			targets: $fsMonogramEls,
 			translateX: [0, 10],
 			translateZ: 0,
-			opacity: 0,
+			opacity: {
+				value: 0,
+				duration: 900
+			},
 			easing: 'easeOutExpo',
 			duration: 1200,
 			offset: '-=1200',
@@ -1169,7 +1172,18 @@ function swipedetect(el, callback) {
 				);
 			}
 			// prevent scrolling when inside DIV
-			e.preventDefault();
+			var node = e.srcElement;
+			var canScroll = false;
+			while (node !== null && node.getAttribute !== undefined) {
+				if (node.getAttribute('data-scrollable') !== null) {
+					canScroll = true;
+					break;
+				}
+				node = node.parentNode;
+			}
+			if (!canScroll) {
+				e.preventDefault();
+			}
 		},
 		false
 	);

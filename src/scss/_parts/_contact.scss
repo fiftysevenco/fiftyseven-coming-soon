@@ -295,6 +295,14 @@
 					font-size: 24px;
 					letter-spacing: 4px;
 					white-space: nowrap;
+
+					@include breakpoint('mobile') {
+						font-size: 6.4vw;
+					}
+
+					@include breakpoint('small-mobile') {
+						font-size: 18px;
+					}
 				}
 				&:before {
 					width: $pad*1.5;

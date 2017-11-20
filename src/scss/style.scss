@@ -301,9 +301,10 @@ figure {
 
 #intro {
 	@include container-center;
+	width: 185px;
 
 	@include breakpoint(tablet) {
-		width: 50%;
+		width: 25%;
 	}
 }
 
@@ -314,7 +315,7 @@ figure {
 	max-width: 330px;
 	// width: 330px;
 	width: 100%;
-	margin-bottom: 50px	;
+	margin-bottom: 17px	;
     overflow: visible;
 }
 
@@ -326,9 +327,19 @@ figure {
 	line-height: 2;
 	// background: linear-gradient(120deg, rgba(227, 227, 227, 0.2) 0%, rgba(227, 227, 227, 0.3) 100%) no-repeat 0 45% /99% 0.75em;
 
+	.letter {
+		&:last-of-type {
+			letter-spacing: 0;
+		}
+	}
+
 	@include breakpoint(tablet) {
 		font-size: 12px;
 		letter-spacing: 0.32em;
+	}
+
+	@include breakpoint('small-mobile') {
+		font-size: 11px;
 	}
 }
 
@@ -352,19 +363,26 @@ figure {
 	}
 
 	&--stardust {
+		$offset: 0.35em;
+
 		display: inline-block;
 		margin-top: 10px;
 		margin-bottom: 10px;
-		padding-right: 0.65em;
-		padding-left: 0.65em;
+		padding-right: $offset;
+		padding-left: $offset;
 
 		&-line {
 			position: absolute;
 			top: 50%;
-			left: -0.65em;
+			// left: #{$offset / 2};
+			left: -0.08em;
 			width: 100%;
 			height: 10px;
 			overflow: hidden;
+
+			@include breakpoint('mobile') {
+				height: 7px;
+			}
 		}
 
 		@include breakpoint(mobile) {
@@ -464,6 +482,16 @@ figure {
 			@include transform(rotate(-60deg) translateY(-50%));
 		}
 	}
+
+	@include breakpoint(mobile-portrait) {
+		top: -12vh;
+	}
+}
+
+[data-section="landing"] {
+	#swipe {
+		// bottom: 14vh;
+	}
 }
 
 #contact {
@@ -472,6 +500,10 @@ figure {
 			bottom: 10px;
 			left: 0;
 			@include transform(rotate(-60deg) translateY(-50%));
+
+			@include breakpoint('mobile') {
+				bottom: -6px;
+			}
 		}
 	}
 }

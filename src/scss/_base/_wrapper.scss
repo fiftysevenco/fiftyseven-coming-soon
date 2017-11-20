@@ -450,8 +450,8 @@ nav#swipe{
 			left:87.5%;
 			top:50%;
 			height: 50%;
-			width: 12px;
-			height: 12px;
+			width: 8px;
+			height: 8px;
 			z-index: 100;
 			background: white;
 			//margin-left: -20px;
@@ -459,18 +459,37 @@ nav#swipe{
 			@include transform(translateX(-50%) translateY(-50%));
 			// @include transition(transform 1s $ease-in-out-expo, left 1s $ease-in-out-expo, background 1s $ease-in-out-expo);
 
-			&:before{
-				content:'';
-				width: 150%;
-				height: 150%;
+			$blast-1: 250%;
+			$blast-2: 300%;
+
+			&:after {
+				box-sizing: border-box;
+				content: '';
+				width: $blast-1;
+				height: $blast-1;
 				position: absolute;
-				top:50%;
-				left:50%;
+				top: 50%;
+				left: 50%;
 				border: 1px solid white;
-				opacity: 0;
+				// opacity: 0;
 				border-radius: 50%;
 				@include transform(translateY(-50%) translateX(-50%));
 				@include animation(pulsate 2s $ease infinite);
+			}
+
+			// &:after {
+			// 	width: $blast-2;
+			// 	height: $blast-2;
+			// 	@include animation(pulsate 2s $ease 0.5s infinite);
+			// }
+
+			@at-root {
+				.swiping & {
+					&:before,
+					&:after {
+						animation: none;
+					}
+				}
 			}
 		}
 	}

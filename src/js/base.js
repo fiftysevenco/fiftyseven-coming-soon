@@ -222,85 +222,80 @@ function globalAnimation(reverse) {
 	};
 }
 
-var tlReaveal;
-function revealAnimation(callback) {
-	var $fsMonogram = document.getElementById('fs-monogram');
-	var $fsMonogramEls = Array.prototype.slice.call(
-		$fsMonogram.querySelectorAll('path')
-	);
-	var $loader = document.getElementById('loader');
-	var $loaderInner = $loader.querySelector('.loader-inner');
+// var tlReaveal;
+// function revealAnimation(callback) {
+// 	var $fsMonogram = document.getElementById('fs-monogram');
+// 	var $fsMonogramEls = Array.prototype.slice.call(
+// 		$fsMonogram.querySelectorAll('path')
+// 	);
+// 	// var $loader = document.getElementById('loader');
+// 	// var $loaderInner = $loader.querySelector('.loader-inner');
 
-	var timeline = anime
-		.timeline({
-			loop: false,
-			autoplay: false
-			// complete: function () {
-			// 	if (callback instanceof Function) {
-			// 		callback.call();
-			// 	}
-			// }
-		})
-		.add({
-			targets: $fsMonogramEls,
-			translateX: [-10, 0],
-			translateZ: 0,
-			opacity: [0, 1],
-			easing: 'easeOutExpo',
-			duration: 1200,
-			offset: 1500,
-			begin: function () {
-				$body.attr('data-section', 'intro');
-			},
-			delay: function (el, i) {
-				return 100 * i;
-			}
-		})
-		.add({
-			targets: $loader,
-			opacity: [0, 1],
-			easing: 'easeOutExpo',
-			duration: 1200,
-			offset: 0
-		})
-		.add({
-			targets: $loaderInner,
-			width: '100%',
-			easing: 'easeOutExpo',
-			duration: 1000,
-			offset: '-=1200'
-		})
-		.add({ duration: 0, delay: 100 })
-		.add({
-			targets: $loader,
-			opacity: 0,
-			easing: 'easeOutExpo',
-			duration: 1200,
-			complete: function () {
-				$body.attr('data-section', 'landing');
-				if (callback instanceof Function) {
-					callback.call();
-				}
-			}
-		})
-		.add({
-			targets: $fsMonogramEls,
-			translateX: [0, 10],
-			translateZ: 0,
-			opacity: {
-				value: 0,
-				duration: 900
-			},
-			easing: 'easeOutExpo',
-			duration: 1200,
-			offset: '-=1200',
-			delay: function (el, i) {
-				return 100 * i;
-			}
-		});
+// 	var timeline = anime
+// 		.timeline({
+// 			loop: false,
+// 			autoplay: false
+// 		})
+// 		.add({
+// 			targets: $fsMonogramEls,
+// 			translateX: [-10, 0],
+// 			translateZ: 0,
+// 			opacity: [0, 1],
+// 			easing: 'easeOutExpo',
+// 			duration: 1200,
+// 			offset: 1500,
+// 			begin: function () {
+// 				$body.attr('data-section', 'intro');
+// 			},
+// 			delay: function (el, i) {
+// 				return 100 * i;
+// 			}
+// 		})
+// 		// .add({
+// 		// 	targets: $loader,
+// 		// 	opacity: [0, 1],
+// 		// 	easing: 'easeOutExpo',
+// 		// 	duration: 1200,
+// 		// 	offset: 0
+// 		// })
+// 		// .add({
+// 		// 	targets: $loaderInner,
+// 		// 	width: '100%',
+// 		// 	easing: 'easeOutExpo',
+// 		// 	duration: 1000,
+// 		// 	offset: '-=1200'
+// 		// })
+// 		// .add({ duration: 0, delay: 100 })
+// 		// .add({
+// 		// 	targets: $loader,
+// 		// 	opacity: 0,
+// 		// 	easing: 'easeOutExpo',
+// 		// 	duration: 1200,
+// 		// 	complete: function () {
+// 		// 		// $body.attr('data-section', 'landing');
+// 		// 		if (callback instanceof Function) {
+// 		// 			callback.call();
+// 		// 		}
+// 		// 	}
+// 		// })
+// 		.add({
+// 			targets: $fsMonogramEls,
+// 			translateX: [0, 10],
+// 			translateZ: 0,
+// 			opacity: {
+// 				value: 0,
+// 				duration: 900
+// 			},
+// 			easing: 'easeOutExpo',
+// 			duration: 1200,
+// 			// offset: '-=1200',
+// 			delay: function (el, i) {
+// 				return 100 * i;
+// 			}
+// 		});
 
-	return timeline;
-}
+// 	return timeline;
+// }
 
 function landingAnimation(initial) {
 	initial = initial === undefined ? false : initial;
@@ -688,6 +683,11 @@ $(document)
 
 $(window)
 	.on('load', function () {
+		var $fsMonogram = document.getElementById('fs-monogram');
+		var $fsMonogramEls = Array.prototype.slice.call(
+			$fsMonogram.querySelectorAll('path')
+		);
+
 		$winW = $(window).width();
 		$winH = $(window).height();
 		$body.addClass('loaded');
@@ -708,10 +708,38 @@ $(window)
 			$(document).prop('title', $title);
 		}
 
+		$body.attr('data-section', 'intro');
+
+		anime({
+			targets: $fsMonogramEls,
+			translateX: [-10, 0],
+			translateZ: 0,
+			opacity: [0, 1],
+			easing: 'easeOutExpo',
+			duration: 1200,
+			offset: 0,
+			delay: function (el, i) {
+				return 100 * i;
+			}
+		});
+
 		// Preload textures
 		var loader = PIXI.loader;
+
 		TEXTURES.forEach(function (value) {
 			loader.add(value.key, value.src);
+		});
+
+		var $loader = document.getElementById('loader');
+		var $loaderInner = $loader.querySelector('.loader-inner');
+		var loaded = 0;
+
+		loader.use(function (resource, next) {
+			loaded += 1;
+			var pc = loaded / TEXTURES.length * 100;
+			$loaderInner.style.width = pc + '%';
+
+			next(resource);
 		});
 
 		loader.load(function (loader, resources) {
@@ -719,19 +747,40 @@ $(window)
 
 			setBackground(function () {
 				$body.addClass('texture-loaded');
+
+				anime.timeline({
+					complete: function () {
+						$body.attr('data-section', 'landing');
+						landingAnimation(true).play();
+					}
+				})
+				.add({
+					targets: $loader,
+					opacity: 0,
+					easing: 'easeOutExpo',
+					duration: 1200
+				})
+				.add({
+					targets: $fsMonogramEls,
+					translateX: [0, 10],
+					translateZ: 0,
+					opacity: {
+						value: 0,
+						duration: 900
+					},
+					easing: 'easeOutExpo',
+					duration: 1200,
+					offset: 600,
+					delay: function (el, i) {
+						return 100 * i;
+					}
+				});
+
 				// TODO: restore reveal animation
 				// $body.attr('data-section', 'landing');
 				// landingAnimation().play()
 
-				var lAnim = landingAnimation(true).play;
-				tlReaveal = revealAnimation(lAnim);
-				tlReaveal.add({
-					duration: 0,
-					complete: function () {
-						$(window).on('resize', resize);
-					}
-				});
-				tlReaveal.play();
+				// var lAnim = landingAnimation(true).play;
 			},
 			RESOURCES);
 		});

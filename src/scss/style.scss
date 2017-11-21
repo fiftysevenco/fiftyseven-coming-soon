@@ -405,8 +405,26 @@ figure {
 #contact-btn,
 #sound-btn,
 #copyright {
-	opacity: 0;
-	transition: 0.42s ease-in-out;
+	transform: translateY(100%);
+}
+
+#contact-btn,
+#sound-btn {
+	opacity: 1;
+}
+
+#copyright {
+	@at-root {
+		[data-section="landing"] & {
+			opacity: 0.30;
+		}
+	}
+
+	@at-root {
+		[data-section="contact"] & {
+			opacity: 0.23;
+		}
+	}
 }
 
 #copyright {
@@ -489,12 +507,6 @@ figure {
 	}
 }
 
-[data-section="landing"] {
-	#swipe {
-		// bottom: 14vh;
-	}
-}
-
 #contact {
 	hgroup {
 		.wrapper--cross-dash:last-child {
@@ -523,9 +535,5 @@ figure {
 		#dot {
 			left: 17.5%;
 		}
-	}
-
-	#copyright {
-		opacity: 0.23 !important;
 	}
 }

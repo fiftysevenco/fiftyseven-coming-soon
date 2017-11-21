@@ -200,12 +200,11 @@ History.Adapter.bind(window, 'statechange', function () {
 function globalAnimation(reverse) {
 	reverse = reverse === undefined ? false : reverse;
 	var $globalEls = $('#global').children().get();
-	var opacity = 0.30;
+	// var opacity = 0.30;
 
 	return {
 		targets: reverse ? $globalEls : $globalEls.reverse(),
 		translateY: ['100%', 0],
-		opacity: [0, opacity],
 		easing: 'easeOutExpo',
 		duration: 1200,
 		offset: '-=1600',
@@ -213,12 +212,12 @@ function globalAnimation(reverse) {
 			return i * 200;
 		},
 		complete: function () {
-			anime({
-				targets: [$globalEls[0], $globalEls[2]],
-				opacity: 1,
-				duration: 800,
-				easing: EASE_OUT
-			});
+			// anime({
+			// 	targets: [$globalEls[0], $globalEls[2]],
+			// 	opacity: 1,
+			// 	duration: 800,
+			// 	easing: EASE_OUT
+			// });
 		}
 	};
 }

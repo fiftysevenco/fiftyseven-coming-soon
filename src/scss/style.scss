@@ -301,7 +301,7 @@ figure {
 
 #intro {
 	@include container-center;
-	width: 185px;
+	width: 135px;
 
 	@include breakpoint(tablet) {
 		width: 25%;
@@ -386,7 +386,7 @@ figure {
 		}
 
 		@include breakpoint(mobile) {
-			margin-top: 30px;
+			margin-top: 10px;
 		}
 	}
 }
@@ -406,6 +406,7 @@ figure {
 #sound-btn,
 #copyright {
 	opacity: 0;
+	transition: 0.42s ease-in-out;
 }
 
 #copyright {
@@ -522,5 +523,9 @@ figure {
 		#dot {
 			left: 17.5%;
 		}
+	}
+
+	#copyright {
+		opacity: 0.23 !important;
 	}
 }

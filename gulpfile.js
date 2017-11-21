@@ -61,6 +61,17 @@ gulp.task('sass', function () {
 		.pipe(reload({ stream: true }));
 });
 
+gulp.task('sass:prod', function () {
+	return gulp
+		.src(src.scss)
+		.pipe(sass({
+			includePaths: require('node-bourbon').includePaths
+		}).on('error', sass.logError))
+		.pipe(autoprefixer())
+		.pipe(gulp.dest(src.css))
+		.pipe(reload({ stream: true }));
+});
+
 gulp.task('js:vendor', function () {
 	return gulp.src(vendor_libs)
 		.pipe(concat('libs.min.js', { newLine: ';' }))

@@ -200,7 +200,7 @@ History.Adapter.bind(window, 'statechange', function () {
 function globalAnimation(reverse) {
 	reverse = reverse === undefined ? false : reverse;
 	var $globalEls = $('#global').children().get();
-	var opacity = 0.57;
+	var opacity = 0.30;
 
 	return {
 		targets: reverse ? $globalEls : $globalEls.reverse(),
@@ -543,7 +543,7 @@ $(document)
 				History.pushState(
 					{ state: 2 },
 					'About. ' + $title,
-					'/contact'
+					'/about'
 				);
 			}
 			else if (intersect && swipedir === 'left' && section === 'contact') {
@@ -570,7 +570,7 @@ $(document)
 				History.pushState({ state: 1 }, $title, '/');
 			}
 			else {
-				History.pushState({ state: 2 }, 'About. ' + $title, '/contact');
+				History.pushState({ state: 2 }, 'About. ' + $title, '/about');
 			}
 			// if ($body.hasClass('contact')) {
 			// 	History.pushState({ state: 1 }, $title, '/');

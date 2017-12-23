@@ -403,7 +403,7 @@ function landingAnimation(initial) {
 			opacity: [0, 1],
 			easing: 'easeOutExpo',
 			duration: 1200,
-			offset: '-=1600'
+			offset: '-=2100'
 		})
 		.add(globalAnimation());
 	}
@@ -746,23 +746,23 @@ $(window)
 			RESOURCES = resources;
 
 			setBackground(function () {
-				$body.addClass('texture-loaded');
+				var onComplete = function () {
+					$body.attr('data-section', 'landing');
+					landingAnimation(true).play();
+				};
 
-				anime.timeline({
-					complete: function () {
-						$body.attr('data-section', 'landing');
-						landingAnimation(true).play();
-					}
-				})
+				$body.addClass('texture-loaded');
+				anime.timeline()
 				.add({
 					targets: $loader,
 					opacity: 0,
 					easing: 'easeOutExpo',
-					duration: 1200
+					duration: 1200,
+					complete: onComplete
 				})
 				.add({
 					targets: $fsMonogramEls,
-					translateX: [0, 10],
+					translateX: [0, 20],
 					translateZ: 0,
 					opacity: {
 						value: 0,
@@ -770,9 +770,9 @@ $(window)
 					},
 					easing: 'easeOutExpo',
 					duration: 1200,
-					offset: 600,
+					offset: 800,
 					delay: function (el, i) {
-						return 100 * i;
+						return 80 * i;
 					}
 				});
 

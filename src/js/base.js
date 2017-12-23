@@ -40,7 +40,7 @@ var BACKGROUNDS = [
 	// { key: 'background', src: 'assets/images/photo/7-dis.jpg' }
 ];
 
-var BACKGROUND = BACKGROUNDS[Math.floor(Math.random() * 6)];
+var BACKGROUND = BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
 TEXTURES.push(BACKGROUND);
 var RESOURCES = null;
 

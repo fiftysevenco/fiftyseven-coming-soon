@@ -525,6 +525,8 @@ function onResizeEnd() {
 
 $(document)
 	.ready(function () {
+		$('#year').text(new Date().getFullYear());
+
 		swipedetect($document, function (swipedir) {
 			var section = $body.attr('data-section');
 			var $$target = $('#target');

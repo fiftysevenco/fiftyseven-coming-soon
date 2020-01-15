@@ -32,10 +32,10 @@ var TEXTURES = [
 ];
 
 var BACKGROUNDS = [
-	{ key: 'background', src: 'assets/images/photo/1-dis.jpg' },
-	// { key: 'background', src: 'assets/images/photo/4-dis.jpg' },
-	{ key: 'background', src: 'assets/images/photo/3-dis.jpg' },
-	{ key: 'background', src: 'assets/images/photo/5-dis.jpg' },
+	// { key: 'background', src: 'assets/images/photo/1-dis.jpg' }
+	// { key: 'background', src: 'assets/images/photo/4-dis.jpg' }
+	// { key: 'background', src: 'assets/images/photo/3-dis.jpg' }
+	// { key: 'background', src: 'assets/images/photo/5-dis.jpg' }
 	{ key: 'background', src: 'assets/images/photo/6-dis.jpg' }
 	// { key: 'background', src: 'assets/images/photo/7-dis.jpg' }
 ];

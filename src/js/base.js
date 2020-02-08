@@ -324,7 +324,10 @@ function landingAnimation(initial) {
 	var landingAnimation = anime
 		.timeline({
 			loop: false,
-			autoplay: false
+			autoplay: false,
+			begin: function () {
+				$('#projects').removeClass('animation--complete');
+			}
 		})
 		.add({
 			targets: $fsLogoEls.reverse(),
@@ -407,6 +410,10 @@ function landingAnimation(initial) {
 		})
 		.add(globalAnimation());
 	}
+
+	landingAnimation.finished.then(function () {
+		$('#projects').addClass('animation--complete');
+	});
 
 	return landingAnimation;
 }
@@ -1086,23 +1093,40 @@ function loadSound(url) {
 			playSound(0);
 			// var noiseVal = 2560;
 
-			$visualizer = setInterval(function () {
-				if ($audio && $playing && $body.hasClass('texture-loaded')) {
-					var array = new Uint8Array(analyser.frequencyBinCount);
-					analyser.getByteFrequencyData(array);
-					var scaleFactor = 640 * array[4] / 150;
+			// $visualizer = setInterval(function () {
+			// 	if ($audio && $playing && $body.hasClass('texture-loaded')) {
+			// 		var array = new Uint8Array(analyser.frequencyBinCount);
+			// 		analyser.getByteFrequencyData(array);
+			// 		// var scaleFactor = 640 * array[4] / 150;
+			// 		var scaleFactor = array[4] * 2;
 
-					anime({
-						targets: $displacement3.scale,
-						duration: 0.15,
-						easing: [0.215, 0.61, 0.355, 1],
-						x: scaleFactor,
-						y: scaleFactor
-					});
-					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, x: 2560 * array[4] / 150 });
-					// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, xy: 2560 * array[4] / 150 });
-				}
-			});
+			// 		anime({
+			// 			targets: $displacement3.scale,
+			// 			duration: 0.15,
+			// 			easing: [0.215, 0.61, 0.355, 1],
+			// 			x: scaleFactor,
+			// 			y: scaleFactor
+			// 		});
+			// 		// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, x: 2560 * array[4] / 150 });
+			// 		// TweenLite.to($displacement3.scale, .15, { ease: Power2.easeOut, xy: 2560 * array[4] / 150 });
+			// 	}
+			// });
+
+			if (window.requestAnimationFrame) {
+				var distortion = function () {
+					if ($audio && $playing && $body.hasClass('texture-loaded')) {
+						var array = new Uint8Array(analyser.frequencyBinCount);
+						analyser.getByteFrequencyData(array);
+						var scaleFactor = array[4] * 2;
+
+						$displacement3.scale = { x: scaleFactor, y: scaleFactor };
+					}
+				};
+
+				setInterval(function () {
+					window.requestAnimationFrame(distortion);
+				});
+			}
 		});
 	};
 	request.send();
@@ -1276,3 +1300,15 @@ function swipedetect(el, callback) {
 		false
 	);
 }
+
+$(function () {
+	function hoverClassToggle(e) {
+		var $el = $(e.currentTarget);
+		var $parent = $el.parents('li');
+		$parent.toggleClass('link--hover');
+	}
+
+	$('a', '#projects')
+	.on('mouseenter', hoverClassToggle)
+	.on('mouseleave', hoverClassToggle);
+});

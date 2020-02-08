@@ -496,7 +496,7 @@ figure {
 		}
 
 		.wrapper--cross-dash:last-child {
-			bottom: -8.334vh;
+			bottom: calc(-8.334vh + 70px);
 			left: 50%;
 			@include transform(rotate(-60deg) translateY(-50%));
 		}
@@ -535,5 +535,58 @@ figure {
 		#dot {
 			left: 17.5%;
 		}
+	}
+}
+
+#projects {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#projects .link {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 0 10px !important;
+}
+
+#projects.animation--complete .link {
+	position: relative;
+	transition: margin 0.24s cubic-bezier(0.86, 0, 0.07, 1);
+
+	.outer {
+		&:after {
+			content: "∫";
+			position: absolute;
+			top: 100%;
+			right: 0;
+			display: block;
+			width: 0;
+			overflow: hidden;
+			transition: all 0.32s cubic-bezier(0.86, 0, 0.07, 1);
+			transition-delay: 0;
+			pointer-events: none;
+		}
+	}
+
+	&--hover {
+		margin-right: 15px;
+		margin-left: 15px;
+
+		.outer:after {
+			top: 0;
+			width: 12px;
+			transition-delay: 0s;
+		}
+
+		a {
+			padding-right: 16px;
+			transition-delay: 0s !important;
+		}
+	}
+
+	a {
+		transition: all 0.24s cubic-bezier(0.86, 0, 0.07, 1);
+		transition-delay: 0.08s;
 	}
 }

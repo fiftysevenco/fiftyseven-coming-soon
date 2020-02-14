@@ -490,13 +490,13 @@ figure {
 #landing {
 	hgroup {
 		.wrapper--cross-dash:first-child {
-			top: -8.334vh;
+			top: -8vh;
 			left: 50%;
 			@include transform(rotate(-60deg) translateY(-50%));
 		}
 
 		.wrapper--cross-dash:last-child {
-			bottom: calc(-8.334vh + 70px);
+			bottom: calc(-8vh + 18px);
 			left: 50%;
 			@include transform(rotate(-60deg) translateY(-50%));
 		}
@@ -548,6 +548,16 @@ figure {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	padding: 0 10px !important;
+
+	a {
+		padding-bottom: 4px;
+
+		&:before,
+		&:after {
+			bottom: 0;
+			height: 2px;
+		}
+	}
 }
 
 #projects.animation--complete .link {
@@ -558,14 +568,15 @@ figure {
 		&:after {
 			content: "∫";
 			position: absolute;
-			top: 100%;
-			right: 0;
+			top: 0;
+			right: 100%;
 			display: block;
 			width: 0;
 			overflow: hidden;
 			transition: all 0.32s cubic-bezier(0.86, 0, 0.07, 1);
 			transition-delay: 0;
 			pointer-events: none;
+			font-weight: 100;
 		}
 	}
 
@@ -574,7 +585,7 @@ figure {
 		margin-left: 15px;
 
 		.outer:after {
-			top: 0;
+			right: 0;
 			width: 12px;
 			transition-delay: 0s;
 		}

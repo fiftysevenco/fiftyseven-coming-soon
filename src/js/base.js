@@ -692,6 +692,7 @@ $(document)
 
 $(window)
 	.on('load', function () {
+		$('#sound-btn').trigger('click');
 		var $fsMonogram = document.getElementById('fs-monogram');
 		var $fsMonogramEls = Array.prototype.slice.call(
 			$fsMonogram.querySelectorAll('path')
@@ -1155,11 +1156,14 @@ function playSound(time) {
 function stopSound() {
 	$playing = false;
 	soundPlaying = false;
-	gainNode.gain.exponentialRampToValueAtTime(
-		0.001,
-		audioContext.currentTime + 2
-	);
-	sound.stop(0);
+
+	if (sound) {
+		gainNode.gain.exponentialRampToValueAtTime(
+			0.001,
+			audioContext.currentTime + 2
+		);
+		sound.stop(0);
+	}
 	clearInterval($visualizer);
 }
 

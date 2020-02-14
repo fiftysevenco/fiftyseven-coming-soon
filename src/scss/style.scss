@@ -53,7 +53,7 @@ a {
 }
 
 #projects {
-	margin-top: 50px;
+	margin-top: 30px;
 
 	@include breakpoint(mobile) {
 		margin-top: 5px;
@@ -555,6 +555,7 @@ figure {
 		&:before,
 		&:after {
 			bottom: 0;
+			left: -2px;
 			height: 2px;
 		}
 	}
@@ -591,7 +592,7 @@ figure {
 		}
 
 		a {
-			padding-right: 16px;
+			padding-right: 14px;
 			transition-delay: 0s !important;
 		}
 	}
